@@ -1,0 +1,26 @@
+{
+  "name": "@vavassor/nws-client",
+  "version": "0.1.0",
+  "description": "NWS Client is a JavaScript library for the National Weather Service API.",
+  "exports": "./src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vavassor/nws-client.git",
+    "directory": "packages/nws-client"
+  },
+  "keywords": [
+    "national weather service",
+    "nws",
+    "weather"
+  ],
+  "author": "Andrew Dawson <dawso.andrew@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Vavassor/nws-client/issues"
+  },
+  "homepage": "https://github.com/Vavassor/nws-client#readme",
+  "sideEffects": false
+}
