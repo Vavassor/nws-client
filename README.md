@@ -4,4 +4,4 @@ NWS Client is a JavaScript library for the [National Weather Service API](https:
 
 ## License
 
-This project is licensed under the terms of the [MIT license](README.md).
+This project is licensed under the terms of the [MIT license](LICENSE).
