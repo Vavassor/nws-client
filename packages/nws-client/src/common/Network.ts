@@ -1,6 +1,14 @@
 import { isErrorResponse } from "./CommonTypeguards";
 import { ErrorResponse, ResponseWithoutBodyError } from "./CommonTypes";
 
+type QueryStringValue =
+  | boolean
+  | boolean[]
+  | number[]
+  | number
+  | string
+  | string[];
+
 export interface JsonArgs {
   body?: string | FormData;
   endpoint: string;
@@ -22,14 +30,19 @@ export interface SimpleGetRequestArgs {
 
 export const addQueryString = (
   path: string,
-  parameters: Partial<Record<string, boolean | number | string | string[]>>
+  parameters: Partial<Record<string, QueryStringValue>>
 ) => {
   const urlSearchParams = new URLSearchParams();
+
   Object.entries(parameters).forEach(([key, value]) => {
-    if (value) {
-      urlSearchParams.set(key, getQueryValue(value));
+    const stringValue = getQueryValue(value);
+    if (typeof stringValue !== "undefined") {
+      urlSearchParams.set(key, stringValue);
     }
   });
+
+  urlSearchParams.sort();
+
   const queryString = urlSearchParams.toString();
 
   if (queryString.length > 0) {
@@ -108,14 +121,16 @@ export function simpleGetRequest<T>({
   });
 }
 
-const getQueryValue = (value: boolean | number | string | string[]) => {
+const getQueryValue = (value: QueryStringValue | undefined) => {
   if (typeof value === "boolean") {
     return value ? "true" : "false";
   } else if (typeof value === "number") {
     return value.toString();
-  } else if (typeof value === "string") {
+  } else if (typeof value === "string" && value.length > 0) {
     return value;
-  } else {
+  } else if (Array.isArray(value) && value.length > 0) {
     return value.join(",");
+  } else {
+    return undefined;
   }
 };
