@@ -1,6 +1,6 @@
 import { ErrorResponse, ResponseWithoutBodyError } from "./CommonTypes";
 
-interface JsonArgs {
+export interface JsonArgs {
   body?: string | FormData;
   endpoint: string;
   headers: Record<string, string>;
@@ -8,7 +8,7 @@ interface JsonArgs {
   signal?: AbortSignal;
 }
 
-interface JsonReturnType<T> {
+export interface JsonReturnType<T> {
   json: T;
   status: number;
   ok: boolean;
