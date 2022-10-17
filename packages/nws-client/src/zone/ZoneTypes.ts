@@ -29,6 +29,22 @@ export interface ZoneCollectionJsonLd {
   "@graph": Zone[];
 }
 
+export interface ZoneForecast {
+  "@context": JsonLdContext;
+  geometry?: string | null;
+  periods: ZoneForecastPeriod[];
+  updated: string;
+  zone: string;
+}
+
+export type ZoneForecastGeoJson = FeatureGeoJson<ZoneForecast>;
+
+export interface ZoneForecastPeriod {
+  detailedForecast: string;
+  name: string;
+  number: number;
+}
+
 export type ZoneGeoJson = FeatureGeoJson<Zone>;
 
 export type ZoneType =

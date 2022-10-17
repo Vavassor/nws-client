@@ -1,10 +1,17 @@
 import { Format } from "../common";
 import { apiRoot } from "../common/CommonConstants";
 import { addQueryString, simpleGetRequest } from "../common/Network";
+import { ObservationCollectionGeoJson } from "../observation";
+import {
+  ObservationStationCollectionGeoJson,
+  ObservationStationCollectionJsonLd,
+} from "../station";
 import {
   Zone,
   ZoneCollectionGeoJson,
   ZoneCollectionJsonLd,
+  ZoneForecast,
+  ZoneForecastGeoJson,
   ZoneGeoJson,
   ZoneType,
 } from "./ZoneTypes";
@@ -19,6 +26,25 @@ interface GetZoneArgs {
 interface GetZoneByUriArgs {
   format?: Format;
   uri: string;
+}
+
+interface GetZoneForecastArgs {
+  format?: Format;
+  type: ZoneType;
+  zoneId: string;
+}
+
+interface GetZoneObservationsArgs {
+  end?: string;
+  format?: Format;
+  limit?: number;
+  start?: string;
+  zoneId: string;
+}
+
+interface GetZoneStationsArgs {
+  format?: Format;
+  zoneId: string;
 }
 
 interface GetZonesArgs {
@@ -63,6 +89,48 @@ export const getZoneByUri = ({
 }: GetZoneByUriArgs) => {
   return simpleGetRequest<Zone | ZoneGeoJson>({
     endpoint: uri,
+    format,
+  });
+};
+
+export const getZoneForecast = ({
+  format = Format.GeoJson,
+  type,
+  zoneId,
+}: GetZoneForecastArgs) => {
+  return simpleGetRequest<ZoneForecast | ZoneForecastGeoJson>({
+    endpoint: `${apiRoot}/zones/${type}/${zoneId}/forecast`,
+    format,
+  });
+};
+
+export const getZoneObservations = ({
+  end,
+  format = Format.GeoJson,
+  limit,
+  start,
+  zoneId,
+}: GetZoneObservationsArgs) => {
+  const endpoint = addQueryString(
+    `${apiRoot}/zones/forecast/${zoneId}/observations`,
+    { end, limit, start }
+  );
+  return simpleGetRequest<
+    ObservationCollectionGeoJson | ObservationStationCollectionJsonLd
+  >({
+    endpoint,
+    format,
+  });
+};
+
+export const getZoneStations = ({
+  format = Format.GeoJson,
+  zoneId,
+}: GetZoneStationsArgs) => {
+  return simpleGetRequest<
+    ObservationStationCollectionGeoJson | ObservationStationCollectionJsonLd
+  >({
+    endpoint: `${apiRoot}/zones/forecast/${zoneId}/stations`,
     format,
   });
 };
