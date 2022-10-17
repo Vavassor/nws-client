@@ -39,6 +39,21 @@ export const addQueryString = (
   }
 };
 
+export const getStringRecord = (
+  headers: Record<string, string | undefined>
+): Record<string, string> => {
+  return Object.entries(headers)
+    .filter((entry): entry is [string, string] => typeof entry[1] !== "string")
+    .reduce((obj, [key, val]) => {
+      obj[key] = val;
+      return obj;
+    }, {} as Record<string, string>);
+};
+
+export const getStringArrayHeader = (values: string[] | undefined) => {
+  return values && values.length > 0 ? values.join(", ") : undefined;
+};
+
 export async function jsonRequest<ResponseType>(
   args: JsonArgs
 ): Promise<JsonReturnType<ResponseType>> {

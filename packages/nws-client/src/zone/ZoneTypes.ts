@@ -1,4 +1,4 @@
-import { GeoJsonGeometry, JsonLdContext } from "../common";
+import { FeatureGeoJson, JsonLdContext } from "../common";
 
 type ZoneType =
   | "land"
@@ -28,10 +28,4 @@ export interface Zone {
   type: ZoneType;
 }
 
-export interface ZoneGeoJson {
-  "@context": JsonLdContext;
-  geometry: GeoJsonGeometry;
-  id: string;
-  properties: Zone;
-  type: "Feature";
-}
+export type ZoneGeoJson = FeatureGeoJson<Zone>;

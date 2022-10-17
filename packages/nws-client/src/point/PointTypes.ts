@@ -1,4 +1,8 @@
-import { GeoJsonGeometry, JsonLdContext, QuantitativeValue } from "../common/CommonTypes";
+import {
+  FeatureGeoJson,
+  JsonLdContext,
+  QuantitativeValue,
+} from "../common/CommonTypes";
 
 export interface Point {
   "@context": JsonLdContext;
@@ -22,13 +26,7 @@ export interface Point {
   timeZone: string;
 }
 
-export interface PointGeoJson {
-  "@context": JsonLdContext;
-  geometry: GeoJsonGeometry;
-  id: string;
-  properties: Point;
-  type: "Feature";
-}
+export type PointGeoJson = FeatureGeoJson<Point>;
 
 export interface RelativeLocationJsonLd {
   bearing: QuantitativeValue;

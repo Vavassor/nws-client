@@ -12,6 +12,14 @@ export interface ErrorResponse {
   type: string;
 }
 
+export interface FeatureGeoJson<PropertiesType> {
+  "@context": JsonLdContext;
+  geometry: GeoJsonGeometry;
+  id: string;
+  properties: PropertiesType;
+  type: "Feature";
+}
+
 export enum Format {
   GeoJson = "application/geo+json",
   JsonLd = "application/ld+json",
