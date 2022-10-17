@@ -1,4 +1,4 @@
-import { JsonLdContext, QuantitativeValue } from "../common/CommonTypes";
+import { GeoJsonGeometry, JsonLdContext, QuantitativeValue } from "../common/CommonTypes";
 
 export interface Point {
   "@context": JsonLdContext;
@@ -20,6 +20,14 @@ export interface Point {
   radarStation: string;
   relativeLocation: RelativeLocationJsonLd;
   timeZone: string;
+}
+
+export interface PointGeoJson {
+  "@context": JsonLdContext;
+  geometry: GeoJsonGeometry;
+  id: string;
+  properties: Point;
+  type: "Feature";
 }
 
 export interface RelativeLocationJsonLd {

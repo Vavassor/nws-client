@@ -1,3 +1,4 @@
+import { isErrorResponse } from "./CommonTypeguards";
 import { ErrorResponse, ResponseWithoutBodyError } from "./CommonTypes";
 
 export interface JsonArgs {
@@ -13,6 +14,30 @@ export interface JsonReturnType<T> {
   status: number;
   ok: boolean;
 }
+
+export interface SimpleGetRequestArgs {
+  endpoint: string;
+  format: string;
+}
+
+export const addQueryString = (
+  path: string,
+  parameters: Partial<Record<string, string>>
+) => {
+  const urlSearchParams = new URLSearchParams();
+  Object.entries(parameters).forEach(([key, value]) => {
+    if (value) {
+      urlSearchParams.set(key, value);
+    }
+  });
+  const queryString = urlSearchParams.toString();
+
+  if (queryString.length > 0) {
+    return `${path}?${queryString}`;
+  } else {
+    return path;
+  }
+};
 
 export async function jsonRequest<ResponseType>(
   args: JsonArgs
@@ -55,14 +80,15 @@ export async function jsonRequest<ResponseType>(
   };
 }
 
-const isRecord = (value: unknown): value is Record<string, unknown> => {
-  return typeof value === "object" && value !== null;
-};
-
-const isErrorResponse = (value: unknown): value is ErrorResponse => {
-  return (
-    isRecord(value) &&
-    typeof value.correlationId === "string" &&
-    typeof value.instance === "string"
-  );
-};
+export function simpleGetRequest<T>({
+  endpoint,
+  format,
+}: SimpleGetRequestArgs) {
+  return jsonRequest<T>({
+    endpoint,
+    headers: {
+      Accept: format,
+    },
+    method: "GET",
+  });
+}

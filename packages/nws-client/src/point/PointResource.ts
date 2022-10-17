@@ -1,13 +1,19 @@
+import { Format } from "../common";
 import { apiRoot } from "../common/CommonConstants";
-import { jsonRequest } from "../common/Network";
-import { Point } from "./PointTypes";
+import { simpleGetRequest } from "../common/Network";
+import { Point, PointGeoJson } from "./PointTypes";
 
 interface GetPointArgs {
+  format?: Format;
   latitude: number;
   longitude: number;
 }
 
-export const getPoint = ({ latitude, longitude }: GetPointArgs) => {
+export const getPoint = ({
+  format = Format.GeoJson,
+  latitude,
+  longitude,
+}: GetPointArgs) => {
   /**
    * Coordinates with more precision than needed cause the point API to return a
    * 301 redirect request to a corrected position. Circumvent this extra
@@ -17,11 +23,8 @@ export const getPoint = ({ latitude, longitude }: GetPointArgs) => {
   const lat = latitude.toFixed(precision);
   const lon = longitude.toFixed(precision);
 
-  return jsonRequest<Point>({
+  return simpleGetRequest<Point | PointGeoJson>({
     endpoint: `${apiRoot}/points/${lat},${lon}`,
-    headers: {
-      Accept: "application/ld+json",
-    },
-    method: "GET",
+    format,
   });
 };

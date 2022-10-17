@@ -12,6 +12,57 @@ export interface ErrorResponse {
   type: string;
 }
 
+export enum Format {
+  GeoJson = "application/geo+json",
+  JsonLd = "application/ld+json",
+}
+
+export type GeoJsonGeometry =
+  | GeoJsonLineString
+  | GeoJsonMultiLineString
+  | GeoJsonMultiPoint
+  | GeoJsonMultiPolygon
+  | GeoJsonPoint
+  | GeoJsonPolygon;
+
+export type GeoJsonPosition = number[];
+
+export interface GeoJsonLineString {
+  bbox: number[];
+  coordinates: GeoJsonPosition[];
+  type: "LineString";
+}
+
+export interface GeoJsonMultiLineString {
+  bbox: number[];
+  coordinates: GeoJsonPosition[][];
+  type: "MultiLineString";
+}
+
+export interface GeoJsonMultiPoint {
+  bbox: number[];
+  coordinates: GeoJsonPosition[];
+  type: "MultiPoint";
+}
+
+export interface GeoJsonMultiPolygon {
+  bbox: number[];
+  coordinates: GeoJsonPosition[][];
+  type: "MultiPolygon";
+}
+
+export interface GeoJsonPoint {
+  bbox: number[];
+  coordinates: GeoJsonPosition;
+  type: "Point";
+}
+
+export interface GeoJsonPolygon {
+  bbox: number[];
+  coordinates: GeoJsonPosition[];
+  type: "Polygon";
+}
+
 export type JsonLdContext = JsonLdContextValue | JsonLdContextValue[];
 
 export interface JsonLdContextObject {
