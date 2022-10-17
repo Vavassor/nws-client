@@ -22,12 +22,12 @@ export interface SimpleGetRequestArgs {
 
 export const addQueryString = (
   path: string,
-  parameters: Partial<Record<string, string>>
+  parameters: Partial<Record<string, boolean | number | string | string[]>>
 ) => {
   const urlSearchParams = new URLSearchParams();
   Object.entries(parameters).forEach(([key, value]) => {
     if (value) {
-      urlSearchParams.set(key, value);
+      urlSearchParams.set(key, getQueryValue(value));
     }
   });
   const queryString = urlSearchParams.toString();
@@ -107,3 +107,15 @@ export function simpleGetRequest<T>({
     method: "GET",
   });
 }
+
+const getQueryValue = (value: boolean | number | string | string[]) => {
+  if (typeof value === "boolean") {
+    return value ? "true" : "false";
+  } else if (typeof value === "number") {
+    return value.toString();
+  } else if (typeof value === "string") {
+    return value;
+  } else {
+    return value.join(",");
+  }
+};
