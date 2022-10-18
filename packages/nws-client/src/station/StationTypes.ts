@@ -14,6 +14,8 @@ export interface ObservationStation {
   timeZone: string;
 }
 
+export type ObservationStationGeoJson = FeatureGeoJson<ObservationStation>;
+
 export interface ObservationStationCollectionGeoJson {
   "@context": JsonLdContext;
   features: FeatureGeoJson<ObservationStation>[];
