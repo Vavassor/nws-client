@@ -4,5 +4,6 @@ export * from "./glossary";
 export * from "./gridpoint";
 export * from "./office";
 export * from "./point";
+export * from "./product";
 export * from "./station";
 export * from "./zone";
