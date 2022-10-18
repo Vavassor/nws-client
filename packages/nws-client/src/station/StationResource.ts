@@ -1,10 +1,10 @@
-import { Format } from "../common";
-import { apiRoot } from "../common/CommonConstants";
-import { addQueryString, simpleGetRequest } from "../common/Network";
 import {
+  Format,
   ObservationCollectionGeoJson,
   ObservationCollectionJsonLd,
-} from "../observation";
+} from "../common";
+import { apiRoot } from "../common/CommonConstants";
+import { addQueryString, simpleGetRequest } from "../common/Network";
 import {
   ObservationStation,
   ObservationStationCollectionGeoJson,

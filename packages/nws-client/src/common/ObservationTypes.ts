@@ -1,4 +1,4 @@
-import { FeatureGeoJson, JsonLdContext, QuantitativeValue } from "../common";
+import { FeatureGeoJson, JsonLdContext, QuantitativeValue } from ".";
 
 type MetarPhenomenonIntensity = "heavy" | "light";
 

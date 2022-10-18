@@ -1,7 +1,10 @@
-import { Format } from "../common";
+import {
+  Format,
+  ObservationCollectionGeoJson,
+  ObservationCollectionJsonLd,
+} from "../common";
 import { apiRoot } from "../common/CommonConstants";
 import { addQueryString, simpleGetRequest } from "../common/Network";
-import { ObservationCollectionGeoJson } from "../observation";
 import {
   ObservationStationCollectionGeoJson,
   ObservationStationCollectionJsonLd,
@@ -116,7 +119,7 @@ export const getZoneObservations = ({
     { end, limit, start }
   );
   return simpleGetRequest<
-    ObservationCollectionGeoJson | ObservationStationCollectionJsonLd
+    ObservationCollectionGeoJson | ObservationCollectionJsonLd
   >({
     endpoint,
     format,
