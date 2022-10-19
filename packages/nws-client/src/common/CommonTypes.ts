@@ -1,3 +1,7 @@
+export interface BaseEndpointArgs {
+  userAgent?: string;
+}
+
 /**
  * This is an API error based on Problem Detail RFC 7807.
  *

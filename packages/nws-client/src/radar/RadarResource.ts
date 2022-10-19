@@ -1,4 +1,4 @@
-import { Format } from "../common";
+import { BaseEndpointArgs, Format } from "../common";
 import { apiRoot } from "../common/CommonConstants";
 import { addQueryString, simpleGetRequest } from "../common/Network";
 import {
@@ -11,27 +11,27 @@ import {
   RadarStationJsonLd,
 } from "./RadarTypes";
 
-interface GetRadarServerArgs {
+interface GetRadarServerArgs extends BaseEndpointArgs {
   reportingHost?: string;
   serverId: string;
 }
 
-interface GetRadarServersArgs {
+interface GetRadarServersArgs extends BaseEndpointArgs {
   reportingHost?: string;
 }
 
-interface GetRadarStationArgs {
+interface GetRadarStationArgs extends BaseEndpointArgs {
   format?: string;
   host?: string;
   reportingHost?: string;
   stationId: string;
 }
 
-interface GetRadarStationAlarmsArgs {
+interface GetRadarStationAlarmsArgs extends BaseEndpointArgs {
   stationId: string;
 }
 
-interface GetRadarStationsArgs {
+interface GetRadarStationsArgs extends BaseEndpointArgs {
   format?: string;
   host?: string;
   reportingHost?: string;
@@ -41,6 +41,7 @@ interface GetRadarStationsArgs {
 export const getRadarServer = ({
   reportingHost,
   serverId,
+  userAgent,
 }: GetRadarServerArgs) => {
   const endpoint = addQueryString(`${apiRoot}/radar/servers/${serverId}`, {
     reportingHost,
@@ -49,10 +50,14 @@ export const getRadarServer = ({
   return simpleGetRequest<RadarServer>({
     endpoint,
     format: Format.JsonLd,
+    userAgent,
   });
 };
 
-export const getRadarServers = ({ reportingHost }: GetRadarServersArgs) => {
+export const getRadarServers = ({
+  reportingHost,
+  userAgent,
+}: GetRadarServersArgs) => {
   const endpoint = addQueryString(`${apiRoot}/radar/servers`, {
     reportingHost,
   });
@@ -60,6 +65,7 @@ export const getRadarServers = ({ reportingHost }: GetRadarServersArgs) => {
   return simpleGetRequest<RadarServerCollection>({
     endpoint,
     format: Format.JsonLd,
+    userAgent,
   });
 };
 
@@ -68,6 +74,7 @@ export const getRadarStation = ({
   host,
   reportingHost,
   stationId,
+  userAgent,
 }: GetRadarStationArgs) => {
   const endpoint = addQueryString(`${apiRoot}/radar/stations/${stationId}`, {
     host,
@@ -77,15 +84,18 @@ export const getRadarStation = ({
   return simpleGetRequest<RadarStationGeoJson | RadarStationJsonLd>({
     endpoint,
     format,
+    userAgent,
   });
 };
 
 export const getRadarStationAlarms = ({
   stationId,
+  userAgent,
 }: GetRadarStationAlarmsArgs) => {
   return simpleGetRequest<RadarStationAlarmCollection>({
     endpoint: `${apiRoot}/radar/stations/${stationId}/alarms`,
     format: Format.JsonLd,
+    userAgent,
   });
 };
 
@@ -94,6 +104,7 @@ export const getRadarStations = ({
   host,
   reportingHost,
   stationType,
+  userAgent,
 }: GetRadarStationsArgs) => {
   const endpoint = addQueryString(`${apiRoot}/radar/stations`, {
     host,
@@ -103,5 +114,5 @@ export const getRadarStations = ({
 
   return simpleGetRequest<
     RadarStationCollectionGeoJson | RadarStationCollectionJsonLd
-  >({ endpoint, format });
+  >({ endpoint, format, userAgent });
 };

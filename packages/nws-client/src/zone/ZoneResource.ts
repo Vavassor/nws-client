@@ -1,4 +1,5 @@
 import {
+  BaseEndpointArgs,
   Format,
   ObservationCollectionGeoJson,
   ObservationCollectionJsonLd,
@@ -19,25 +20,25 @@ import {
   ZoneType,
 } from "./ZoneTypes";
 
-interface GetZoneArgs {
+interface GetZoneArgs extends BaseEndpointArgs {
   effective?: string;
   format?: Format;
   type: "county" | "fire" | "forecast";
   zoneId: string;
 }
 
-interface GetZoneByUriArgs {
+interface GetZoneByUriArgs extends BaseEndpointArgs {
   format?: Format;
   uri: string;
 }
 
-interface GetZoneForecastArgs {
+interface GetZoneForecastArgs extends BaseEndpointArgs {
   format?: Format;
   type: ZoneType;
   zoneId: string;
 }
 
-interface GetZoneObservationsArgs {
+interface GetZoneObservationsArgs extends BaseEndpointArgs {
   end?: string;
   format?: Format;
   limit?: number;
@@ -45,12 +46,12 @@ interface GetZoneObservationsArgs {
   zoneId: string;
 }
 
-interface GetZoneStationsArgs {
+interface GetZoneStationsArgs extends BaseEndpointArgs {
   format?: Format;
   zoneId: string;
 }
 
-interface GetZonesArgs {
+interface GetZonesArgs extends BaseEndpointArgs {
   area?: string[];
   effective?: string;
   format?: Format;
@@ -62,7 +63,7 @@ interface GetZonesArgs {
   type?: ZoneType[];
 }
 
-interface GetZonesByTypeArgs {
+interface GetZonesByTypeArgs extends BaseEndpointArgs {
   area?: string[];
   effective?: string;
   format?: Format;
@@ -78,32 +79,37 @@ export const getZone = ({
   effective,
   format = Format.GeoJson,
   type,
+  userAgent,
   zoneId,
 }: GetZoneArgs) => {
   const endpoint = addQueryString(`${apiRoot}/zones/${type}/${zoneId}`, {
     effective,
   });
-  return simpleGetRequest<Zone | ZoneGeoJson>({ endpoint, format });
+  return simpleGetRequest<Zone | ZoneGeoJson>({ endpoint, format, userAgent });
 };
 
 export const getZoneByUri = ({
   format = Format.GeoJson,
   uri,
+  userAgent,
 }: GetZoneByUriArgs) => {
   return simpleGetRequest<Zone | ZoneGeoJson>({
     endpoint: uri,
     format,
+    userAgent,
   });
 };
 
 export const getZoneForecast = ({
   format = Format.GeoJson,
   type,
+  userAgent,
   zoneId,
 }: GetZoneForecastArgs) => {
   return simpleGetRequest<ZoneForecast | ZoneForecastGeoJson>({
     endpoint: `${apiRoot}/zones/${type}/${zoneId}/forecast`,
     format,
+    userAgent,
   });
 };
 
@@ -112,22 +118,26 @@ export const getZoneObservations = ({
   format = Format.GeoJson,
   limit,
   start,
+  userAgent,
   zoneId,
 }: GetZoneObservationsArgs) => {
   const endpoint = addQueryString(
     `${apiRoot}/zones/forecast/${zoneId}/observations`,
     { end, limit, start }
   );
+
   return simpleGetRequest<
     ObservationCollectionGeoJson | ObservationCollectionJsonLd
   >({
     endpoint,
     format,
+    userAgent,
   });
 };
 
 export const getZoneStations = ({
   format = Format.GeoJson,
+  userAgent,
   zoneId,
 }: GetZoneStationsArgs) => {
   return simpleGetRequest<
@@ -135,6 +145,7 @@ export const getZoneStations = ({
   >({
     endpoint: `${apiRoot}/zones/forecast/${zoneId}/stations`,
     format,
+    userAgent,
   });
 };
 
@@ -148,6 +159,7 @@ export const getZones = ({
   point,
   region,
   type,
+  userAgent,
 }: GetZonesArgs) => {
   const endpoint = addQueryString(`${apiRoot}/zones`, {
     area,
@@ -159,9 +171,11 @@ export const getZones = ({
     region,
     type,
   });
+
   return simpleGetRequest<ZoneCollectionGeoJson | ZoneCollectionJsonLd>({
     endpoint,
     format,
+    userAgent,
   });
 };
 
@@ -175,6 +189,7 @@ export const getZonesByType = ({
   point,
   region,
   type,
+  userAgent,
 }: GetZonesByTypeArgs) => {
   const endpoint = addQueryString(`${apiRoot}/zones/${type}`, {
     area,
@@ -185,8 +200,10 @@ export const getZonesByType = ({
     point,
     region,
   });
+
   return simpleGetRequest<ZoneCollectionGeoJson | ZoneCollectionJsonLd>({
     endpoint,
     format,
+    userAgent,
   });
 };

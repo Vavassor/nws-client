@@ -1,4 +1,4 @@
-import { Format } from "../common";
+import { BaseEndpointArgs, Format } from "../common";
 import { apiRoot } from "../common/CommonConstants";
 import { addQueryString, simpleGetRequest } from "../common/Network";
 import {
@@ -10,7 +10,7 @@ import {
   AlertTypes,
 } from "./AlertTypes";
 
-interface GetActiveAlertsArgs {
+interface GetActiveAlertsArgs extends BaseEndpointArgs {
   area?: string[];
   certainty?: string[];
   code?: string[];
@@ -27,27 +27,27 @@ interface GetActiveAlertsArgs {
   zone?: string[];
 }
 
-interface GetActiveAlertsByAreaArgs {
+interface GetActiveAlertsByAreaArgs extends BaseEndpointArgs {
   areaId: string;
   format?: Format;
 }
 
-interface GetActiveAlertsByRegionArgs {
+interface GetActiveAlertsByRegionArgs extends BaseEndpointArgs {
   format?: Format;
   regionId: string;
 }
 
-interface GetActiveAlertsByZoneArgs {
+interface GetActiveAlertsByZoneArgs extends BaseEndpointArgs {
   format?: Format;
   zoneId: string;
 }
 
-interface GetAlertArgs {
+interface GetAlertArgs extends BaseEndpointArgs {
   format?: string;
   id: string;
 }
 
-interface GetAlertsArgs {
+interface GetAlertsArgs extends BaseEndpointArgs {
   area?: string[];
   certainty?: string[];
   code?: string[];
@@ -81,6 +81,7 @@ export const getActiveAlerts = ({
   severity,
   status,
   urgency,
+  userAgent,
   zone,
 }: GetActiveAlertsArgs) => {
   const endpoint = addQueryString(`${apiRoot}/alerts/active`, {
@@ -102,57 +103,71 @@ export const getActiveAlerts = ({
   return simpleGetRequest<AlertCollectionGeoJson | AlertCollectionJsonLd>({
     endpoint,
     format,
+    userAgent,
   });
 };
 
 export const getActiveAlertsByArea = ({
   areaId,
   format = Format.GeoJson,
+  userAgent,
 }: GetActiveAlertsByAreaArgs) => {
   return simpleGetRequest<AlertCollectionGeoJson | AlertCollectionJsonLd>({
     endpoint: `${apiRoot}/alerts/active/area/${areaId}`,
     format,
+    userAgent,
   });
 };
 
 export const getActiveAlertsByRegion = ({
   format = Format.GeoJson,
   regionId,
+  userAgent,
 }: GetActiveAlertsByRegionArgs) => {
   return simpleGetRequest<AlertCollectionGeoJson | AlertCollectionJsonLd>({
     endpoint: `${apiRoot}/alerts/active/region/${regionId}`,
     format,
+    userAgent,
   });
 };
 
 export const getActiveAlertsByZone = ({
   format = Format.GeoJson,
+  userAgent,
   zoneId,
 }: GetActiveAlertsByZoneArgs) => {
   return simpleGetRequest<AlertCollectionGeoJson | AlertCollectionJsonLd>({
     endpoint: `${apiRoot}/alerts/active/zone/${zoneId}`,
     format,
+    userAgent,
   });
 };
 
-export const getActiveAlertsCount = () => {
+export const getActiveAlertsCount = ({ userAgent }: BaseEndpointArgs) => {
   return simpleGetRequest<ActiveAlertsCount>({
     endpoint: `${apiRoot}/alerts/active/count`,
     format: Format.JsonLd,
+    userAgent,
   });
 };
 
-export const getAlert = ({ format = Format.GeoJson, id }: GetAlertArgs) => {
+export const getAlert = ({
+  format = Format.GeoJson,
+  id,
+  userAgent,
+}: GetAlertArgs) => {
   return simpleGetRequest<AlertJsonLd | AlertGeoJson>({
     endpoint: `${apiRoot}/alerts/${id}`,
     format,
+    userAgent,
   });
 };
 
-export const getAlertTypes = () => {
+export const getAlertTypes = ({ userAgent }: BaseEndpointArgs) => {
   return simpleGetRequest<AlertTypes>({
     endpoint: `${apiRoot}/alerts/types`,
     format: Format.JsonLd,
+    userAgent,
   });
 };
 
@@ -173,6 +188,7 @@ export const getAlerts = ({
   region,
   regionType,
   urgency,
+  userAgent,
   zone,
 }: GetAlertsArgs) => {
   const endpoint = addQueryString(`${apiRoot}/alerts`, {
@@ -197,5 +213,6 @@ export const getAlerts = ({
   return simpleGetRequest<AlertCollectionGeoJson | AlertCollectionJsonLd>({
     endpoint,
     format,
+    userAgent,
   });
 };

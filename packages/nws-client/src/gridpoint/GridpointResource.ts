@@ -1,4 +1,4 @@
-import { Format, UnitType } from "../common";
+import { BaseEndpointArgs, Format, UnitType } from "../common";
 import { apiRoot } from "../common/CommonConstants";
 import {
   addQueryString,
@@ -18,23 +18,23 @@ import {
   GridpointGeoJson,
 } from "./GridpointTypes";
 
-interface GetGridpointArgs {
+interface GetGridpointArgs extends BaseEndpointArgs {
   forecastOfficeId: string;
   format?: Format;
   gridX: string;
   gridY: string;
 }
 
-interface GetGridpointForecastArgs {
+interface GetGridpointForecastArgs extends BaseEndpointArgs {
   featureFlags?: GetGridpointForecastFeatureFlag[];
   forecastOfficeId: string;
   format?: Format;
-  gridX: string;
-  gridY: string;
+  gridX: number | string;
+  gridY: number | string;
   units?: UnitType;
 }
 
-interface GetGridpointStationsArgs {
+interface GetGridpointStationsArgs extends BaseEndpointArgs {
   forecastOfficeId: string;
   format?: Format;
   gridX: string;
@@ -50,10 +50,12 @@ export const getGridpoint = ({
   format = Format.GeoJson,
   gridX,
   gridY,
+  userAgent,
 }: GetGridpointArgs) => {
   return simpleGetRequest<Gridpoint | GridpointGeoJson>({
     endpoint: `${apiRoot}/gridpoints/${forecastOfficeId}/${gridX},${gridY}`,
     format,
+    userAgent,
   });
 };
 
@@ -64,6 +66,7 @@ export const getGridpointForecast = ({
   gridX,
   gridY,
   units,
+  userAgent,
 }: GetGridpointForecastArgs) => {
   const endpoint = addQueryString(
     `${apiRoot}/gridpoints/${forecastOfficeId}/${gridX},${gridY}/forecast`,
@@ -75,6 +78,7 @@ export const getGridpointForecast = ({
     headers: getStringRecord({
       Accept: format,
       "Feature-Flags": getStringArrayHeader(featureFlags),
+      "User-Agent": userAgent,
     }),
     method: "GET",
   });
@@ -87,6 +91,7 @@ export const getGridpointForecastHourly = ({
   gridX,
   gridY,
   units,
+  userAgent,
 }: GetGridpointForecastArgs) => {
   const endpoint = addQueryString(
     `${apiRoot}/gridpoints/${forecastOfficeId}/${gridX},${gridY}/forecast/hourly`,
@@ -98,6 +103,7 @@ export const getGridpointForecastHourly = ({
     headers: getStringRecord({
       Accept: format,
       "Feature-Flags": getStringArrayHeader(featureFlags),
+      "User-Agent": userAgent,
     }),
     method: "GET",
   });
@@ -108,11 +114,13 @@ export const getGridpointStations = ({
   format = Format.GeoJson,
   gridX,
   gridY,
+  userAgent,
 }: GetGridpointStationsArgs) => {
   return simpleGetRequest<
     ObservationStationCollectionGeoJson | ObservationStationCollectionJsonLd
   >({
     endpoint: `${apiRoot}/gridpoints/${forecastOfficeId}/${gridX},${gridY}/stations`,
     format,
+    userAgent,
   });
 };

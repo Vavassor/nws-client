@@ -1,4 +1,4 @@
-import { Format } from "../common";
+import { BaseEndpointArgs, Format } from "../common";
 import { apiRoot } from "../common/CommonConstants";
 import { simpleGetRequest } from "../common/Network";
 import {
@@ -7,39 +7,46 @@ import {
   OfficeHeadlineCollection,
 } from "./OfficeTypes";
 
-interface GetOfficeArgs {
+interface GetOfficeArgs extends BaseEndpointArgs {
   officeId: string;
 }
 
-interface GetOfficeHeadlineArgs {
+interface GetOfficeHeadlineArgs extends BaseEndpointArgs {
   headlineId: string;
   officeId: string;
 }
 
-interface GetOfficeHeadlinesArgs {
+interface GetOfficeHeadlinesArgs extends BaseEndpointArgs {
   officeId: string;
 }
 
-export const getOffice = ({ officeId }: GetOfficeArgs) => {
+export const getOffice = ({ officeId, userAgent }: GetOfficeArgs) => {
   return simpleGetRequest<Office>({
     endpoint: `${apiRoot}/offices/${officeId}`,
     format: Format.JsonLd,
+    userAgent,
   });
 };
 
 export const getOfficeHeadline = ({
   headlineId,
   officeId,
+  userAgent,
 }: GetOfficeHeadlineArgs) => {
   return simpleGetRequest<OfficeHeadline>({
     endpoint: `${apiRoot}/offices/${officeId}/headlines/${headlineId}`,
     format: Format.JsonLd,
+    userAgent,
   });
 };
 
-export const getOfficeHeadlines = ({ officeId }: GetOfficeHeadlinesArgs) => {
+export const getOfficeHeadlines = ({
+  officeId,
+  userAgent,
+}: GetOfficeHeadlinesArgs) => {
   return simpleGetRequest<OfficeHeadlineCollection>({
     endpoint: `${apiRoot}/offices/${officeId}/headlines`,
     format: Format.JsonLd,
+    userAgent,
   });
 };
