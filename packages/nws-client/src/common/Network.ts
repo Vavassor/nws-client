@@ -26,7 +26,7 @@ export interface JsonReturnType<T> {
 export interface SimpleGetRequestArgs {
   endpoint: string;
   format: string;
-  userAgent: string;
+  userAgent?: string;
 }
 
 export const addQueryString = (
@@ -116,10 +116,10 @@ export function simpleGetRequest<T>({
 }: SimpleGetRequestArgs) {
   return jsonRequest<T>({
     endpoint,
-    headers: {
+    headers: getStringRecord({
       Accept: format,
       "User-Agent": userAgent,
-    },
+    }),
     method: "GET",
   });
 }

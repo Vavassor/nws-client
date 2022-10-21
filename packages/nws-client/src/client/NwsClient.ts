@@ -1,10 +1,16 @@
-import { getGridpointForecast } from "../gridpoint";
+import { UnitType } from "../common";
+import {
+  getGridpointForecastByUri,
+  GetGridpointForecastFeatureFlag,
+} from "../gridpoint";
 import { isPoint } from "../point";
 import { PointCache } from "./PointCache";
 
 interface GetGridpointForecastArgs {
+  featureFlags?: GetGridpointForecastFeatureFlag[];
   latitude: number;
   longitude: number;
+  units?: UnitType;
 }
 
 export class NwsClient {
@@ -12,14 +18,14 @@ export class NwsClient {
   userAgent: string | undefined;
 
   async getGridpointForecast({
+    featureFlags,
     latitude,
     longitude,
   }: GetGridpointForecastArgs) {
     const point = await this.getPoint(latitude, longitude);
-    return getGridpointForecast({
-      forecastOfficeId: point.gridId,
-      gridX: point.gridX,
-      gridY: point.gridY,
+    return getGridpointForecastByUri({
+      featureFlags,
+      uri: point.forecast,
       userAgent: this.userAgent,
     });
   }

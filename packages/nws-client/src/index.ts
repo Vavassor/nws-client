@@ -1,4 +1,5 @@
 export * from "./alert";
+export * from "./client";
 export * from "./common";
 export * from "./glossary";
 export * from "./gridpoint";

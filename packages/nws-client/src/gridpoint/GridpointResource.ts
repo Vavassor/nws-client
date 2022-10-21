@@ -34,6 +34,12 @@ interface GetGridpointForecastArgs extends BaseEndpointArgs {
   units?: UnitType;
 }
 
+interface GetGridpointForecastByUri extends BaseEndpointArgs {
+  featureFlags?: GetGridpointForecastFeatureFlag[];
+  format?: Format;
+  uri: string;
+}
+
 interface GetGridpointStationsArgs extends BaseEndpointArgs {
   forecastOfficeId: string;
   format?: Format;
@@ -75,6 +81,23 @@ export const getGridpointForecast = ({
 
   return jsonRequest<GridpointForecast | GridpointForecastGeoJson>({
     endpoint,
+    headers: getStringRecord({
+      Accept: format,
+      "Feature-Flags": getStringArrayHeader(featureFlags),
+      "User-Agent": userAgent,
+    }),
+    method: "GET",
+  });
+};
+
+export const getGridpointForecastByUri = ({
+  featureFlags,
+  format = Format.GeoJson,
+  uri,
+  userAgent
+}: GetGridpointForecastByUri) => {
+  return jsonRequest<GridpointForecast | GridpointForecastGeoJson>({
+    endpoint: uri,
     headers: getStringRecord({
       Accept: format,
       "Feature-Flags": getStringArrayHeader(featureFlags),
