@@ -5,6 +5,7 @@ import {
   GetGridpointForecastFeatureFlag,
 } from "../gridpoint";
 import { isPoint } from "../point";
+import { getZoneByUri } from "../zone";
 import { PointCache } from "./PointCache";
 
 interface GetGridpointArgs {
@@ -27,6 +28,13 @@ interface GetGridpointForecastHourlyArgs {
   latitude: number;
   longitude: number;
   units?: UnitType;
+}
+
+interface GetZoneArgs {
+  effective?: string;
+  format?: Format;
+  latitude: number;
+  longitude: number;
 }
 
 /**
@@ -80,6 +88,16 @@ export class NwsClient {
       format,
       units,
       uri: point.forecast,
+      userAgent: this.userAgent,
+    });
+  }
+
+  async getZone({ effective, format, latitude, longitude }: GetZoneArgs) {
+    const point = await this.getPoint(latitude, longitude);
+    return getZoneByUri({
+      effective,
+      format,
+      uri: point.forecastZone,
       userAgent: this.userAgent,
     });
   }

@@ -28,6 +28,7 @@ interface GetZoneArgs extends BaseEndpointArgs {
 }
 
 interface GetZoneByUriArgs extends BaseEndpointArgs {
+  effective?: string;
   format?: Format;
   uri: string;
 }
@@ -89,12 +90,14 @@ export const getZone = ({
 };
 
 export const getZoneByUri = ({
+  effective,
   format = Format.GeoJson,
   uri,
   userAgent,
 }: GetZoneByUriArgs) => {
+  const endpoint = addQueryString(uri, { effective });
   return simpleGetRequest<Zone | ZoneGeoJson>({
-    endpoint: uri,
+    endpoint,
     format,
     userAgent,
   });
