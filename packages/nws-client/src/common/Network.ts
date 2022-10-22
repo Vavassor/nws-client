@@ -33,24 +33,18 @@ export const addQueryString = (
   path: string,
   parameters: Partial<Record<string, QueryStringValue>>
 ) => {
-  const urlSearchParams = new URLSearchParams();
+  const url = new URL(path);
 
   Object.entries(parameters).forEach(([key, value]) => {
     const stringValue = getQueryValue(value);
     if (typeof stringValue !== "undefined") {
-      urlSearchParams.set(key, stringValue);
+      url.searchParams.set(key, stringValue);
     }
   });
 
-  urlSearchParams.sort();
+  url.searchParams.sort();
 
-  const queryString = urlSearchParams.toString();
-
-  if (queryString.length > 0) {
-    return `${path}?${queryString}`;
-  } else {
-    return path;
-  }
+  return url.href;
 };
 
 export const getStringRecord = (

@@ -1,30 +1,84 @@
-import { UnitType } from "../common";
+import { Format, UnitType } from "../common";
 import {
+  getGridpointByUri,
   getGridpointForecastByUri,
   GetGridpointForecastFeatureFlag,
 } from "../gridpoint";
 import { isPoint } from "../point";
 import { PointCache } from "./PointCache";
 
+interface GetGridpointArgs {
+  format?: Format;
+  latitude: number;
+  longitude: number;
+}
+
 interface GetGridpointForecastArgs {
   featureFlags?: GetGridpointForecastFeatureFlag[];
+  format?: Format;
   latitude: number;
   longitude: number;
   units?: UnitType;
 }
 
+interface GetGridpointForecastHourlyArgs {
+  featureFlags?: GetGridpointForecastFeatureFlag[];
+  format?: Format;
+  latitude: number;
+  longitude: number;
+  units?: UnitType;
+}
+
+/**
+ * NWS API client that caches data and combines simultaneous requests for the
+ * same data.
+ *
+ * Some NWS endpoints require data from other endpoints. Frameworks like React
+ * encourage separate components to fetch data they need, separately. These
+ * factors together can create situations where endpoints are called redundantly.
+ */
 export class NwsClient {
   pointCache = new PointCache();
   userAgent: string | undefined;
 
+  async getGridpoint({ format, latitude, longitude }: GetGridpointArgs) {
+    const point = await this.getPoint(latitude, longitude);
+    return getGridpointByUri({
+      format,
+      uri: point.forecastGridData,
+      userAgent: this.userAgent,
+    });
+  }
+
   async getGridpointForecast({
     featureFlags,
+    format,
     latitude,
     longitude,
+    units,
   }: GetGridpointForecastArgs) {
     const point = await this.getPoint(latitude, longitude);
     return getGridpointForecastByUri({
       featureFlags,
+      format,
+      units,
+      uri: point.forecast,
+      userAgent: this.userAgent,
+    });
+  }
+
+  async getGridpointForecastHourly({
+    featureFlags,
+    format,
+    latitude,
+    longitude,
+    units,
+  }: GetGridpointForecastHourlyArgs) {
+    const point = await this.getPoint(latitude, longitude);
+    return getGridpointForecastByUri({
+      featureFlags,
+      format,
+      units,
       uri: point.forecast,
       userAgent: this.userAgent,
     });

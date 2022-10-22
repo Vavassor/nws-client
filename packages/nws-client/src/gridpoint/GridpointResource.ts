@@ -25,6 +25,11 @@ interface GetGridpointArgs extends BaseEndpointArgs {
   gridY: string;
 }
 
+interface GetGridpointByUriArgs extends BaseEndpointArgs {
+  format?: Format;
+  uri: string;
+}
+
 interface GetGridpointForecastArgs extends BaseEndpointArgs {
   featureFlags?: GetGridpointForecastFeatureFlag[];
   forecastOfficeId: string;
@@ -34,9 +39,10 @@ interface GetGridpointForecastArgs extends BaseEndpointArgs {
   units?: UnitType;
 }
 
-interface GetGridpointForecastByUri extends BaseEndpointArgs {
+interface GetGridpointForecastByUriArgs extends BaseEndpointArgs {
   featureFlags?: GetGridpointForecastFeatureFlag[];
   format?: Format;
+  units?: UnitType;
   uri: string;
 }
 
@@ -60,6 +66,18 @@ export const getGridpoint = ({
 }: GetGridpointArgs) => {
   return simpleGetRequest<Gridpoint | GridpointGeoJson>({
     endpoint: `${apiRoot}/gridpoints/${forecastOfficeId}/${gridX},${gridY}`,
+    format,
+    userAgent,
+  });
+};
+
+export const getGridpointByUri = ({
+  format = Format.GeoJson,
+  uri,
+  userAgent,
+}: GetGridpointByUriArgs) => {
+  return simpleGetRequest<Gridpoint | GridpointGeoJson>({
+    endpoint: uri,
     format,
     userAgent,
   });
@@ -93,11 +111,14 @@ export const getGridpointForecast = ({
 export const getGridpointForecastByUri = ({
   featureFlags,
   format = Format.GeoJson,
+  units,
   uri,
-  userAgent
-}: GetGridpointForecastByUri) => {
+  userAgent,
+}: GetGridpointForecastByUriArgs) => {
+  const endpoint = addQueryString(uri, { units });
+
   return jsonRequest<GridpointForecast | GridpointForecastGeoJson>({
-    endpoint: uri,
+    endpoint,
     headers: getStringRecord({
       Accept: format,
       "Feature-Flags": getStringArrayHeader(featureFlags),
@@ -121,6 +142,25 @@ export const getGridpointForecastHourly = ({
     { units }
   );
 
+  return jsonRequest<GridpointForecast | GridpointForecastGeoJson>({
+    endpoint,
+    headers: getStringRecord({
+      Accept: format,
+      "Feature-Flags": getStringArrayHeader(featureFlags),
+      "User-Agent": userAgent,
+    }),
+    method: "GET",
+  });
+};
+
+export const getGridpointForecastHourlyByUri = ({
+  featureFlags,
+  format = Format.GeoJson,
+  units,
+  uri,
+  userAgent,
+}: GetGridpointForecastByUriArgs) => {
+  const endpoint = addQueryString(uri, { units });
   return jsonRequest<GridpointForecast | GridpointForecastGeoJson>({
     endpoint,
     headers: getStringRecord({
