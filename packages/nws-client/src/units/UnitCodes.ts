@@ -22,13 +22,22 @@ interface UnitOfMeasure {
  * @returns a unit of measure as a UCUM code
  */
 export const getUcumCode = (unitCode: string): string | null => {
+  if (!unitCode) {
+    return null;
+  }
+
   const unitOfMeasure = parseUnitOfMeasure(unitCode);
+  
   switch (unitOfMeasure.namespace) {
     case "uc":
       return unitOfMeasure.unit;
     case "wmo":
     case "wmoUnit":
       return getUcumCodeFromWmoCode(unitOfMeasure.unit);
+    case "nwsUnit":
+      // NWS units are not standardized, so there's no sensible way to convert
+      // these to UCUM format.
+      return null;
     default:
       return null;
   }
