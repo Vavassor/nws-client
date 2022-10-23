@@ -39,6 +39,11 @@ interface GetZoneForecastArgs extends BaseEndpointArgs {
   zoneId: string;
 }
 
+interface GetZoneForecastByUriArgs extends BaseEndpointArgs {
+  format?: Format;
+  uri: string;
+}
+
 interface GetZoneObservationsArgs extends BaseEndpointArgs {
   end?: string;
   format?: Format;
@@ -111,6 +116,18 @@ export const getZoneForecast = ({
 }: GetZoneForecastArgs) => {
   return simpleGetRequest<ZoneForecast | ZoneForecastGeoJson>({
     endpoint: `${apiRoot}/zones/${type}/${zoneId}/forecast`,
+    format,
+    userAgent,
+  });
+};
+
+export const getZoneForecastByUri = ({
+  format = Format.GeoJson,
+  uri,
+  userAgent,
+}: GetZoneForecastByUriArgs) => {
+  return simpleGetRequest<ZoneForecast | ZoneForecastGeoJson>({
+    endpoint: uri,
     format,
     userAgent,
   });

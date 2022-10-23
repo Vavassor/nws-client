@@ -53,6 +53,11 @@ interface GetGridpointStationsArgs extends BaseEndpointArgs {
   gridY: string;
 }
 
+interface GetGridpointStationsByUriArgs extends BaseEndpointArgs {
+  format?: Format;
+  uri: string;
+}
+
 export type GetGridpointForecastFeatureFlag =
   | "forecast_temperature_qv"
   | "forecast_wind_speed_qv";
@@ -183,6 +188,20 @@ export const getGridpointStations = ({
     ObservationStationCollectionGeoJson | ObservationStationCollectionJsonLd
   >({
     endpoint: `${apiRoot}/gridpoints/${forecastOfficeId}/${gridX},${gridY}/stations`,
+    format,
+    userAgent,
+  });
+};
+
+export const getGridpointStationsByUri = ({
+  format = Format.GeoJson,
+  uri,
+  userAgent,
+}: GetGridpointStationsByUriArgs) => {
+  return simpleGetRequest<
+    ObservationStationCollectionGeoJson | ObservationStationCollectionJsonLd
+  >({
+    endpoint: uri,
     format,
     userAgent,
   });

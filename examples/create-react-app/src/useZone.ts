@@ -9,7 +9,9 @@ export const useZone = () => {
 
   useEffect(() => {
     const updateZone = async () => {
-      const position = await getCurrentPosition({ maximumAge: 10000 });
+      const position = await getCurrentPosition({
+        timeout: 5000,
+      });
 
       const zone = await nwsClient.getZone({
         latitude: position.coords.latitude,

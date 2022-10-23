@@ -24,6 +24,11 @@ interface GetStationArgs extends BaseEndpointArgs {
   stationId: string;
 }
 
+interface GetStationByUriArgs extends BaseEndpointArgs {
+  format?: Format;
+  uri: string;
+}
+
 interface GetStationObservationByTimeArgs extends BaseEndpointArgs {
   format?: Format;
   stationId: string;
@@ -72,6 +77,18 @@ export const getStation = ({
 }: GetStationArgs) => {
   return simpleGetRequest<ObservationStation | ObservationStationGeoJson>({
     endpoint: `${apiRoot}/stations/${stationId}`,
+    format,
+    userAgent,
+  });
+};
+
+export const getStationByUri = ({
+  format = Format.GeoJson,
+  uri,
+  userAgent,
+}: GetStationByUriArgs) => {
+  return simpleGetRequest<ObservationStation | ObservationStationGeoJson>({
+    endpoint: uri,
     format,
     userAgent,
   });

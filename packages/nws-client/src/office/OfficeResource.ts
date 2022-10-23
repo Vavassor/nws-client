@@ -11,6 +11,10 @@ interface GetOfficeArgs extends BaseEndpointArgs {
   officeId: string;
 }
 
+interface GetOfficeByUriArgs extends BaseEndpointArgs {
+  uri: string;
+}
+
 interface GetOfficeHeadlineArgs extends BaseEndpointArgs {
   headlineId: string;
   officeId: string;
@@ -23,6 +27,14 @@ interface GetOfficeHeadlinesArgs extends BaseEndpointArgs {
 export const getOffice = ({ officeId, userAgent }: GetOfficeArgs) => {
   return simpleGetRequest<Office>({
     endpoint: `${apiRoot}/offices/${officeId}`,
+    format: Format.JsonLd,
+    userAgent,
+  });
+};
+
+export const getOfficeByUri = ({ uri, userAgent }: GetOfficeByUriArgs) => {
+  return simpleGetRequest<Office>({
+    endpoint: uri,
     format: Format.JsonLd,
     userAgent,
   });

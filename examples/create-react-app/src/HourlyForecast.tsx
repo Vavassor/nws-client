@@ -26,7 +26,9 @@ export const HourlyForecast: FC = () => {
 
   useEffect(() => {
     const updateForecast = async () => {
-      const position = await getCurrentPosition({ maximumAge: 10000 });
+      const position = await getCurrentPosition({
+        timeout: 5000,
+      });
 
       const forecast = await nwsClient.getGridpointForecastHourly({
         latitude: position.coords.latitude,
