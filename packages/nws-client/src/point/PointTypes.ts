@@ -22,16 +22,25 @@ export interface Point {
   gridY: number;
   observationStations: string;
   radarStation: string;
-  relativeLocation: RelativeLocationJsonLd;
+  relativeLocation: RelativeLocationGeoJson | RelativeLocationJsonLd;
   timeZone: string;
 }
 
 export type PointGeoJson = FeatureGeoJson<Point>;
 
+export type RelativeLocationGeoJson = FeatureGeoJson<RelativeLocation>;
+
 export interface RelativeLocationJsonLd {
   bearing: QuantitativeValue;
   city: string;
   geometry?: null | string;
+  distance: QuantitativeValue;
+  state: string;
+}
+
+export interface RelativeLocation {
+  bearing: QuantitativeValue;
+  city: string;
   distance: QuantitativeValue;
   state: string;
 }

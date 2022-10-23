@@ -31,6 +31,11 @@ interface GetGridpointForecastHourlyArgs {
   units?: UnitType;
 }
 
+interface GetPointArgs {
+  latitude: number;
+  longitude: number;
+}
+
 interface GetZoneArgs {
   effective?: string;
   format?: Format;
@@ -51,7 +56,7 @@ export class NwsClient {
   userAgent: string | undefined;
 
   async getGridpoint({ format, latitude, longitude }: GetGridpointArgs) {
-    const point = await this.getPoint(latitude, longitude);
+    const point = await this.getPoint({ latitude, longitude });
     return getGridpointByUri({
       format,
       uri: point.forecastGridData,
@@ -66,7 +71,7 @@ export class NwsClient {
     longitude,
     units,
   }: GetGridpointForecastArgs) {
-    const point = await this.getPoint(latitude, longitude);
+    const point = await this.getPoint({ latitude, longitude });
     return getGridpointForecastByUri({
       featureFlags,
       format,
@@ -83,7 +88,7 @@ export class NwsClient {
     longitude,
     units,
   }: GetGridpointForecastHourlyArgs) {
-    const point = await this.getPoint(latitude, longitude);
+    const point = await this.getPoint({ latitude, longitude });
     return getGridpointForecastHourlyByUri({
       featureFlags,
       format,
@@ -93,8 +98,17 @@ export class NwsClient {
     });
   }
 
+  async getPoint({ latitude, longitude }: GetPointArgs) {
+    const point = await this.pointCache.getPoint(latitude, longitude);
+    if (isPoint(point)) {
+      return point;
+    } else {
+      return point.properties;
+    }
+  }
+
   async getZone({ effective, format, latitude, longitude }: GetZoneArgs) {
-    const point = await this.getPoint(latitude, longitude);
+    const point = await this.getPoint({ latitude, longitude });
     return getZoneByUri({
       effective,
       format,
@@ -109,14 +123,5 @@ export class NwsClient {
 
   setUserAgentWebsiteAndEmail(website: string, email: string) {
     this.userAgent = `(${website}, ${email})`;
-  }
-
-  private async getPoint(latitude: number, longitude: number) {
-    const point = await this.pointCache.getPoint(latitude, longitude);
-    if (isPoint(point)) {
-      return point;
-    } else {
-      return point.properties;
-    }
   }
 }

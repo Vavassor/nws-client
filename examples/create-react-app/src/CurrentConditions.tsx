@@ -5,14 +5,14 @@ import {
 import React, { FC, useEffect, useState } from "react";
 import { getCurrentPosition } from "./getCurrentPosition";
 import { nwsClient } from "./nws";
-import { useZone } from "./useZone";
+import { usePoint } from "./usePoint";
 
 export const CurrentConditions: FC = () => {
   const [shortForecast, setShortForecast] = useState<string | undefined>();
   const [temperatureFahrenheit, setTemperatureFahrenheit] = useState("0");
   const [updateTime, setUpdateTime] = useState<string | undefined>();
   const [updateTimeIso, setUpdateTimeIso] = useState<string | undefined>();
-  const { name: locationName, state } = useZone();
+  const { city, state } = usePoint();
 
   useEffect(() => {
     const updateForecast = async () => {
@@ -54,8 +54,7 @@ export const CurrentConditions: FC = () => {
   return (
     <section>
       <h2>
-        {locationName}, {state} as of{" "}
-        <time dateTime={updateTimeIso}>{updateTime}</time>
+        {city}, {state} as of <time dateTime={updateTimeIso}>{updateTime}</time>
       </h2>
       <p>{temperatureFahrenheit} °F</p>
       <p>{shortForecast}</p>

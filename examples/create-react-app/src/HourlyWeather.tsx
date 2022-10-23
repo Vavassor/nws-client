@@ -6,7 +6,7 @@ import { FC, Fragment, useEffect, useState } from "react";
 import { groupBy } from "./ArrayUtilities";
 import { getCurrentPosition } from "./getCurrentPosition";
 import { nwsClient } from "./nws";
-import { useZone } from "./useZone";
+import { usePoint } from "./usePoint";
 
 interface Day {
   name: string;
@@ -20,9 +20,9 @@ interface Period {
   wind: string;
 }
 
-export const HourlyForecast: FC = () => {
+export const HourlyWeather: FC = () => {
   const [days, setDays] = useState<Day[]>([]);
-  const { name: locationName, state } = useZone();
+  const { city, state } = usePoint();
 
   useEffect(() => {
     const updateForecast = async () => {
@@ -80,7 +80,7 @@ export const HourlyForecast: FC = () => {
 
   return (
     <section>
-      <h2>{`Today's Forecast for ${locationName}, ${state}`}</h2>
+      <h2>{`Today's Forecast for ${city}, ${state}`}</h2>
       <table>
         <thead className="visually-hidden">
           <tr>
