@@ -31,7 +31,7 @@ export class PointCache {
       this.coordsToRequestQueue.set(coords, queue);
     }
     const point = await queue.runOrEnqueue(() =>
-      getPoint({ latitude, longitude }).then((response) => response.json)
+      getPoint({ latitude, longitude })
     );
 
     this.ensureCacheMaxSize();

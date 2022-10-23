@@ -26,14 +26,12 @@ export const HourlyForecast: FC = () => {
 
   useEffect(() => {
     const updateForecast = async () => {
-      const position = await getCurrentPosition();
+      const position = await getCurrentPosition({ maximumAge: 10000 });
 
-      const forecast = (
-        await nwsClient.getGridpointForecastHourly({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        })
-      ).json;
+      const forecast = await nwsClient.getGridpointForecastHourly({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
 
       if (isGridpointForecastGeoJson(forecast)) {
         const dayFormat = new Intl.DateTimeFormat("en-US", {
@@ -82,7 +80,7 @@ export const HourlyForecast: FC = () => {
     <section>
       <h2>{`Today's Forecast for ${locationName}, ${state}`}</h2>
       <table>
-        <thead>
+        <thead className="visually-hidden">
           <tr>
             <th id="time">Time</th>
             <th id="temperature">Temperature</th>

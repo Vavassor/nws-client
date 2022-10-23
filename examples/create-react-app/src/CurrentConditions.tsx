@@ -16,14 +16,12 @@ export const CurrentConditions: FC = () => {
 
   useEffect(() => {
     const updateForecast = async () => {
-      const position = await getCurrentPosition();
+      const position = await getCurrentPosition({ maximumAge: 10000 });
 
-      const forecast = (
-        await nwsClient.getGridpointForecast({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        })
-      ).json;
+      const forecast = await nwsClient.getGridpointForecast({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
 
       const now = new Date();
       setUpdateTime(

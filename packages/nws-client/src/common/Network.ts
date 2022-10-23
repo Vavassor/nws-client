@@ -17,12 +17,6 @@ export interface JsonArgs {
   signal?: AbortSignal;
 }
 
-export interface JsonReturnType<T> {
-  json: T;
-  status: number;
-  ok: boolean;
-}
-
 export interface SimpleGetRequestArgs {
   endpoint: string;
   format: string;
@@ -64,7 +58,7 @@ export const getStringArrayHeader = (values: string[] | undefined) => {
 
 export async function jsonRequest<ResponseType>(
   args: JsonArgs
-): Promise<JsonReturnType<ResponseType>> {
+): Promise<ResponseType> {
   const { endpoint, method, headers, body, signal } = args;
   const options: RequestInit = {
     method,
@@ -94,13 +88,7 @@ export async function jsonRequest<ResponseType>(
     throw errorResponse;
   }
 
-  const json = await response.json();
-
-  return {
-    json,
-    status: response.status,
-    ok: response.ok,
-  };
+  return await response.json();
 }
 
 export function simpleGetRequest<T>({

@@ -39,7 +39,7 @@ interface GetZoneArgs {
 }
 
 /**
- * NWS API client that caches data and combines simultaneous requests for the
+ * NWS API client that caches data and dedupes simultaneous requests for the
  * same data.
  *
  * Some NWS endpoints require data from other endpoints. Frameworks like React

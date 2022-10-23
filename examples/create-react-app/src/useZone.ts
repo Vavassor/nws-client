@@ -9,14 +9,12 @@ export const useZone = () => {
 
   useEffect(() => {
     const updateZone = async () => {
-      const position = await getCurrentPosition();
+      const position = await getCurrentPosition({ maximumAge: 10000 });
 
-      const zone = (
-        await nwsClient.getZone({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        })
-      ).json;
+      const zone = await nwsClient.getZone({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
 
       if (isZoneGeoJson(zone)) {
         setName(zone.properties.name);
