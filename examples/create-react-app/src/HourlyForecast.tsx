@@ -28,53 +28,50 @@ export const HourlyForecast: FC = () => {
     const updateForecast = async () => {
       const position = await getCurrentPosition();
 
-      const [forecastResult] = await Promise.allSettled([
-        nwsClient.getGridpointForecastHourly({
+      const forecast = (
+        await nwsClient.getGridpointForecastHourly({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-        }),
-      ]);
+        })
+      ).json;
 
-      if (forecastResult.status === "fulfilled") {
-        const forecast = forecastResult.value.json;
-        if (isGridpointForecastGeoJson(forecast)) {
-          const dayFormat = new Intl.DateTimeFormat("en-US", {
-            weekday: "long",
-          });
+      if (isGridpointForecastGeoJson(forecast)) {
+        const dayFormat = new Intl.DateTimeFormat("en-US", {
+          weekday: "long",
+        });
 
-          const allPeriods = forecast.properties.periods.map((period) => {
-            const temperatureValue = getQuantitativeValue(
-              period.temperature,
-              "[degF]"
-            ).value;
-            const temperature = temperatureValue
-              ? temperatureValue.toString()
-              : "--";
-            const windSpeedValue = getQuantitativeValue(
-              period.windSpeed,
-              "[mi_i]/h"
-            ).value;
-            const wind = windSpeedValue ? windSpeedValue.toString() : "--";
-            const hourPeriod: Period = {
-              condition: period.shortForecast,
-              startTime: period.startTime,
-              temperature,
-              wind,
-            };
-            return hourPeriod;
-          });
+        const allPeriods = forecast.properties.periods.map((period) => {
+          const temperatureValue = getQuantitativeValue(
+            period.temperature,
+            "[degF]"
+          ).value;
+          const temperature = temperatureValue
+            ? temperatureValue.toString()
+            : "--";
+          const windSpeedValue = getQuantitativeValue(
+            period.windSpeed,
+            "[mi_i]/h"
+          ).value;
+          const wind = windSpeedValue ? windSpeedValue.toString() : "--";
+          const hourPeriod: Period = {
+            condition: period.shortForecast,
+            startTime: period.startTime,
+            temperature,
+            wind,
+          };
+          return hourPeriod;
+        });
 
-          setDays(
-            Object.entries(
-              groupBy(allPeriods, (period) =>
-                dayFormat.format(new Date(period.startTime))
-              )
-            ).map(([key, value]) => ({
-              name: key,
-              periods: value,
-            }))
-          );
-        }
+        setDays(
+          Object.entries(
+            groupBy(allPeriods, (period) =>
+              dayFormat.format(new Date(period.startTime))
+            )
+          ).map(([key, value]) => ({
+            name: key,
+            periods: value,
+          }))
+        );
       }
     };
 

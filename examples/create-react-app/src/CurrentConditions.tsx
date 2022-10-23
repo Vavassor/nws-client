@@ -18,12 +18,12 @@ export const CurrentConditions: FC = () => {
     const updateForecast = async () => {
       const position = await getCurrentPosition();
 
-      const [forecastResult] = await Promise.allSettled([
-        nwsClient.getGridpointForecast({
+      const forecast = (
+        await nwsClient.getGridpointForecast({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-        }),
-      ]);
+        })
+      ).json;
 
       const now = new Date();
       setUpdateTime(
@@ -35,20 +35,16 @@ export const CurrentConditions: FC = () => {
       );
       setUpdateTimeIso(now.toISOString());
 
-      if (forecastResult.status === "fulfilled") {
-        const forecast = forecastResult.value.json;
-
-        if (isGridpointForecastGeoJson(forecast)) {
-          const period = forecast.properties.periods[0];
-          const temperatureQv = getQuantitativeValue(
-            period.temperature,
-            "[degF]"
-          );
-          if (temperatureQv.value !== null) {
-            setTemperatureFahrenheit(temperatureQv.value.toString());
-          }
-          setShortForecast(period.shortForecast);
+      if (isGridpointForecastGeoJson(forecast)) {
+        const period = forecast.properties.periods[0];
+        const temperatureQv = getQuantitativeValue(
+          period.temperature,
+          "[degF]"
+        );
+        if (temperatureQv.value !== null) {
+          setTemperatureFahrenheit(temperatureQv.value.toString());
         }
+        setShortForecast(period.shortForecast);
       }
     };
 
