@@ -5,7 +5,7 @@ export const isZone = (value: unknown): value is Zone => {
   return (
     isRecord(value) &&
     typeof value["@type"] === "string" &&
-    value["@type"] === "wx:Point"
+    value["@type"] === "wx:Zone"
   );
 };
 

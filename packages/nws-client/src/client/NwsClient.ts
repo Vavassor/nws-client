@@ -3,6 +3,7 @@ import {
   getGridpointByUri,
   getGridpointForecastByUri,
   GetGridpointForecastFeatureFlag,
+  getGridpointForecastHourlyByUri,
 } from "../gridpoint";
 import { isPoint } from "../point";
 import { getZoneByUri } from "../zone";
@@ -83,11 +84,11 @@ export class NwsClient {
     units,
   }: GetGridpointForecastHourlyArgs) {
     const point = await this.getPoint(latitude, longitude);
-    return getGridpointForecastByUri({
+    return getGridpointForecastHourlyByUri({
       featureFlags,
       format,
       units,
-      uri: point.forecast,
+      uri: point.forecastHourly,
       userAgent: this.userAgent,
     });
   }
