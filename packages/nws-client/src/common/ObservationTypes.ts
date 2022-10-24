@@ -60,12 +60,15 @@ export type MetarSkyCoverage =
 
 export interface Observation {
   "@context": JsonLdContext;
+  /** URI of this resource. */
   "@id": string;
+  /** Type of this resource. */
   "@type": "wx:ObservationStation";
   barometricPressure: QuantitativeValue;
   cloudLayers: MetarPhenomenonCloudLayer[];
   dewpoint: QuantitativeValue;
   elevation: QuantitativeValue;
+  /** Geometry represented in Well-Known Text (WKT) format. */
   geometry?: string | null;
   heatIndex: QuantitativeValue;
   maxTemperatureLast24Hours: QuantitativeValue;
@@ -77,9 +80,15 @@ export interface Observation {
   rawMessage: string;
   relativeHumidity: QuantitativeValue;
   seaLevelPressure: QuantitativeValue;
+  /** URI of the observation station. */
   station: string;
   temperature: QuantitativeValue;
   textDescription: string;
+  /**
+   * Time of the observation.
+   * 
+   * @see {@link https://www.rfc-editor.org/rfc/rfc3339 | RFC 3339}
+   */
   timestamp: string;
   visibility: QuantitativeValue;
   windChill: QuantitativeValue;

@@ -36,12 +36,14 @@ interface GetGridpointForecastArgs extends BaseEndpointArgs {
   format?: Format;
   gridX: number | string;
   gridY: number | string;
+  /** Use US customary or SI (metric) units in textual output. */
   units?: UnitType;
 }
 
 interface GetGridpointForecastByUriArgs extends BaseEndpointArgs {
   featureFlags?: GetGridpointForecastFeatureFlag[];
   format?: Format;
+  /** Use US customary or SI (metric) units in textual output. */
   units?: UnitType;
   uri: string;
 }
@@ -58,6 +60,12 @@ interface GetGridpointStationsByUriArgs extends BaseEndpointArgs {
   uri: string;
 }
 
+/**
+ * Enable future and experimental features.
+ * 
+ * forecast_temperature_qv - Represent temperature as QuantitativeValue.
+ * forecast_wind_speed_qv - Represent wind speed as QuantitativeValue.
+ */
 export type GetGridpointForecastFeatureFlag =
   | "forecast_temperature_qv"
   | "forecast_wind_speed_qv";

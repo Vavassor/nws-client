@@ -52,8 +52,8 @@ interface GetZoneArgs {
  * factors together can create situations where endpoints are called redundantly.
  */
 export class NwsClient {
-  pointCache = new PointCache();
-  userAgent: string | undefined;
+  private pointCache = new PointCache();
+  private userAgent: string | undefined;
 
   async getGridpoint({ format, latitude, longitude }: GetGridpointArgs) {
     const point = await this.getPoint({ latitude, longitude });
@@ -117,10 +117,16 @@ export class NwsClient {
     });
   }
 
+  /**
+   * @see {@link https://httpwg.org/specs/rfc9110.html#field.user-agent | HTTP Semantics - User Agent}
+   */
   setUserAgent(userAgent: string) {
     this.userAgent = userAgent;
   }
 
+  /**
+   * @see {@link https://httpwg.org/specs/rfc9110.html#field.user-agent | HTTP Semantics - User Agent}
+   */
   setUserAgentWebsiteAndEmail(website: string, email: string) {
     this.userAgent = `(${website}, ${email})`;
   }

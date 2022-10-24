@@ -1,0 +1,5 @@
+{
+  "entryPoints": ["./packages/nws-client/src/index.ts"],
+  "out": "docs",
+  "tsconfig": "./packages/nws-client/tsconfig.json"
+}

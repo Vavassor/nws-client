@@ -1,5 +1,5 @@
-import { isErrorResponse } from "./CommonTypeguards";
-import { ErrorResponse, ResponseWithoutBodyError } from "./CommonTypes";
+import { isProblemDetail } from "./CommonTypeguards";
+import { ProblemDetail, ResponseWithoutBodyError } from "./CommonTypes";
 
 type QueryStringValue =
   | boolean
@@ -70,13 +70,13 @@ export async function jsonRequest<ResponseType>(
   const response = await fetch(endpoint, options);
 
   if (!response.ok) {
-    let errorResponse: ErrorResponse;
+    let problemDetail: ProblemDetail;
     try {
       const json = await response.json();
-      if (!isErrorResponse(json)) {
+      if (!isProblemDetail(json)) {
         throw Error("The response body was not an ErrorResponse.");
       }
-      errorResponse = json;
+      problemDetail = json;
     } catch (error) {
       const genericError: ResponseWithoutBodyError = {
         message: "Something went wrong",
@@ -85,7 +85,7 @@ export async function jsonRequest<ResponseType>(
       };
       throw genericError;
     }
-    throw errorResponse;
+    throw problemDetail;
   }
 
   return await response.json();

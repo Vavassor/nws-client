@@ -12,6 +12,7 @@ interface GetPointArgs extends BaseEndpointArgs {
   longitude: number;
 }
 
+/** Returns metadata about a given latitude/longitude point. */
 export const getPoint = ({
   format = Format.GeoJson,
   latitude,

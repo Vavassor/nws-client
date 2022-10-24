@@ -15,10 +15,10 @@ interface UnitOfMeasure {
 }
 
 /**
- * Standardizes a QuantitativeValue unit code to UCUM code format.
+ * Standardizes a {@link QuantitativeValue} unit code to UCUM code format.
  *
- * @param unitCode the unit of measure, expressed in the format "{unit}" or
- *   "{namespace}:{unit}"
+ * @param unitCode the unit of measure, expressed in the format "unit" or
+ *   "namespace:unit"
  * @returns a unit of measure as a UCUM code
  */
 export const getUcumCode = (unitCode: string): string | null => {
@@ -27,7 +27,7 @@ export const getUcumCode = (unitCode: string): string | null => {
   }
 
   const unitOfMeasure = parseUnitOfMeasure(unitCode);
-  
+
   switch (unitOfMeasure.namespace) {
     case "uc":
       return unitOfMeasure.unit;

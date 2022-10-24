@@ -1,6 +1,6 @@
-import { ErrorResponse, ResponseWithoutBodyError } from "./CommonTypes";
+import { ProblemDetail, ResponseWithoutBodyError } from "./CommonTypes";
 
-export const isErrorResponse = (value: unknown): value is ErrorResponse => {
+export const isProblemDetail = (value: unknown): value is ProblemDetail => {
   return (
     isRecord(value) &&
     typeof value.correlationId === "string" &&
