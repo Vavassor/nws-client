@@ -1,5 +1,6 @@
 import { isProblemDetail } from "./CommonTypeguards";
 import { ProblemDetail, ResponseWithoutBodyError } from "./CommonTypes";
+import fetch from "cross-fetch";
 
 type QueryStringValue =
   | boolean
