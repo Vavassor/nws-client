@@ -22,5 +22,6 @@
     "docs": "typedoc --options typedoc.json",
     "lint": "eslint . --ext .js,.ts",
     "prettier:all": "prettier --write ."
-  }
+  },
+  "packageManager": "yarn@3.2.4"
 }
