@@ -17,7 +17,7 @@ async function run() {
     );
   }
 
-  await exec(["yarn", "tsc", "-b", tsconfigPath].join(" "));
+  await exec(["yarn", "g:tsc", "-b", tsconfigPath].join(" "));
 }
 
 yargs

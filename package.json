@@ -20,6 +20,7 @@
   },
   "scripts": {
     "docs": "typedoc --options typedoc.json",
+    "g:tsc": "cd $INIT_CWD && tsc",
     "lint": "eslint . --ext .js,.ts",
     "prettier:all": "prettier --write ."
   },
