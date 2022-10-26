@@ -2,8 +2,8 @@ build
 node_modules
 
 # Yarn files
-.pnp.*
 .yarn/*
+!.yarn/cache
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
