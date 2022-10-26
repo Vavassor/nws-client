@@ -4,6 +4,7 @@
   "description": "NWS Client is a JavaScript library for the National Weather Service API.",
   "exports": "./build/index.js",
   "types": "./build/index.d.ts",
+  "files": ["build/"],
   "scripts": {
     "build": "node ../../scripts/build",
     "test": "cd ../.. && jest"
