@@ -4,6 +4,15 @@ const path = require("path");
 const packagePath = process.cwd();
 const buildPath = path.join(packagePath, "./build");
 
+const getPackageData = async () => {
+  const packageJson = await fs.readFile(
+    path.resolve(packagePath, "./package.json"),
+    "utf8"
+  );
+  const packageData = JSON.parse(packageJson);
+  return packageData;
+};
+
 const includeFileInBuild = async (file) => {
   const sourcePath = path.resolve(packagePath, file);
   const targetPath = path.resolve(buildPath, path.basename(file));
@@ -40,14 +49,12 @@ const addLicenseComments = async (packageData) => {
 
 const run = async () => {
   try {
-    const packageJson = await fs.readFile(
-      path.resolve(packagePath, "./package.json"),
-      "utf8"
-    );
-    const packageData = JSON.parse(packageJson);
+    const packageData = await getPackageData();
 
     await Promise.all(
-      ["../../LICENSE"].map((file) => includeFileInBuild(file))
+      ["../../CHANGELOG.md", "../../LICENSE"].map((file) =>
+        includeFileInBuild(file)
+      )
     );
 
     await addLicenseComments(packageData);
