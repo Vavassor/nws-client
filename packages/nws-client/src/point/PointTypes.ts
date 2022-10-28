@@ -40,7 +40,7 @@ export interface Point {
   relativeLocation: RelativeLocationGeoJson | RelativeLocationJsonLd;
   /**
    * TZ database name of the time zone.
-   * 
+   *
    * @see {@link https://www.iana.org/time-zones | IANA time zones}
    */
   timeZone: string;

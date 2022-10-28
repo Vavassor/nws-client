@@ -174,7 +174,7 @@ export interface AlertReference {
   sender: string;
   /**
    * The time the prior alert was sent.
-   * 
+   *
    * @see {@link https://www.rfc-editor.org/rfc/rfc3339 | RFC 3339}
    */
   sent: string;

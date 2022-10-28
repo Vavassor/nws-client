@@ -66,7 +66,7 @@ export interface ZoneForecast {
   periods: ZoneForecastPeriod[];
   /**
    * The time this zone forecast product was published.
-   * 
+   *
    * @see {@link https://www.rfc-editor.org/rfc/rfc3339 | RFC 3339}
    */
   updated: string;

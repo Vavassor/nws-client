@@ -86,7 +86,7 @@ export interface Observation {
   textDescription: string;
   /**
    * Time of the observation.
-   * 
+   *
    * @see {@link https://www.rfc-editor.org/rfc/rfc3339 | RFC 3339}
    */
   timestamp: string;

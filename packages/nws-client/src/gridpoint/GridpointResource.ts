@@ -62,7 +62,7 @@ interface GetGridpointStationsByUriArgs extends BaseEndpointArgs {
 
 /**
  * Enable future and experimental features.
- * 
+ *
  * forecast_temperature_qv - Represent temperature as QuantitativeValue.
  * forecast_wind_speed_qv - Represent wind speed as QuantitativeValue.
  */

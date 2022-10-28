@@ -19,7 +19,7 @@ export interface ObservationStation {
   stationIdentifier: string;
   /**
    * Time zone containing this station.
-   * 
+   *
    * @see {@link https://www.iana.org/time-zones | IANA time zones}
    */
   timeZone: string;
