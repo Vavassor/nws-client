@@ -28,18 +28,26 @@ export const addQueryString = (
   path: string,
   parameters: Partial<Record<string, QueryStringValue>>
 ) => {
-  const url = new URL(path);
+  // The below implementation avoids using URLSearchParams because most of its
+  // methods aren't supported in React Native.
+  // https://github.com/facebook/react-native/blob/87c356d56c73c3289da3d5911288909720b11994/Libraries/Blob/URL.js#L56
+  const pathWithSlash = ensureEnd(path, "/");
+  const entries = Object.entries(parameters)
+    .map(([key, value]) => [key, getQueryValue(value)])
+    .filter(
+      (entry): entry is [string, string] => typeof entry[0] !== "undefined"
+    );
+  const sortedEntries = Array.from(entries).sort((a, b) =>
+    a[0] > b[0] ? 1 : -1
+  );
+  const queryString = sortedEntries
+    .map(
+      ([key, value]) =>
+        `${encodeUriComponentRfc3986(key)}=${encodeUriComponentRfc3986(value)}`
+    )
+    .join("&");
 
-  Object.entries(parameters).forEach(([key, value]) => {
-    const stringValue = getQueryValue(value);
-    if (typeof stringValue !== "undefined") {
-      url.searchParams.set(key, stringValue);
-    }
-  });
-
-  url.searchParams.sort();
-
-  return url.href;
+  return queryString ? `${pathWithSlash}?${queryString}` : pathWithSlash;
 };
 
 export const getStringRecord = (
@@ -106,6 +114,22 @@ export function simpleGetRequest<T>({
     method: "GET",
   });
 }
+
+/**
+ * Encodes characters in part of a URI that are reserved according to RFC 3986.
+ *
+ * @see {@link https://datatracker.ietf.org/doc/html/rfc3986 | RFC 3986}
+ */
+const encodeUriComponentRfc3986 = (value: string) => {
+  return encodeURIComponent(value).replace(
+    /[!'()*]/g,
+    (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`
+  );
+};
+
+const ensureEnd = (value: string, end: string) => {
+  return value.endsWith(end) ? value : value.concat(end);
+};
 
 const getQueryValue = (value: QueryStringValue | undefined) => {
   if (typeof value === "boolean") {
