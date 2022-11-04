@@ -1,14 +1,14 @@
 import { JsonLdContext } from "../common";
 
 export interface TextProduct {
-  "@context": JsonLdContext;
-  "@id": string;
+  "@context"?: JsonLdContext;
+  "@id"?: string;
   id: string;
   issuingOffice: string;
   issuanceTime: string;
   productCode: string;
   productName: string;
-  productText: string;
+  productText?: string;
   wmoCollectiveId: string;
 }
 

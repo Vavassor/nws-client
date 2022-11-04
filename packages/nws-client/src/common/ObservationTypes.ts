@@ -59,9 +59,9 @@ export type MetarSkyCoverage =
   | "VV";
 
 export interface Observation {
-  "@context": JsonLdContext;
+  "@context"?: JsonLdContext;
   /** URI of this resource. */
-  "@id": string;
+  "@id"?: string;
   /** Type of this resource. */
   "@type": "wx:ObservationStation";
   barometricPressure: QuantitativeValue;
@@ -71,6 +71,8 @@ export interface Observation {
   /** Geometry represented in Well-Known Text (WKT) format. */
   geometry?: string | null;
   heatIndex: QuantitativeValue;
+  /** @deprecated */
+  icon: string | null;
   maxTemperatureLast24Hours: QuantitativeValue;
   minTemperatureLast24Hours: QuantitativeValue;
   precipitationLastHour: QuantitativeValue;
@@ -109,3 +111,44 @@ export interface ObservationCollectionJsonLd {
 }
 
 export type ObservationGeoJson = FeatureGeoJson<Observation>;
+
+export interface ObservationJsonLd {
+  "@context": JsonLdContext;
+  /** URI of this resource. */
+  "@id": string;
+  /** Type of this resource. */
+  "@type": "wx:ObservationStation";
+  barometricPressure: QuantitativeValue;
+  cloudLayers: MetarPhenomenonCloudLayer[];
+  dewpoint: QuantitativeValue;
+  elevation: QuantitativeValue;
+  /** Geometry represented in Well-Known Text (WKT) format. */
+  geometry?: string | null;
+  heatIndex: QuantitativeValue;
+  /** @deprecated */
+  icon: string | null;
+  maxTemperatureLast24Hours: QuantitativeValue;
+  minTemperatureLast24Hours: QuantitativeValue;
+  precipitationLastHour: QuantitativeValue;
+  precipitationLast3Hours: QuantitativeValue;
+  precipitationLast6Hours: QuantitativeValue;
+  presentWeather: MetarPhenomenon[];
+  rawMessage: string;
+  relativeHumidity: QuantitativeValue;
+  seaLevelPressure: QuantitativeValue;
+  /** URI of the observation station. */
+  station: string;
+  temperature: QuantitativeValue;
+  textDescription: string;
+  /**
+   * Time of the observation.
+   *
+   * @see {@link https://www.rfc-editor.org/rfc/rfc3339 | RFC 3339}
+   */
+  timestamp: string;
+  visibility: QuantitativeValue;
+  windChill: QuantitativeValue;
+  windDirection: QuantitativeValue;
+  windGust: QuantitativeValue;
+  windSpeed: QuantitativeValue;
+}

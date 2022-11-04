@@ -190,35 +190,16 @@ export type JsonLdContext = OrArray<ContextDefinition | string | null>;
  *
  * @see {@link https://madis.ncep.noaa.gov/madis_sfc_qc_notes.shtml | MADIS Meteorological Surface Quality Control Checks}
  */
-export enum QualityControl {
-  /** No quality control available. */
-  Preliminary = "Z",
-  /** Automated QC check. Passed level 1. */
-  CoarsePass = "C",
-  /** Automated QC check. Passed level 1 and 2. */
-  Screened = "S",
-  /** Automated QC check. Passed levels 1, 2, and 3. */
-  Verified = "V",
-  /** Automated QC check. Failed level 1. */
-  Rejected = "X",
-  /** Automated QC check. Passed level 1, failed 2 or 3. */
-  Questioned = "Q",
-  /**
-   * Subjective intervention labeling an observation as acceptable, overriding
-   * the results of automated checks.
-   */
-  SubjectiveGood = "G",
-  /**
-   * Subjective intervention labeling an observation as rejected, overriding
-   * the results of automated checks.
-   */
-  SubjectiveBad = "B",
-  /**
-   * Virtual temperature could not be calculated, air temperature passing all
-   * QC checks has been returned
-   */
-  AirTemperature = "T",
-}
+export type QualityControl =
+  | "Z"
+  | "C"
+  | "S"
+  | "V"
+  | "X"
+  | "Q"
+  | "G"
+  | "B"
+  | "T";
 
 /** A measured value, or range of values. */
 export interface QuantitativeValue {

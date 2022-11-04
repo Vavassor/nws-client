@@ -1,6 +1,7 @@
 import { FeatureGeoJson, JsonLdContext, QuantitativeValue } from "../common";
 
 export interface RadarServer {
+  "@context"?: JsonLdContext;
   "@id": string;
   "@type": "wx:RadarServer";
   active?: boolean;
@@ -85,7 +86,7 @@ export interface RadarServerPing {
       tocRouter?: boolean;
     };
     server: RadarServerPingLdm;
-    radar: Record<string, boolean>[];
+    radar: Record<string, boolean> | [];
   };
   timestamp: string;
 }
@@ -113,7 +114,38 @@ interface RadarServerPingLdm {
 export interface RadarStation {
   "@id": string;
   "@type": "wx:RadarStation";
+  adaptation: {
+    properties: {
+      ameHorzizontalTestSignalPower: QuantitativeValue;
+      ameNoiseSourceHorizontalExcessNoiseRatio: QuantitativeValue;
+      antennaGainIncludingRadome: QuantitativeValue;
+      cohoPowerAtA1J4: QuantitativeValue;
+      horizontalReceiverNoiseLongPulse: QuantitativeValue;
+      horizontalReceiverNoiseShortPulse: QuantitativeValue;
+      pathLossA6ArcDetector: QuantitativeValue;
+      pathLossAT4Attenuator: QuantitativeValue;
+      pathLossHorzontalIFHeliaxTo4AT17: QuantitativeValue;
+      pathLossIFDBurstAntiAliasFilter: QuantitativeValue;
+      pathLossIFDRIFAntiAliasFilter: QuantitativeValue;
+      pathLossTransmitterCouplerCoupling: QuantitativeValue;
+      pathLossVerticalIFHeliaxTo4AT16: QuantitativeValue;
+      pathLossWaveguideKlystronToSwitch: QuantitativeValue;
+      pathLossWG02HarmonicFilter: QuantitativeValue;
+      pathLossWG04Circulator: QuantitativeValue;
+      pathLossWG06SpectrumFilter: QuantitativeValue;
+      pulseWidthTransmitterOutputLongPulse: QuantitativeValue;
+      pulseWidthTransmitterOutputShortPulse: QuantitativeValue;
+      staloPowerAtA1J2: QuantitativeValue;
+      transmitterFrequency: QuantitativeValue;
+      transmitterPowerDataWattsFactor: QuantitativeValue;
+      transmitterSpectrumFilterInstalled: string;
+    };
+    reportingHost: string;
+    timestamp: string;
+  };
   elevation: QuantitativeValue;
+  /** Geometry represented in Well-Known Text (WKT) format. */
+  geometry?: null | string;
   id: string;
   latency: {
     average: QuantitativeValue;
@@ -125,9 +157,37 @@ export interface RadarStation {
     reportingHost: string;
   };
   name: string;
-  rda: {
-    timestamp: string;
+  performance: {
+    properties: {
+      azimuthEncoderLight: string;
+      commandChannel: string;
+      dynamicRange: QuantitativeValue;
+      elevationEncoderLight: string;
+      fuelLevel: QuantitativeValue;
+      horizontalDeltadBZ0: QuantitativeValue;
+      horizontalLongPulseNoise: QuantitativeValue;
+      horizontalNoiseTemperature: QuantitativeValue;
+      horizontalShortPulseNoise: QuantitativeValue;
+      linearity: number;
+      longPulseHorizontaldBZ0: QuantitativeValue;
+      ntp_status: number;
+      performanceCheckTime: string;
+      powerSource: string;
+      radomeAirTemperature: QuantitativeValue;
+      receiverBias: QuantitativeValue;
+      shelterTemperature: QuantitativeValue;
+      shortPulseHorizontaldBZ0: QuantitativeValue;
+      transitionalPowerSource: string;
+      transmitterPeakPower: QuantitativeValue;
+      transmitterImbalance: QuantitativeValue;
+      transmitterLeavingAirTemperature: QuantitativeValue;
+      transmitterRecycleCount: number;
+      verticalDeltadBZ0: QuantitativeValue;
+    };
     reportingHost: string;
+    timestamp: string;
+  };
+  rda: {
     properties: {
       alarmSummary: string;
       averageTransmitterPower: QuantitativeValue;
@@ -143,6 +203,8 @@ export interface RadarStation {
       superResolutionStatus: string;
       volumeCoveragePattern: string;
     };
+    reportingHost: string;
+    timestamp: string;
   };
   stationType: string;
   timeZone: string;
