@@ -4,7 +4,7 @@ import {
   getPointGeolocationPrecision,
 } from "../common/CommonConstants";
 import { simpleGetRequest } from "../common/Network";
-import { Point, PointGeoJson } from "./PointTypes";
+import { PointGeoJson, PointJsonLd } from "./PointTypes";
 
 interface GetPointArgs extends BaseEndpointArgs {
   format?: Format;
@@ -28,7 +28,7 @@ export const getPoint = ({
   const lat = latitude.toFixed(precision);
   const lon = longitude.toFixed(precision);
 
-  return simpleGetRequest<Point | PointGeoJson>({
+  return simpleGetRequest<PointGeoJson | PointJsonLd>({
     endpoint: `${apiRoot}/points/${lat},${lon}`,
     format,
     userAgent,

@@ -28,7 +28,7 @@ export interface ObservationStation {
 export type ObservationStationGeoJson = FeatureGeoJson<ObservationStation>;
 
 export interface ObservationStationCollectionGeoJson {
-  "@context": JsonLdContext;
+  "@context"?: JsonLdContext;
   features: FeatureGeoJson<ObservationStation>[];
   observationStations: string[];
   type: "FeatureCollection";

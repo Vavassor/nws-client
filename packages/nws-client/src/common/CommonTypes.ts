@@ -29,9 +29,9 @@ export interface ProblemDetail {
  * @see {@link https://datatracker.ietf.org/doc/html/rfc7946 | RFC 7946}
  */
 export interface FeatureGeoJson<PropertiesType> {
-  "@context": JsonLdContext;
+  "@context"?: JsonLdContext;
   geometry: GeoJsonGeometry;
-  id: string;
+  id?: string;
   properties: PropertiesType;
   type: "Feature";
 }
@@ -57,6 +57,7 @@ export enum Format {
 }
 
 export type GeoJsonGeometry =
+  | GeoJsonGeometryCollection
   | GeoJsonLineString
   | GeoJsonMultiLineString
   | GeoJsonMultiPoint
@@ -67,48 +68,122 @@ export type GeoJsonGeometry =
 export type GeoJsonPosition = number[];
 
 export interface GeoJsonLineString {
-  bbox: number[];
+  bbox?: number[];
   coordinates: GeoJsonPosition[];
   type: "LineString";
 }
 
 export interface GeoJsonMultiLineString {
-  bbox: number[];
+  bbox?: number[];
   coordinates: GeoJsonPosition[][];
   type: "MultiLineString";
 }
 
 export interface GeoJsonMultiPoint {
-  bbox: number[];
+  bbox?: number[];
   coordinates: GeoJsonPosition[];
   type: "MultiPoint";
 }
 
 export interface GeoJsonMultiPolygon {
-  bbox: number[];
-  coordinates: GeoJsonPosition[][];
+  bbox?: number[];
+  coordinates: GeoJsonPosition[][][];
   type: "MultiPolygon";
 }
 
 export interface GeoJsonPoint {
-  bbox: number[];
+  bbox?: number[];
   coordinates: GeoJsonPosition;
   type: "Point";
 }
 
 export interface GeoJsonPolygon {
-  bbox: number[];
-  coordinates: GeoJsonPosition[];
+  bbox?: number[];
+  coordinates: GeoJsonPosition[][];
   type: "Polygon";
 }
 
-export type JsonLdContext = JsonLdContextValue | JsonLdContextValue[];
-
-export interface JsonLdContextObject {
-  "@version": string;
+export interface GeoJsonGeometryCollection<
+  G extends GeoJsonGeometry = GeoJsonGeometry
+> {
+  bbox?: number[];
+  geometries: G[];
+  type: "GeometryCollection";
 }
 
-export type JsonLdContextValue = string | JsonLdContextObject;
+type ContainerType = "@language" | "@index" | "@id" | "@graph" | "@type";
+type OrArray<T> = T | T[];
+
+// @see https://www.w3.org/TR/json-ld11/#keywords
+type KeywordBase = string | null;
+type KeywordContainer =
+  | OrArray<"@list" | "@set" | ContainerType>
+  | ["@graph", "@id"]
+  | ["@id", "@graph"]
+  | ["@set", "@graph", "@id"]
+  | ["@set", "@id", "@graph"]
+  | ["@graph", "@set", "@id"]
+  | ["@id", "@set", "@graph"]
+  | ["@graph", "@id", "@set"]
+  | ["@id", "@graph", "@set"]
+  | ["@set", ContainerType]
+  | [ContainerType, "@set"]
+  | null;
+type KeywordDirection = "ltr" | "rtl" | null;
+type KeywordId = OrArray<string>;
+type KeywordVersion = "1.1";
+type KeywordVocab = string | null;
+
+/**
+ * @see {@link https://www.w3.org/TR/json-ld11/#context-definitions | Context Definition}
+ */
+export interface ContextDefinition {
+  "@base"?: KeywordBase;
+  "@direction"?: KeywordDirection;
+  "@import"?: string;
+  "@language"?: string;
+  "@propagate"?: boolean;
+  "@protected"?: boolean;
+  "@type"?: {
+    "@container": "@set";
+    "@protected"?: boolean;
+  };
+  "@version"?: KeywordVersion;
+  "@vocab"?: KeywordVocab;
+  [key: string]:
+    | null
+    | string
+    | ExpandedTermDefinition
+    | ContextDefinition[keyof ContextDefinition];
+}
+
+/**
+ * @see {@link https://www.w3.org/TR/json-ld11/#expanded-term-definition | Expanded Term Definition}
+ */
+export type ExpandedTermDefinition = {
+  "@type"?: "@id" | "@json" | "@none" | "@vocab" | string;
+  "@language"?: string;
+  "@index"?: string;
+  "@context"?: ContextDefinition;
+  "@prefix"?: boolean;
+  "@propagate"?: boolean;
+  "@protected"?: boolean;
+} & (
+  | {
+      "@id"?: KeywordId | null;
+      "@nest"?: "@nest" | string;
+      "@container"?: KeywordContainer;
+    }
+  | {
+      "@reverse": string;
+      "@container"?: "@set" | "@index" | null;
+    }
+);
+
+/**
+ * @see {@link https://www.w3.org/TR/json-ld11/#the-context | The Context}
+ */
+export type JsonLdContext = OrArray<ContextDefinition | string | null>;
 
 /**
  * Quality control data descriptor.

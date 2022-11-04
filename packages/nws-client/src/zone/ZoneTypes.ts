@@ -1,6 +1,54 @@
 import { FeatureGeoJson, JsonLdContext } from "../common";
 
 export interface Zone {
+  "@context"?: JsonLdContext;
+  /** URI of this resource. */
+  "@id"?: string;
+  /** Type of this resource. */
+  "@type": string;
+  /** Three-letter identifiers of NWS offices in the zone. */
+  cwa: string[];
+  /**
+   * Effective date of this zone information.
+   *
+   * @see {@link https://www.rfc-editor.org/rfc/rfc3339 | RFC 3339}
+   */
+  effectiveDate: string;
+  /**
+   * Expiration date of this zone information.
+   *
+   * @see {@link https://www.rfc-editor.org/rfc/rfc3339 | RFC 3339}
+   */
+  expirationDate: string;
+  /** URIs of forecast offices in this zone. */
+  forecastOffices: string[];
+  /** Geometry represented in Well-Known Text (WKT) format. */
+  geometry?: string | null;
+  /**
+   * UGC identifier for a NWS forecast zone or county. The first two letters
+   * will correspond to either a state code or marine area code. The third
+   * letter will be Z for public/fire zone or C for county.
+   */
+  id: string;
+  /** The name of the zone. */
+  name: string;
+  /** URIs of observation stations in this zone. */
+  observationStations: string[];
+  /** ID of the radar station. */
+  radarStation?: string | null;
+  /** The two letter state abbreviation. */
+  state: string;
+  /**
+   * TZ database names of the time zones in this zone.
+   *
+   * @see {@link https://www.iana.org/time-zones | IANA time zones}
+   */
+  timeZone: string[];
+  /** The type of zone. */
+  type: ZoneType;
+}
+
+export interface ZoneJsonLd {
   "@context": JsonLdContext;
   /** URI of this resource. */
   "@id": string;
@@ -49,7 +97,7 @@ export interface Zone {
 }
 
 export interface ZoneCollectionGeoJson {
-  "@context": JsonLdContext;
+  "@context"?: JsonLdContext;
   features: FeatureGeoJson<Zone>[];
   type: "FeatureCollection";
 }

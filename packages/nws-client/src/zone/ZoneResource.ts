@@ -11,12 +11,12 @@ import {
   ObservationStationCollectionJsonLd,
 } from "../station";
 import {
-  Zone,
   ZoneCollectionGeoJson,
   ZoneCollectionJsonLd,
   ZoneForecast,
   ZoneForecastGeoJson,
   ZoneGeoJson,
+  ZoneJsonLd,
   ZoneType,
 } from "./ZoneTypes";
 
@@ -91,7 +91,11 @@ export const getZone = ({
   const endpoint = addQueryString(`${apiRoot}/zones/${type}/${zoneId}`, {
     effective,
   });
-  return simpleGetRequest<Zone | ZoneGeoJson>({ endpoint, format, userAgent });
+  return simpleGetRequest<ZoneJsonLd | ZoneGeoJson>({
+    endpoint,
+    format,
+    userAgent,
+  });
 };
 
 export const getZoneByUri = ({
@@ -101,7 +105,7 @@ export const getZoneByUri = ({
   userAgent,
 }: GetZoneByUriArgs) => {
   const endpoint = addQueryString(uri, { effective });
-  return simpleGetRequest<Zone | ZoneGeoJson>({
+  return simpleGetRequest<ZoneJsonLd | ZoneGeoJson>({
     endpoint,
     format,
     userAgent,

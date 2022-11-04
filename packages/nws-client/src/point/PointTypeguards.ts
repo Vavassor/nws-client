@@ -2,6 +2,7 @@ import { isRecord } from "../common/CommonTypeguards";
 import {
   Point,
   PointGeoJson,
+  PointJsonLd,
   RelativeLocation,
   RelativeLocationGeoJson,
   RelativeLocationJsonLd,
@@ -24,19 +25,17 @@ export const isPointGeoJson = (value: unknown): value is PointGeoJson => {
   );
 };
 
-export const isRelativeLocation = (
-  value: unknown
-): value is RelativeLocation => {
+export const isPointJsonLd = (value: unknown): value is PointJsonLd => {
   return (
     isRecord(value) &&
-    typeof value.city === "string" &&
-    typeof value.state === "string"
+    typeof value["@type"] === "string" &&
+    value["@type"] === "wx:Point"
   );
 };
 
-export const isRelativeLocationJsonLd = (
+export const isRelativeLocation = (
   value: unknown
-): value is RelativeLocationJsonLd => {
+): value is RelativeLocation => {
   return (
     isRecord(value) &&
     typeof value.city === "string" &&
@@ -52,5 +51,15 @@ export const isRelativeLocationGeoJson = (
     typeof value.type === "string" &&
     value.type === "Feature" &&
     isRelativeLocation(value.properties)
+  );
+};
+
+export const isRelativeLocationJsonLd = (
+  value: unknown
+): value is RelativeLocationJsonLd => {
+  return (
+    isRecord(value) &&
+    typeof value.city === "string" &&
+    typeof value.state === "string"
   );
 };

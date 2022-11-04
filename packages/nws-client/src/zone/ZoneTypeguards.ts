@@ -1,5 +1,5 @@
 import { isRecord } from "../common/CommonTypeguards";
-import { Zone, ZoneGeoJson } from "./ZoneTypes";
+import { Zone, ZoneGeoJson, ZoneJsonLd } from "./ZoneTypes";
 
 export const isZone = (value: unknown): value is Zone => {
   return (
@@ -15,5 +15,13 @@ export const isZoneGeoJson = (value: unknown): value is ZoneGeoJson => {
     typeof value.type === "string" &&
     value.type === "Feature" &&
     isZone(value.properties)
+  );
+};
+
+export const isZoneJsonLd = (value: unknown): value is ZoneJsonLd => {
+  return (
+    isRecord(value) &&
+    typeof value["@type"] === "string" &&
+    value["@type"] === "wx:Zone"
   );
 };

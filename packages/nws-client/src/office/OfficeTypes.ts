@@ -4,6 +4,13 @@ export interface Office {
   "@context": JsonLdContext;
   "@id": string;
   "@type": "GovernmentOrganization";
+  address: {
+    "@type": "PostalAddress";
+    addressLocality: string;
+    addressRegion: string;
+    postalCode: string;
+    streetAddress: string;
+  };
   approvedObservationStations: string[];
   email: string;
   faxNumber: string;
