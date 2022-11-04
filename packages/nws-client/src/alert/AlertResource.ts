@@ -1,6 +1,13 @@
 import { BaseEndpointArgs, Format } from "../common";
 import { apiRoot } from "../common/CommonConstants";
 import { addQueryString, simpleGetRequest } from "../common/Network";
+import { requestInFormat } from "../common/RequestInFormat";
+import {
+  isAlertCollectionGeoJson,
+  isAlertCollectionJsonLd,
+  isAlertGeoJson,
+  isAlertJsonLd,
+} from "./AlertTypeguards";
 import {
   ActiveAlertsCount,
   AlertCollectionGeoJson,
@@ -15,7 +22,6 @@ interface GetActiveAlertsArgs extends BaseEndpointArgs {
   certainty?: string[];
   code?: string[];
   event?: string[];
-  format?: string;
   limit?: number;
   messageType?: string[];
   point?: string;
@@ -29,21 +35,17 @@ interface GetActiveAlertsArgs extends BaseEndpointArgs {
 
 interface GetActiveAlertsByAreaArgs extends BaseEndpointArgs {
   areaId: string;
-  format?: Format;
 }
 
 interface GetActiveAlertsByRegionArgs extends BaseEndpointArgs {
-  format?: Format;
   regionId: string;
 }
 
 interface GetActiveAlertsByZoneArgs extends BaseEndpointArgs {
-  format?: Format;
   zoneId: string;
 }
 
 interface GetAlertArgs extends BaseEndpointArgs {
-  format?: string;
   id: string;
 }
 
@@ -54,7 +56,6 @@ interface GetAlertsArgs extends BaseEndpointArgs {
   cursor?: string;
   end?: string;
   event?: string[];
-  format?: string;
   limit?: number;
   messageType?: string[];
   point?: string;
@@ -67,23 +68,164 @@ interface GetAlertsArgs extends BaseEndpointArgs {
   zone?: string[];
 }
 
-export const getActiveAlerts = ({
-  area,
-  certainty,
-  code,
-  event,
-  format = Format.GeoJson,
-  limit,
-  messageType,
-  point,
-  region,
-  regionType,
-  severity,
-  status,
-  urgency,
-  userAgent,
-  zone,
-}: GetActiveAlertsArgs) => {
+export const getActiveAlertsGeoJson = (args: GetActiveAlertsArgs) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isAlertCollectionGeoJson,
+    getActiveAlertsInternal
+  );
+
+export const getActiveAlertsJsonLd = (args: GetActiveAlertsArgs) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isAlertCollectionJsonLd,
+    getActiveAlertsInternal
+  );
+
+export const getActiveAlertsByAreaGeoJson = (args: GetActiveAlertsByAreaArgs) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isAlertCollectionGeoJson,
+    getActiveAlertsByAreaInternal
+  );
+
+export const getActiveAlertsByAreaJsonLd = (args: GetActiveAlertsByAreaArgs) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isAlertCollectionJsonLd,
+    getActiveAlertsByAreaInternal
+  );
+
+export const getActiveAlertsByRegionGeoJson = (
+  args: GetActiveAlertsByRegionArgs
+) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isAlertCollectionGeoJson,
+    getActiveAlertsByRegionInternal
+  );
+
+export const getActiveAlertsByRegionJsonLd = (
+  args: GetActiveAlertsByRegionArgs
+) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isAlertCollectionJsonLd,
+    getActiveAlertsByRegionInternal
+  );
+
+export const getActiveAlertsByZoneGeoJson = (args: GetActiveAlertsByZoneArgs) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isAlertCollectionGeoJson,
+    getActiveAlertsByZoneInternal
+  );
+
+export const getActiveAlertsByZoneJsonLd = (args: GetActiveAlertsByZoneArgs) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isAlertCollectionJsonLd,
+    getActiveAlertsByZoneInternal
+  );
+
+export const getActiveAlertsCount = ({ userAgent }: BaseEndpointArgs) => {
+  return simpleGetRequest<ActiveAlertsCount>({
+    endpoint: `${apiRoot}/alerts/active/count`,
+    format: Format.JsonLd,
+    userAgent,
+  });
+};
+
+export const getAlertGeoJson = (args: GetAlertArgs) =>
+  requestInFormat(args, Format.GeoJson, isAlertGeoJson, getAlertInternal);
+
+export const getAlertJsonLd = (args: GetAlertArgs) =>
+  requestInFormat(args, Format.JsonLd, isAlertJsonLd, getAlertInternal);
+
+export const getAlertTypes = ({ userAgent }: BaseEndpointArgs) => {
+  return simpleGetRequest<AlertTypes>({
+    endpoint: `${apiRoot}/alerts/types`,
+    format: Format.JsonLd,
+    userAgent,
+  });
+};
+
+export const getAlertsGeoJson = (args: GetAlertsArgs) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isAlertCollectionGeoJson,
+    getAlertsInternal
+  );
+
+export const getAlertsJsonLd = (args: GetAlertsArgs) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isAlertCollectionJsonLd,
+    getAlertsInternal
+  );
+
+const getActiveAlertsByAreaInternal = (
+  { areaId, userAgent }: GetActiveAlertsByAreaArgs,
+  format: Format
+) => {
+  return simpleGetRequest<AlertCollectionGeoJson | AlertCollectionJsonLd>({
+    endpoint: `${apiRoot}/alerts/active/area/${areaId}`,
+    format,
+    userAgent,
+  });
+};
+
+const getActiveAlertsByRegionInternal = (
+  { regionId, userAgent }: GetActiveAlertsByRegionArgs,
+  format: Format
+) => {
+  return simpleGetRequest<AlertCollectionGeoJson | AlertCollectionJsonLd>({
+    endpoint: `${apiRoot}/alerts/active/region/${regionId}`,
+    format,
+    userAgent,
+  });
+};
+
+const getActiveAlertsByZoneInternal = (
+  { userAgent, zoneId }: GetActiveAlertsByZoneArgs,
+  format: Format
+) => {
+  return simpleGetRequest<AlertCollectionGeoJson | AlertCollectionJsonLd>({
+    endpoint: `${apiRoot}/alerts/active/zone/${zoneId}`,
+    format,
+    userAgent,
+  });
+};
+
+const getActiveAlertsInternal = (
+  {
+    area,
+    certainty,
+    code,
+    event,
+    limit,
+    messageType,
+    point,
+    region,
+    regionType,
+    severity,
+    status,
+    urgency,
+    userAgent,
+    zone,
+  }: GetActiveAlertsArgs,
+  format: Format
+) => {
   const endpoint = addQueryString(`${apiRoot}/alerts/active`, {
     area,
     certainty,
@@ -107,55 +249,7 @@ export const getActiveAlerts = ({
   });
 };
 
-export const getActiveAlertsByArea = ({
-  areaId,
-  format = Format.GeoJson,
-  userAgent,
-}: GetActiveAlertsByAreaArgs) => {
-  return simpleGetRequest<AlertCollectionGeoJson | AlertCollectionJsonLd>({
-    endpoint: `${apiRoot}/alerts/active/area/${areaId}`,
-    format,
-    userAgent,
-  });
-};
-
-export const getActiveAlertsByRegion = ({
-  format = Format.GeoJson,
-  regionId,
-  userAgent,
-}: GetActiveAlertsByRegionArgs) => {
-  return simpleGetRequest<AlertCollectionGeoJson | AlertCollectionJsonLd>({
-    endpoint: `${apiRoot}/alerts/active/region/${regionId}`,
-    format,
-    userAgent,
-  });
-};
-
-export const getActiveAlertsByZone = ({
-  format = Format.GeoJson,
-  userAgent,
-  zoneId,
-}: GetActiveAlertsByZoneArgs) => {
-  return simpleGetRequest<AlertCollectionGeoJson | AlertCollectionJsonLd>({
-    endpoint: `${apiRoot}/alerts/active/zone/${zoneId}`,
-    format,
-    userAgent,
-  });
-};
-
-export const getActiveAlertsCount = ({ userAgent }: BaseEndpointArgs) => {
-  return simpleGetRequest<ActiveAlertsCount>({
-    endpoint: `${apiRoot}/alerts/active/count`,
-    format: Format.JsonLd,
-    userAgent,
-  });
-};
-
-export const getAlert = ({
-  format = Format.GeoJson,
-  id,
-  userAgent,
-}: GetAlertArgs) => {
+const getAlertInternal = ({ id, userAgent }: GetAlertArgs, format: Format) => {
   return simpleGetRequest<AlertJsonLd | AlertGeoJson>({
     endpoint: `${apiRoot}/alerts/${id}`,
     format,
@@ -163,34 +257,28 @@ export const getAlert = ({
   });
 };
 
-export const getAlertTypes = ({ userAgent }: BaseEndpointArgs) => {
-  return simpleGetRequest<AlertTypes>({
-    endpoint: `${apiRoot}/alerts/types`,
-    format: Format.JsonLd,
+const getAlertsInternal = (
+  {
+    area,
+    certainty,
+    code,
+    cursor,
+    end,
+    event,
+    limit,
+    messageType,
+    point,
+    severity,
+    start,
+    status,
+    region,
+    regionType,
+    urgency,
     userAgent,
-  });
-};
-
-export const getAlerts = ({
-  area,
-  certainty,
-  code,
-  cursor,
-  end,
-  event,
-  format = Format.GeoJson,
-  limit,
-  messageType,
-  point,
-  severity,
-  start,
-  status,
-  region,
-  regionType,
-  urgency,
-  userAgent,
-  zone,
-}: GetAlertsArgs) => {
+    zone,
+  }: GetAlertsArgs,
+  format: Format
+) => {
   const endpoint = addQueryString(`${apiRoot}/alerts`, {
     area,
     certainty,

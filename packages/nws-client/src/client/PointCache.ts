@@ -1,5 +1,5 @@
 import { getPointGeolocationPrecision } from "../common/CommonConstants";
-import { getPoint, Point, PointGeoJson } from "../point";
+import { getPointGeoJson, PointGeoJson } from "../point";
 import { ActionQueue } from "./ActionQueue";
 
 /**
@@ -11,8 +11,8 @@ import { ActionQueue } from "./ActionQueue";
  * location to improve latency and reduce the additional lookup request."
  */
 export class PointCache {
-  coordsToPoint = new Map<string, Point | PointGeoJson>();
-  coordsToRequestQueue = new Map<string, ActionQueue<Point | PointGeoJson>>();
+  coordsToPoint = new Map<string, PointGeoJson>();
+  coordsToRequestQueue = new Map<string, ActionQueue<PointGeoJson>>();
   private maxCacheSize = 16;
 
   async getPoint(latitude: number, longitude: number) {
@@ -31,7 +31,7 @@ export class PointCache {
       this.coordsToRequestQueue.set(coords, queue);
     }
     const point = await queue.runOrEnqueue(() =>
-      getPoint({ latitude, longitude })
+      getPointGeoJson({ latitude, longitude })
     );
 
     this.ensureCacheMaxSize();

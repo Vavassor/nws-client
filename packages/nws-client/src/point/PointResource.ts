@@ -4,21 +4,27 @@ import {
   getPointGeolocationPrecision,
 } from "../common/CommonConstants";
 import { simpleGetRequest } from "../common/Network";
+import { requestInFormat } from "../common/RequestInFormat";
+import { isPointGeoJson, isPointJsonLd } from "./PointTypeguards";
 import { PointGeoJson, PointJsonLd } from "./PointTypes";
 
 interface GetPointArgs extends BaseEndpointArgs {
-  format?: Format;
   latitude: number;
   longitude: number;
 }
 
 /** Returns metadata about a given latitude/longitude point. */
-export const getPoint = ({
-  format = Format.GeoJson,
-  latitude,
-  longitude,
-  userAgent,
-}: GetPointArgs) => {
+export const getPointGeoJson = (args: GetPointArgs) =>
+  requestInFormat(args, Format.GeoJson, isPointGeoJson, getPointInternal);
+
+/** Returns metadata about a given latitude/longitude point. */
+export const getPointJsonLd = (args: GetPointArgs) =>
+  requestInFormat(args, Format.JsonLd, isPointJsonLd, getPointInternal);
+
+const getPointInternal = (
+  { latitude, longitude, userAgent }: GetPointArgs,
+  format: Format
+) => {
   /**
    * Coordinates with more precision than needed cause the point API to return a
    * 301 redirect request to a corrected position. Circumvent this extra
