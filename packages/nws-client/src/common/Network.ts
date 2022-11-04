@@ -35,7 +35,7 @@ export const addQueryString = (
   const entries = Object.entries(parameters)
     .map(([key, value]) => [key, getQueryValue(value)])
     .filter(
-      (entry): entry is [string, string] => typeof entry[0] !== "undefined"
+      (entry): entry is [string, string] => typeof entry[1] !== "undefined"
     );
   const sortedEntries = Array.from(entries).sort((a, b) =>
     a[0] > b[0] ? 1 : -1
