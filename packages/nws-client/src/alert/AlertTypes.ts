@@ -100,44 +100,44 @@ export type AlertCertainty =
   | "Unlikely";
 
 export interface AlertCollection {
-  pagination: AlertCollectionPagination;
+  pagination?: AlertCollectionPagination;
   /** A title describing the alert collection. */
-  title: string;
+  title?: string;
   /**
    * The last time a change occurred to this collection.
    *
    * @see {@link https://www.rfc-editor.org/rfc/rfc3339 | RFC 3339}
    */
-  updated: string;
+  updated?: string;
 }
 
 export interface AlertCollectionGeoJson {
-  "@context": JsonLdContext;
+  "@context"?: JsonLdContext;
   features: AlertGeoJson[];
-  pagination: AlertCollectionPagination;
+  pagination?: AlertCollectionPagination;
   /** A title describing the alert collection. */
-  title: string;
+  title?: string;
   type: "FeatureCollection";
   /**
    * The last time a change occurred to this collection.
    *
    * @see {@link https://www.rfc-editor.org/rfc/rfc3339 | RFC 3339}
    */
-  updated: string;
+  updated?: string;
 }
 
 export interface AlertCollectionJsonLd {
-  "@context": JsonLdContext;
+  "@context"?: JsonLdContext;
   "@graph": Alert[];
-  pagination: AlertCollectionPagination;
+  pagination?: AlertCollectionPagination;
   /** A title describing the alert collection. */
-  title: string;
+  title?: string;
   /**
    * The last time a change occurred to this collection.
    *
    * @see {@link https://www.rfc-editor.org/rfc/rfc3339 | RFC 3339}
    */
-  updated: string;
+  updated?: string;
 }
 
 export interface AlertCollectionPagination {
@@ -205,6 +205,7 @@ export type AlertSeverity =
 export type AlertStatus = "Actual" | "Draft" | "Exercise" | "System" | "Test";
 
 export interface AlertTypes {
+  "@context": JsonLdContext;
   eventTypes: string[];
 }
 

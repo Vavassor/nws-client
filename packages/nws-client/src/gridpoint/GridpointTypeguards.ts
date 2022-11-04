@@ -3,7 +3,9 @@ import {
   Gridpoint,
   GridpointForecast,
   GridpointForecastGeoJson,
+  GridpointForecastJsonLd,
   GridpointGeoJson,
+  GridpointJsonLd,
 } from "./GridpointTypes";
 
 export const isGridpoint = (value: unknown): value is Gridpoint => {
@@ -35,9 +37,29 @@ export const isGridpointForecastGeoJson = (
   );
 };
 
+export const isGridpointForecastJsonLd = (
+  value: unknown
+): value is GridpointForecastJsonLd => {
+  return (
+    isRecord(value) &&
+    typeof value.type === "string" &&
+    value.type === "Feature" &&
+    isGridpointForecast(value.properties)
+  );
+};
+
 export const isGridpointGeoJson = (
   value: unknown
 ): value is GridpointGeoJson => {
+  return (
+    isRecord(value) &&
+    typeof value.type === "string" &&
+    value.type === "Feature" &&
+    isGridpoint(value.properties)
+  );
+};
+
+export const isGridpointJsonLd = (value: unknown): value is GridpointJsonLd => {
   return (
     isRecord(value) &&
     typeof value.type === "string" &&

@@ -12,10 +12,10 @@ import {
   ObservationStationCollectionJsonLd,
 } from "../station";
 import {
-  Gridpoint,
-  GridpointForecast,
   GridpointForecastGeoJson,
+  GridpointForecastJsonLd,
   GridpointGeoJson,
+  GridpointJsonLd,
 } from "./GridpointTypes";
 
 interface GetGridpointArgs extends BaseEndpointArgs {
@@ -77,7 +77,7 @@ export const getGridpoint = ({
   gridY,
   userAgent,
 }: GetGridpointArgs) => {
-  return simpleGetRequest<Gridpoint | GridpointGeoJson>({
+  return simpleGetRequest<GridpointJsonLd | GridpointGeoJson>({
     endpoint: `${apiRoot}/gridpoints/${forecastOfficeId}/${gridX},${gridY}`,
     format,
     userAgent,
@@ -89,7 +89,7 @@ export const getGridpointByUri = ({
   uri,
   userAgent,
 }: GetGridpointByUriArgs) => {
-  return simpleGetRequest<Gridpoint | GridpointGeoJson>({
+  return simpleGetRequest<GridpointJsonLd | GridpointGeoJson>({
     endpoint: uri,
     format,
     userAgent,
@@ -110,7 +110,7 @@ export const getGridpointForecast = ({
     { units }
   );
 
-  return jsonRequest<GridpointForecast | GridpointForecastGeoJson>({
+  return jsonRequest<GridpointForecastJsonLd | GridpointForecastGeoJson>({
     endpoint,
     headers: getStringRecord({
       Accept: format,
@@ -130,7 +130,7 @@ export const getGridpointForecastByUri = ({
 }: GetGridpointForecastByUriArgs) => {
   const endpoint = addQueryString(uri, { units });
 
-  return jsonRequest<GridpointForecast | GridpointForecastGeoJson>({
+  return jsonRequest<GridpointForecastJsonLd | GridpointForecastGeoJson>({
     endpoint,
     headers: getStringRecord({
       Accept: format,
@@ -155,7 +155,7 @@ export const getGridpointForecastHourly = ({
     { units }
   );
 
-  return jsonRequest<GridpointForecast | GridpointForecastGeoJson>({
+  return jsonRequest<GridpointForecastJsonLd | GridpointForecastGeoJson>({
     endpoint,
     headers: getStringRecord({
       Accept: format,
@@ -174,7 +174,7 @@ export const getGridpointForecastHourlyByUri = ({
   userAgent,
 }: GetGridpointForecastByUriArgs) => {
   const endpoint = addQueryString(uri, { units });
-  return jsonRequest<GridpointForecast | GridpointForecastGeoJson>({
+  return jsonRequest<GridpointForecastJsonLd | GridpointForecastGeoJson>({
     endpoint,
     headers: getStringRecord({
       Accept: format,

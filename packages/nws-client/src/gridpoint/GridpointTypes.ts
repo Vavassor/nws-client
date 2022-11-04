@@ -60,8 +60,117 @@ type WeatherType =
   | "volcanic_ash"
   | "water_spouts";
 
+type WindDirection =
+  | "N"
+  | "NNE"
+  | "NE"
+  | "ENE"
+  | "E"
+  | "ESE"
+  | "SE"
+  | "SSE"
+  | "S"
+  | "SSW"
+  | "SW"
+  | "WSW"
+  | "W"
+  | "WNW"
+  | "NW"
+  | "NNW";
+
 /** Raw forecast data for a 2.5km grid square. */
 export interface Gridpoint {
+  "@context"?: JsonLdContext;
+  /** URI of this resource. */
+  "@id"?: string;
+  /** Type of this resource. */
+  "@type": "wx:Gridpoint";
+  apparentTemperature?: GridpointQuantitativeValueLayer;
+  atmosphericDispersionIndex?: GridpointQuantitativeValueLayer;
+  ceilingHeight?: GridpointQuantitativeValueLayer;
+  davisStabilityIndex?: GridpointQuantitativeValueLayer;
+  dewpoint?: GridpointQuantitativeValueLayer;
+  dispersionIndex?: GridpointQuantitativeValueLayer;
+  elevation: QuantitativeValue;
+  /** URI of the forecast office. */
+  forecastOffice: string;
+  /** Geometry represented in Well-Known Text (WKT) format. */
+  geometry?: null | string;
+  grasslandFireDangerIndex?: GridpointQuantitativeValueLayer;
+  /** Three-letter identifier for a NWS office. */
+  gridId: string;
+  gridX: string;
+  gridY: string;
+  hainesIndex?: GridpointQuantitativeValueLayer;
+  hazards: {
+    values: GridpointHazardValue[];
+  };
+  heatIndex?: GridpointQuantitativeValueLayer;
+  iceAccumulation?: GridpointQuantitativeValueLayer;
+  lightningActivityLevel?: GridpointQuantitativeValueLayer;
+  lowVisibilityOccurrenceRiskIndex?: GridpointQuantitativeValueLayer;
+  maxTemperature?: GridpointQuantitativeValueLayer;
+  minTemperature?: GridpointQuantitativeValueLayer;
+  mixingHeight?: GridpointQuantitativeValueLayer;
+  potentialOf15mphWinds?: GridpointQuantitativeValueLayer;
+  potentialOf25mphWinds?: GridpointQuantitativeValueLayer;
+  potentialOf35mphWinds?: GridpointQuantitativeValueLayer;
+  potentialOf45mphWinds?: GridpointQuantitativeValueLayer;
+  potentialOf20mphWindGusts?: GridpointQuantitativeValueLayer;
+  potentialOf30mphWindGusts?: GridpointQuantitativeValueLayer;
+  potentialOf40mphWindGusts?: GridpointQuantitativeValueLayer;
+  potentialOf50mphWindGusts?: GridpointQuantitativeValueLayer;
+  potentialOf60mphWindGusts?: GridpointQuantitativeValueLayer;
+  pressure?: GridpointQuantitativeValueLayer;
+  primarySwellDirection?: GridpointQuantitativeValueLayer;
+  primarySwellHeight?: GridpointQuantitativeValueLayer;
+  probabilityOfHurricaneWinds?: GridpointQuantitativeValueLayer;
+  probabilityOfPrecipitation?: GridpointQuantitativeValueLayer;
+  probabilityOfThunder?: GridpointQuantitativeValueLayer;
+  probabilityOfTropicalStormWinds?: GridpointQuantitativeValueLayer;
+  quantitativePrecipitation?: GridpointQuantitativeValueLayer;
+  redFlagThreatIndex?: GridpointQuantitativeValueLayer;
+  relativeHumidity?: GridpointQuantitativeValueLayer;
+  secondarySwellDirection?: GridpointQuantitativeValueLayer;
+  secondarySwellHeight?: GridpointQuantitativeValueLayer;
+  skyCover?: GridpointQuantitativeValueLayer;
+  snowLevel?: GridpointQuantitativeValueLayer;
+  snowfallAmount?: GridpointQuantitativeValueLayer;
+  stability?: GridpointQuantitativeValueLayer;
+  temperature?: GridpointQuantitativeValueLayer;
+  transportWindDirection?: GridpointQuantitativeValueLayer;
+  transportWindSpeed?: GridpointQuantitativeValueLayer;
+  twentyFootWindDirection?: GridpointQuantitativeValueLayer;
+  twentyFootWindSpeed?: GridpointQuantitativeValueLayer;
+  /**
+   * Update time of the forecast.
+   *
+   * @see {@link https://www.rfc-editor.org/rfc/rfc3339 | RFC 3339}
+   */
+  updateTime: string;
+  /**
+   * Time interval during which this data is valid.
+   *
+   * @see {@link https://www.iso.org/standard/70907.html | ISO 8601-1:2019}
+   */
+  validTimes: string;
+  visibility?: GridpointQuantitativeValueLayer;
+  waveDirection?: GridpointQuantitativeValueLayer;
+  waveHeight?: GridpointQuantitativeValueLayer;
+  wavePeriod?: GridpointQuantitativeValueLayer;
+  wavePeriod2?: GridpointQuantitativeValueLayer;
+  weather: {
+    values: GridpointWeatherValue[];
+  };
+  windChill?: GridpointQuantitativeValueLayer;
+  windDirection?: GridpointQuantitativeValueLayer;
+  windGust?: GridpointQuantitativeValueLayer;
+  windSpeed?: GridpointQuantitativeValueLayer;
+  windWaveHeight?: GridpointQuantitativeValueLayer;
+}
+
+/** Raw forecast data for a 2.5km grid square. */
+export interface GridpointJsonLd {
   "@context": JsonLdContext;
   /** URI of this resource. */
   "@id": string;
@@ -81,8 +190,8 @@ export interface Gridpoint {
   grasslandFireDangerIndex?: GridpointQuantitativeValueLayer;
   /** Three-letter identifier for a NWS office. */
   gridId: string;
-  gridX: number;
-  gridY: number;
+  gridX: string;
+  gridY: string;
   hainesIndex?: GridpointQuantitativeValueLayer;
   hazards: {
     values: GridpointHazardValue[];
@@ -153,6 +262,44 @@ export interface Gridpoint {
 
 /** A multi-day forecast for a 2.5km grid square. */
 export interface GridpointForecast {
+  "@context"?: JsonLdContext;
+  elevation: QuantitativeValue;
+  /**
+   * The internal generator class used to create the forecast text (used for
+   * NWS debugging).
+   */
+  forecastGenerator: string;
+  /** Geometry represented in Well-Known Text (WKT) format. */
+  geometry?: string | null;
+  /**
+   * The time this forecast data was generated.
+   *
+   * @see {@link https://www.rfc-editor.org/rfc/rfc3339 | RFC 3339}
+   */
+  generatedAt: string;
+  periods: GridpointForecastPeriod[];
+  /** Denotes the units used in the textual portions of the forecast. */
+  units: UnitType;
+  /** @deprecated */
+  updated: string;
+  /**
+   * Update time of the forecast.
+   *
+   * @see {@link https://www.rfc-editor.org/rfc/rfc3339 | RFC 3339}
+   */
+  updateTime: string;
+  /**
+   * Time interval during which this data is valid.
+   *
+   * @see {@link https://www.iso.org/standard/70907.html | ISO 8601-1:2019}
+   */
+  validTimes: string;
+}
+
+export type GridpointForecastGeoJson = FeatureGeoJson<GridpointForecast>;
+
+/** A multi-day forecast for a 2.5km grid square. */
+export interface GridpointForecastJsonLd {
   "@context": JsonLdContext;
   elevation: QuantitativeValue;
   /**
@@ -171,6 +318,8 @@ export interface GridpointForecast {
   periods: GridpointForecastPeriod[];
   /** Denotes the units used in the textual portions of the forecast. */
   units: UnitType;
+  /** @deprecated */
+  updated: string;
   /**
    * Update time of the forecast.
    *
@@ -185,8 +334,6 @@ export interface GridpointForecast {
   validTimes: string;
 }
 
-export type GridpointForecastGeoJson = FeatureGeoJson<GridpointForecast>;
-
 /**
  * An object containing forecast information for a specific time period
  * (generally 12-hour or 1-hour).
@@ -200,6 +347,8 @@ export interface GridpointForecastPeriod {
    * @see {@link https://www.rfc-editor.org/rfc/rfc3339 | RFC 3339}
    */
   endTime: string;
+  /** @deprecated */
+  icon: string;
   /** Indicates whether this period is daytime or nighttime. */
   isDaytime: boolean;
   /**
@@ -233,6 +382,13 @@ export interface GridpointForecastPeriod {
    * day).
    */
   temperatureTrend?: string | null;
+  /** @deprecated */
+  temperatureUnit: string;
+  /**
+   * The prevailing direction of the wind for the period, using a 16-point
+   * compass.
+   */
+  windDirection: WindDirection;
   /**
    * Peak wind gust for the period.
    *
@@ -241,7 +397,7 @@ export interface GridpointForecastPeriod {
    * future standard format now, set the "forecast_wind_speed_qv" feature flag
    * on the request.
    */
-  windGust: string | QuantitativeValue;
+  windGust?: string | QuantitativeValue;
   /**
    * Wind speed for the period.
    *
@@ -311,7 +467,7 @@ export interface GridpointQuantitativeValueLayer {
    * Namespaced units are considered deprecated. NWS will be aligning the API to
    * use the same standards as GML/IWXXM in the future.
    */
-  uom: string;
+  uom?: string;
   values: GridpointQuantitativeValueLayerValue[];
 }
 

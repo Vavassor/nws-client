@@ -7,10 +7,10 @@ import {
 import { apiRoot } from "../common/CommonConstants";
 import { addQueryString, simpleGetRequest } from "../common/Network";
 import {
-  ObservationStation,
   ObservationStationCollectionGeoJson,
   ObservationStationCollectionJsonLd,
   ObservationStationGeoJson,
+  ObservationStationJsonLd,
 } from "./StationTypes";
 
 interface GetLatestStationObservationArgs extends BaseEndpointArgs {
@@ -63,11 +63,13 @@ export const getLatestStationObservation = ({
     }
   );
 
-  return simpleGetRequest<ObservationStation | ObservationStationGeoJson>({
-    endpoint,
-    format,
-    userAgent,
-  });
+  return simpleGetRequest<ObservationStationJsonLd | ObservationStationGeoJson>(
+    {
+      endpoint,
+      format,
+      userAgent,
+    }
+  );
 };
 
 export const getStation = ({
@@ -75,11 +77,13 @@ export const getStation = ({
   stationId,
   userAgent,
 }: GetStationArgs) => {
-  return simpleGetRequest<ObservationStation | ObservationStationGeoJson>({
-    endpoint: `${apiRoot}/stations/${stationId}`,
-    format,
-    userAgent,
-  });
+  return simpleGetRequest<ObservationStationJsonLd | ObservationStationGeoJson>(
+    {
+      endpoint: `${apiRoot}/stations/${stationId}`,
+      format,
+      userAgent,
+    }
+  );
 };
 
 export const getStationByUri = ({
@@ -87,11 +91,13 @@ export const getStationByUri = ({
   uri,
   userAgent,
 }: GetStationByUriArgs) => {
-  return simpleGetRequest<ObservationStation | ObservationStationGeoJson>({
-    endpoint: uri,
-    format,
-    userAgent,
-  });
+  return simpleGetRequest<ObservationStationJsonLd | ObservationStationGeoJson>(
+    {
+      endpoint: uri,
+      format,
+      userAgent,
+    }
+  );
 };
 
 export const getStationObservationByTime = ({
@@ -100,11 +106,13 @@ export const getStationObservationByTime = ({
   time,
   userAgent,
 }: GetStationObservationByTimeArgs) => {
-  return simpleGetRequest<ObservationStation | ObservationStationGeoJson>({
-    endpoint: `${apiRoot}/stations/${stationId}/observations/${time}`,
-    format,
-    userAgent,
-  });
+  return simpleGetRequest<ObservationStationJsonLd | ObservationStationGeoJson>(
+    {
+      endpoint: `${apiRoot}/stations/${stationId}/observations/${time}`,
+      format,
+      userAgent,
+    }
+  );
 };
 
 export const getStationObservations = ({
