@@ -1,10 +1,19 @@
 # Versions
 
+## v0.2.0
+
+Released November 4, 2022.
+
+### @vavassor/nws-client v0.2.0
+
+- Fixes React Native compatibility due to [React Native's URL implementation](https://github.com/facebook/react-native/blob/44f3234d1f4d21f779f2dfb3b9dbe16249e7c9d2/Libraries/Blob/URL.js) not supporting many methods.
+- Fixes type errors in all resources.
+
 ## v0.1.0
 
 Released October 27, 2022.
 
-### @vavassor/nws-client
+### @vavassor/nws-client v0.1.0
 
 - Added full support for all endpoints in the NWS API.
 - Added a client to help obtain forecasts.
