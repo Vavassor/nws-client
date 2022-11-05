@@ -108,7 +108,7 @@ export interface ZoneCollectionJsonLd {
 }
 
 export interface ZoneForecast {
-  "@context": JsonLdContext;
+  "@context"?: JsonLdContext;
   /** Geometry represented in Well-Known Text (WKT) format. */
   geometry?: string | null;
   periods: ZoneForecastPeriod[];
@@ -123,6 +123,21 @@ export interface ZoneForecast {
 }
 
 export type ZoneForecastGeoJson = FeatureGeoJson<ZoneForecast>;
+
+export interface ZoneForecastJsonLd {
+  "@context": JsonLdContext;
+  /** Geometry represented in Well-Known Text (WKT) format. */
+  geometry?: string | null;
+  periods: ZoneForecastPeriod[];
+  /**
+   * The time this zone forecast product was published.
+   *
+   * @see {@link https://www.rfc-editor.org/rfc/rfc3339 | RFC 3339}
+   */
+  updated: string;
+  /** URI of the zone this forecast is for. */
+  zone: string;
+}
 
 export interface ZoneForecastPeriod {
   /** A detailed textual forecast for the period. */

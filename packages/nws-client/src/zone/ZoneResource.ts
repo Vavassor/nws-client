@@ -1,20 +1,33 @@
 import {
   BaseEndpointArgs,
   Format,
+  isObservationCollectionGeoJson,
+  isObservationCollectionJsonLd,
   ObservationCollectionGeoJson,
   ObservationCollectionJsonLd,
 } from "../common";
 import { apiRoot } from "../common/CommonConstants";
 import { addQueryString, simpleGetRequest } from "../common/Network";
+import { requestInFormat } from "../common/RequestInFormat";
 import {
+  isObservationStationCollectionGeoJson,
+  isObservationStationCollectionJsonLd,
   ObservationStationCollectionGeoJson,
   ObservationStationCollectionJsonLd,
 } from "../station";
 import {
+  isZoneCollectionGeoJson,
+  isZoneCollectionJsonLd,
+  isZoneForecastGeoJson,
+  isZoneForecastJsonLd,
+  isZoneGeoJson,
+  isZoneJsonLd,
+} from "./ZoneTypeguards";
+import {
   ZoneCollectionGeoJson,
   ZoneCollectionJsonLd,
-  ZoneForecast,
   ZoneForecastGeoJson,
+  ZoneForecastJsonLd,
   ZoneGeoJson,
   ZoneJsonLd,
   ZoneType,
@@ -22,45 +35,38 @@ import {
 
 interface GetZoneArgs extends BaseEndpointArgs {
   effective?: string;
-  format?: Format;
   type: "county" | "fire" | "forecast";
   zoneId: string;
 }
 
 interface GetZoneByUriArgs extends BaseEndpointArgs {
   effective?: string;
-  format?: Format;
   uri: string;
 }
 
 interface GetZoneForecastArgs extends BaseEndpointArgs {
-  format?: Format;
   type: ZoneType;
   zoneId: string;
 }
 
 interface GetZoneForecastByUriArgs extends BaseEndpointArgs {
-  format?: Format;
   uri: string;
 }
 
 interface GetZoneObservationsArgs extends BaseEndpointArgs {
   end?: string;
-  format?: Format;
   limit?: number;
   start?: string;
   zoneId: string;
 }
 
 interface GetZoneStationsArgs extends BaseEndpointArgs {
-  format?: Format;
   zoneId: string;
 }
 
 interface GetZonesArgs extends BaseEndpointArgs {
   area?: string[];
   effective?: string;
-  format?: Format;
   id?: string[];
   includeGeometry?: boolean;
   limit?: number;
@@ -72,7 +78,6 @@ interface GetZonesArgs extends BaseEndpointArgs {
 interface GetZonesByTypeArgs extends BaseEndpointArgs {
   area?: string[];
   effective?: string;
-  format?: Format;
   id?: string[];
   includeGeometry?: boolean;
   limit?: number;
@@ -81,13 +86,118 @@ interface GetZonesByTypeArgs extends BaseEndpointArgs {
   type: ZoneType;
 }
 
-export const getZone = ({
-  effective,
-  format = Format.GeoJson,
-  type,
-  userAgent,
-  zoneId,
-}: GetZoneArgs) => {
+export const getZoneGeoJson = (args: GetZoneArgs) =>
+  requestInFormat(args, Format.GeoJson, isZoneGeoJson, getZoneInternal);
+
+export const getZoneJsonLd = (args: GetZoneArgs) =>
+  requestInFormat(args, Format.JsonLd, isZoneJsonLd, getZoneInternal);
+
+export const getZoneByUriGeoJson = (args: GetZoneByUriArgs) =>
+  requestInFormat(args, Format.GeoJson, isZoneGeoJson, getZoneByUriInternal);
+
+export const getZoneByUriJsonLd = (args: GetZoneByUriArgs) =>
+  requestInFormat(args, Format.JsonLd, isZoneJsonLd, getZoneByUriInternal);
+
+export const getZoneForecastGeoJson = (args: GetZoneForecastArgs) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isZoneForecastGeoJson,
+    getZoneForecastInternal
+  );
+
+export const getZoneForecastJsonLd = (args: GetZoneForecastArgs) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isZoneForecastJsonLd,
+    getZoneForecastInternal
+  );
+
+export const getZoneForecastByUriGeoJson = (args: GetZoneForecastByUriArgs) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isZoneForecastGeoJson,
+    getZoneForecastByUriInternal
+  );
+
+export const getZoneForecastByUriJsonLd = (args: GetZoneForecastByUriArgs) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isZoneForecastJsonLd,
+    getZoneForecastByUriInternal
+  );
+
+export const getZoneObservationsGeoJson = (args: GetZoneObservationsArgs) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isObservationCollectionGeoJson,
+    getZoneObservationsInternal
+  );
+
+export const getZoneObservationsJsonLd = (args: GetZoneObservationsArgs) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isObservationCollectionJsonLd,
+    getZoneObservationsInternal
+  );
+
+export const getZoneStationsGeoJson = (args: GetZoneStationsArgs) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isObservationStationCollectionGeoJson,
+    getZoneStationsInternal
+  );
+
+export const getZoneStationsJsonLd = (args: GetZoneStationsArgs) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isObservationStationCollectionJsonLd,
+    getZoneStationsInternal
+  );
+
+export const getZonesGeoJson = (args: GetZonesArgs) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isZoneCollectionGeoJson,
+    getZonesInternal
+  );
+
+export const getZonesJsonLd = (args: GetZonesArgs) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isZoneCollectionJsonLd,
+    getZonesInternal
+  );
+
+export const getZonesByTypeGeoJson = (args: GetZonesByTypeArgs) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isZoneCollectionGeoJson,
+    getZonesByTypeInternal
+  );
+
+export const getZonesByTypeJsonLd = (args: GetZonesByTypeArgs) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isZoneCollectionJsonLd,
+    getZonesByTypeInternal
+  );
+
+const getZoneInternal = (
+  { effective, type, userAgent, zoneId }: GetZoneArgs,
+  format: Format
+) => {
   const endpoint = addQueryString(`${apiRoot}/zones/${type}/${zoneId}`, {
     effective,
   });
@@ -98,12 +208,10 @@ export const getZone = ({
   });
 };
 
-export const getZoneByUri = ({
-  effective,
-  format = Format.GeoJson,
-  uri,
-  userAgent,
-}: GetZoneByUriArgs) => {
+const getZoneByUriInternal = (
+  { effective, uri, userAgent }: GetZoneByUriArgs,
+  format: Format
+) => {
   const endpoint = addQueryString(uri, { effective });
   return simpleGetRequest<ZoneJsonLd | ZoneGeoJson>({
     endpoint,
@@ -112,39 +220,32 @@ export const getZoneByUri = ({
   });
 };
 
-export const getZoneForecast = ({
-  format = Format.GeoJson,
-  type,
-  userAgent,
-  zoneId,
-}: GetZoneForecastArgs) => {
-  return simpleGetRequest<ZoneForecast | ZoneForecastGeoJson>({
+const getZoneForecastInternal = (
+  { type, userAgent, zoneId }: GetZoneForecastArgs,
+  format: Format
+) => {
+  return simpleGetRequest<ZoneForecastGeoJson | ZoneForecastJsonLd>({
     endpoint: `${apiRoot}/zones/${type}/${zoneId}/forecast`,
     format,
     userAgent,
   });
 };
 
-export const getZoneForecastByUri = ({
-  format = Format.GeoJson,
-  uri,
-  userAgent,
-}: GetZoneForecastByUriArgs) => {
-  return simpleGetRequest<ZoneForecast | ZoneForecastGeoJson>({
+const getZoneForecastByUriInternal = (
+  { uri, userAgent }: GetZoneForecastByUriArgs,
+  format: Format
+) => {
+  return simpleGetRequest<ZoneForecastGeoJson | ZoneForecastJsonLd>({
     endpoint: uri,
     format,
     userAgent,
   });
 };
 
-export const getZoneObservations = ({
-  end,
-  format = Format.GeoJson,
-  limit,
-  start,
-  userAgent,
-  zoneId,
-}: GetZoneObservationsArgs) => {
+const getZoneObservationsInternal = (
+  { end, limit, start, userAgent, zoneId }: GetZoneObservationsArgs,
+  format: Format
+) => {
   const endpoint = addQueryString(
     `${apiRoot}/zones/forecast/${zoneId}/observations`,
     { end, limit, start }
@@ -159,11 +260,10 @@ export const getZoneObservations = ({
   });
 };
 
-export const getZoneStations = ({
-  format = Format.GeoJson,
-  userAgent,
-  zoneId,
-}: GetZoneStationsArgs) => {
+const getZoneStationsInternal = (
+  { userAgent, zoneId }: GetZoneStationsArgs,
+  format: Format
+) => {
   return simpleGetRequest<
     ObservationStationCollectionGeoJson | ObservationStationCollectionJsonLd
   >({
@@ -173,18 +273,20 @@ export const getZoneStations = ({
   });
 };
 
-export const getZones = ({
-  area,
-  effective,
-  format = Format.GeoJson,
-  id,
-  includeGeometry,
-  limit,
-  point,
-  region,
-  type,
-  userAgent,
-}: GetZonesArgs) => {
+const getZonesInternal = (
+  {
+    area,
+    effective,
+    id,
+    includeGeometry,
+    limit,
+    point,
+    region,
+    type,
+    userAgent,
+  }: GetZonesArgs,
+  format: Format
+) => {
   const endpoint = addQueryString(`${apiRoot}/zones`, {
     area,
     effective,
@@ -203,18 +305,20 @@ export const getZones = ({
   });
 };
 
-export const getZonesByType = ({
-  area,
-  effective,
-  format = Format.GeoJson,
-  id,
-  includeGeometry,
-  limit,
-  point,
-  region,
-  type,
-  userAgent,
-}: GetZonesByTypeArgs) => {
+const getZonesByTypeInternal = (
+  {
+    area,
+    effective,
+    id,
+    includeGeometry,
+    limit,
+    point,
+    region,
+    type,
+    userAgent,
+  }: GetZonesByTypeArgs,
+  format: Format
+) => {
   const endpoint = addQueryString(`${apiRoot}/zones/${type}`, {
     area,
     effective,
