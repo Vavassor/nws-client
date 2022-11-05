@@ -1,23 +1,21 @@
-import { Format, UnitType } from "../common";
+import { UnitType } from "../common";
 import {
-  getGridpointByUri,
-  getGridpointForecastByUri,
+  getGridpointByUriGeoJson,
+  getGridpointForecastByUriGeoJson,
   GetGridpointForecastFeatureFlag,
-  getGridpointForecastHourlyByUri,
+  getGridpointForecastHourlyByUriGeoJson,
 } from "../gridpoint";
 import { isPoint } from "../point";
-import { getZoneByUri } from "../zone";
+import { getZoneByUriGeoJson } from "../zone";
 import { PointCache } from "./PointCache";
 
 interface GetGridpointArgs {
-  format?: Format;
   latitude: number;
   longitude: number;
 }
 
 interface GetGridpointForecastArgs {
   featureFlags?: GetGridpointForecastFeatureFlag[];
-  format?: Format;
   latitude: number;
   longitude: number;
   units?: UnitType;
@@ -25,7 +23,6 @@ interface GetGridpointForecastArgs {
 
 interface GetGridpointForecastHourlyArgs {
   featureFlags?: GetGridpointForecastFeatureFlag[];
-  format?: Format;
   latitude: number;
   longitude: number;
   units?: UnitType;
@@ -38,7 +35,6 @@ interface GetPointArgs {
 
 interface GetZoneArgs {
   effective?: string;
-  format?: Format;
   latitude: number;
   longitude: number;
 }
@@ -55,43 +51,38 @@ export class NwsClient {
   private pointCache = new PointCache();
   private userAgent: string | undefined;
 
-  async getGridpoint({ format, latitude, longitude }: GetGridpointArgs) {
+  async getGridpointGeoJson({ latitude, longitude }: GetGridpointArgs) {
     const point = await this.getPoint({ latitude, longitude });
-    return getGridpointByUri({
-      format,
+    return getGridpointByUriGeoJson({
       uri: point.forecastGridData,
       userAgent: this.userAgent,
     });
   }
 
-  async getGridpointForecast({
+  async getGridpointForecastGeoJson({
     featureFlags,
-    format,
     latitude,
     longitude,
     units,
   }: GetGridpointForecastArgs) {
     const point = await this.getPoint({ latitude, longitude });
-    return getGridpointForecastByUri({
+    return getGridpointForecastByUriGeoJson({
       featureFlags,
-      format,
       units,
       uri: point.forecast,
       userAgent: this.userAgent,
     });
   }
 
-  async getGridpointForecastHourly({
+  async getGridpointForecastHourlyGeoJson({
     featureFlags,
-    format,
     latitude,
     longitude,
     units,
   }: GetGridpointForecastHourlyArgs) {
     const point = await this.getPoint({ latitude, longitude });
-    return getGridpointForecastHourlyByUri({
+    return getGridpointForecastHourlyByUriGeoJson({
       featureFlags,
-      format,
       units,
       uri: point.forecastHourly,
       userAgent: this.userAgent,
@@ -107,11 +98,10 @@ export class NwsClient {
     }
   }
 
-  async getZone({ effective, format, latitude, longitude }: GetZoneArgs) {
+  async getZone({ effective, latitude, longitude }: GetZoneArgs) {
     const point = await this.getPoint({ latitude, longitude });
-    return getZoneByUri({
+    return getZoneByUriGeoJson({
       effective,
-      format,
       uri: point.forecastZone,
       userAgent: this.userAgent,
     });
