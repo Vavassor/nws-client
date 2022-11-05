@@ -83,7 +83,7 @@ export async function jsonRequest<ResponseType>(
     try {
       const json = await response.json();
       if (!isProblemDetail(json)) {
-        throw Error("The response body was not an ErrorResponse.");
+        throw Error("The response body was not a ProblemDetail.");
       }
       problemDetail = json;
     } catch (error) {
