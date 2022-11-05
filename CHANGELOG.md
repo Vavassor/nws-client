@@ -1,5 +1,14 @@
 # Versions
 
+## v0.3.0
+
+Released November 4, 2022.
+
+### @vavassor/nws-client v0.3.0
+
+- Creates separate functions for endpoints that return data in either GeoJSON or JSON-LD format. This is so that users writing Typescript don't have to cast the return value, or use typeguards.
+- Removes the previous functions that let you specify the format as a parameter.
+
 ## v0.2.0
 
 Released November 4, 2022.
