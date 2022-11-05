@@ -1,12 +1,12 @@
-import {
-  ObservationStationCollectionGeoJson,
-  ObservationStationCollectionJsonLd,
-} from "../station";
 import { isRecord } from "./CommonTypeguards";
+import {
+  ObservationCollectionGeoJson,
+  ObservationCollectionJsonLd,
+} from "./ObservationTypes";
 
-export const isObservationStationCollectionGeoJson = (
+export const isObservationCollectionGeoJson = (
   value: unknown
-): value is ObservationStationCollectionGeoJson => {
+): value is ObservationCollectionGeoJson => {
   return (
     isRecord(value) &&
     typeof value.type === "string" &&
@@ -15,8 +15,8 @@ export const isObservationStationCollectionGeoJson = (
   );
 };
 
-export const isObservationStationCollectionJsonLd = (
+export const isObservationCollectionJsonLd = (
   value: unknown
-): value is ObservationStationCollectionJsonLd => {
+): value is ObservationCollectionJsonLd => {
   return isRecord(value) && Array.isArray(value["@graph"]);
 };

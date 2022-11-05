@@ -1,10 +1,4 @@
-import {
-  BaseEndpointArgs,
-  Format,
-  isObservationStationCollectionGeoJson,
-  isObservationStationCollectionJsonLd,
-  UnitType,
-} from "../common";
+import { BaseEndpointArgs, Format, UnitType } from "../common";
 import { apiRoot } from "../common/CommonConstants";
 import {
   addQueryString,
@@ -15,6 +9,8 @@ import {
 } from "../common/Network";
 import { requestInFormat } from "../common/RequestInFormat";
 import {
+  isObservationStationCollectionGeoJson,
+  isObservationStationCollectionJsonLd,
   ObservationStationCollectionGeoJson,
   ObservationStationCollectionJsonLd,
 } from "../station";

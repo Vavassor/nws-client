@@ -1,11 +1,20 @@
 import {
   BaseEndpointArgs,
   Format,
+  isObservationCollectionGeoJson,
+  isObservationCollectionJsonLd,
   ObservationCollectionGeoJson,
   ObservationCollectionJsonLd,
 } from "../common";
 import { apiRoot } from "../common/CommonConstants";
 import { addQueryString, simpleGetRequest } from "../common/Network";
+import { requestInFormat } from "../common/RequestInFormat";
+import {
+  isObservationStationCollectionGeoJson,
+  isObservationStationCollectionJsonLd,
+  isObservationStationGeoJson,
+  isObservationStationJsonLd,
+} from "./StationTypeguards";
 import {
   ObservationStationCollectionGeoJson,
   ObservationStationCollectionJsonLd,
@@ -14,48 +23,148 @@ import {
 } from "./StationTypes";
 
 interface GetLatestStationObservationArgs extends BaseEndpointArgs {
-  format?: Format;
   requireQc?: string;
   stationId: string;
 }
 
 interface GetStationArgs extends BaseEndpointArgs {
-  format?: Format;
   stationId: string;
 }
 
 interface GetStationByUriArgs extends BaseEndpointArgs {
-  format?: Format;
   uri: string;
 }
 
 interface GetStationObservationByTimeArgs extends BaseEndpointArgs {
-  format?: Format;
   stationId: string;
   time: string;
 }
 
 interface GetStationObservationsArgs extends BaseEndpointArgs {
   end?: string;
-  format?: Format;
   limit?: number;
   stationId: string;
   start?: string;
 }
 
 interface GetStationsArgs extends BaseEndpointArgs {
-  format?: Format;
   id?: string[];
   limit?: number;
   state?: string[];
 }
 
-export const getLatestStationObservation = ({
-  format = Format.GeoJson,
-  requireQc,
-  stationId,
-  userAgent,
-}: GetLatestStationObservationArgs) => {
+export const getLatestStationObservationsGeoJson = (
+  args: GetLatestStationObservationArgs
+) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isObservationCollectionGeoJson,
+    getLatestStationObservationsInternal
+  );
+
+export const getLatestStationObservationsJsonLd = (
+  args: GetLatestStationObservationArgs
+) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isObservationCollectionJsonLd,
+    getLatestStationObservationsInternal
+  );
+
+export const getStationGeoJson = (args: GetStationArgs) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isObservationStationGeoJson,
+    getStationInternal
+  );
+
+export const getStationJsonLd = (args: GetStationArgs) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isObservationStationJsonLd,
+    getStationInternal
+  );
+
+export const getStationByUriGeoJson = (args: GetStationByUriArgs) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isObservationStationGeoJson,
+    getStationByUriInternal
+  );
+
+export const getStationByUriJsonLd = (args: GetStationByUriArgs) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isObservationStationJsonLd,
+    getStationByUriInternal
+  );
+
+export const getStationObservationByTimeGeoJson = (
+  args: GetStationObservationByTimeArgs
+) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isObservationStationGeoJson,
+    getStationObservationByTimeInternal
+  );
+
+export const getStationObservationByTimeJsonLd = (
+  args: GetStationObservationByTimeArgs
+) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isObservationStationJsonLd,
+    getStationObservationByTimeInternal
+  );
+
+export const getStationObservationsGeoJson = (
+  args: GetStationObservationsArgs
+) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isObservationCollectionGeoJson,
+    getStationObservationsInternal
+  );
+
+export const getStationObservationsJsonLd = (
+  args: GetStationObservationsArgs
+) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isObservationCollectionJsonLd,
+    getStationObservationsInternal
+  );
+
+export const getStationsGeoJson = (args: GetStationsArgs) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isObservationStationCollectionGeoJson,
+    getStationsInternal
+  );
+
+export const getStationsJsonLd = (args: GetStationsArgs) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isObservationStationCollectionJsonLd,
+    getStationsInternal
+  );
+
+const getLatestStationObservationsInternal = (
+  { requireQc, stationId, userAgent }: GetLatestStationObservationArgs,
+  format: Format
+) => {
   const endpoint = addQueryString(
     `${apiRoot}/stations/${stationId}/observations/latest`,
     {
@@ -63,34 +172,19 @@ export const getLatestStationObservation = ({
     }
   );
 
-  return simpleGetRequest<ObservationStationJsonLd | ObservationStationGeoJson>(
-    {
-      endpoint,
-      format,
-      userAgent,
-    }
-  );
+  return simpleGetRequest<
+    ObservationCollectionGeoJson | ObservationCollectionJsonLd
+  >({
+    endpoint,
+    format,
+    userAgent,
+  });
 };
 
-export const getStation = ({
-  format = Format.GeoJson,
-  stationId,
-  userAgent,
-}: GetStationArgs) => {
-  return simpleGetRequest<ObservationStationJsonLd | ObservationStationGeoJson>(
-    {
-      endpoint: `${apiRoot}/stations/${stationId}`,
-      format,
-      userAgent,
-    }
-  );
-};
-
-export const getStationByUri = ({
-  format = Format.GeoJson,
-  uri,
-  userAgent,
-}: GetStationByUriArgs) => {
+const getStationByUriInternal = (
+  { uri, userAgent }: GetStationByUriArgs,
+  format: Format
+) => {
   return simpleGetRequest<ObservationStationJsonLd | ObservationStationGeoJson>(
     {
       endpoint: uri,
@@ -100,12 +194,23 @@ export const getStationByUri = ({
   );
 };
 
-export const getStationObservationByTime = ({
-  format = Format.GeoJson,
-  stationId,
-  time,
-  userAgent,
-}: GetStationObservationByTimeArgs) => {
+const getStationInternal = (
+  { stationId, userAgent }: GetStationArgs,
+  format: Format
+) => {
+  return simpleGetRequest<ObservationStationJsonLd | ObservationStationGeoJson>(
+    {
+      endpoint: `${apiRoot}/stations/${stationId}`,
+      format,
+      userAgent,
+    }
+  );
+};
+
+const getStationObservationByTimeInternal = (
+  { stationId, time, userAgent }: GetStationObservationByTimeArgs,
+  format: Format
+) => {
   return simpleGetRequest<ObservationStationJsonLd | ObservationStationGeoJson>(
     {
       endpoint: `${apiRoot}/stations/${stationId}/observations/${time}`,
@@ -115,14 +220,10 @@ export const getStationObservationByTime = ({
   );
 };
 
-export const getStationObservations = ({
-  end,
-  format = Format.GeoJson,
-  limit,
-  start,
-  stationId,
-  userAgent,
-}: GetStationObservationsArgs) => {
+const getStationObservationsInternal = (
+  { end, limit, start, stationId, userAgent }: GetStationObservationsArgs,
+  format: Format
+) => {
   const endpoint = addQueryString(
     `${apiRoot}/stations/${stationId}/observations`,
     { end, limit, start }
@@ -136,13 +237,10 @@ export const getStationObservations = ({
   });
 };
 
-export const getStations = ({
-  format = Format.GeoJson,
-  id,
-  limit,
-  state,
-  userAgent,
-}: GetStationsArgs) => {
+const getStationsInternal = (
+  { id, limit, state, userAgent }: GetStationsArgs,
+  format: Format
+) => {
   const endpoint = addQueryString(`${apiRoot}/stations`, { id, limit, state });
   return simpleGetRequest<
     ObservationStationCollectionGeoJson | ObservationStationCollectionJsonLd

@@ -2,7 +2,12 @@ import { BaseEndpointArgs, Format } from "../common";
 import { apiRoot } from "../common/CommonConstants";
 import { addQueryString, simpleGetRequest } from "../common/Network";
 import { requestInFormat } from "../common/RequestInFormat";
-import { isRadarStationCollectionGeoJson, isRadarStationCollectionJsonLd, isRadarStationGeoJson, isRadarStationJsonLd } from "./RadarTypeguards";
+import {
+  isRadarStationCollectionGeoJson,
+  isRadarStationCollectionJsonLd,
+  isRadarStationGeoJson,
+  isRadarStationJsonLd,
+} from "./RadarTypeguards";
 import {
   RadarServer,
   RadarServerCollection,
