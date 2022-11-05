@@ -9,7 +9,7 @@
     "build/"
   ],
   "scripts": {
-    "build": "node ../../scripts/build && node ../../scripts/copy-files",
+    "build": "yarn run g:clean && node ../../scripts/build && node ../../scripts/copy-files",
     "test": "cd ../.. && jest"
   },
   "repository": {
