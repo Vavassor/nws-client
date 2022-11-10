@@ -53,12 +53,7 @@ export const isZoneForecastGeoJson = (
 export const isZoneForecastJsonLd = (
   value: unknown
 ): value is ZoneForecastJsonLd => {
-  return (
-    isRecord(value) &&
-    typeof value.type === "string" &&
-    value.type === "Feature" &&
-    isZoneForecast(value.properties)
-  );
+  return isRecord(value) && Array.isArray(value.periods);
 };
 
 export const isZoneGeoJson = (value: unknown): value is ZoneGeoJson => {

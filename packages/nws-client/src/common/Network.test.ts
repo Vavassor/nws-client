@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { addQueryString } from "./Network";
+import { addQueryString, getStringRecord } from "./Network";
 
 describe("addQueryString", () => {
   test("encodes parameters", () => {
@@ -34,5 +34,31 @@ describe("addQueryString", () => {
         c: [],
       })
     ).toBe("https://example.com/");
+  });
+});
+
+describe("getStringRecord", () => {
+  test("allows whitespace", () => {
+    expect(
+      getStringRecord({
+        a: "1 2 3",
+        b: "a, b",
+        c: " ",
+      })
+    ).toStrictEqual({
+      a: "1 2 3",
+      b: "a, b",
+      c: " ",
+    });
+  });
+
+  test("omits empty values", () => {
+    expect(
+      getStringRecord({
+        a: "1",
+        b: undefined,
+        c: "",
+      })
+    ).toStrictEqual({ a: "1" });
   });
 });

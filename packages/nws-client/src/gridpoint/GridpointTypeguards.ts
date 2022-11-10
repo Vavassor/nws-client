@@ -42,9 +42,8 @@ export const isGridpointForecastJsonLd = (
 ): value is GridpointForecastJsonLd => {
   return (
     isRecord(value) &&
-    typeof value.type === "string" &&
-    value.type === "Feature" &&
-    isGridpointForecast(value.properties)
+    typeof value.forecastGenerator === "string" &&
+    typeof value.generatedAt === "string"
   );
 };
 
@@ -62,8 +61,7 @@ export const isGridpointGeoJson = (
 export const isGridpointJsonLd = (value: unknown): value is GridpointJsonLd => {
   return (
     isRecord(value) &&
-    typeof value.type === "string" &&
-    value.type === "Feature" &&
-    isGridpoint(value.properties)
+    typeof value["@type"] === "string" &&
+    value["@type"] === "wx:Gridpoint"
   );
 };

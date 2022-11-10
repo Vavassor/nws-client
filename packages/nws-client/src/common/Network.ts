@@ -54,7 +54,10 @@ export const getStringRecord = (
   headers: Record<string, string | undefined>
 ): Record<string, string> => {
   return Object.entries(headers)
-    .filter((entry): entry is [string, string] => typeof entry[1] !== "string")
+    .filter(
+      (entry): entry is [string, string] =>
+        typeof entry[1] === "string" && entry[1].length > 0
+    )
     .reduce((obj, [key, val]) => {
       obj[key] = val;
       return obj;
