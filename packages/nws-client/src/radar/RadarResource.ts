@@ -62,7 +62,7 @@ export const getRadarServer = ({
 export const getRadarServers = ({
   reportingHost,
   userAgent,
-}: GetRadarServersArgs) => {
+}: GetRadarServersArgs = {}) => {
   const endpoint = addQueryString(`${apiRoot}/radar/servers`, {
     reportingHost,
   });
@@ -101,7 +101,7 @@ export const getRadarStationAlarms = ({
   });
 };
 
-export const getRadarStationsGeoJson = (args: GetRadarStationsArgs) =>
+export const getRadarStationsGeoJson = (args: GetRadarStationsArgs = {}) =>
   requestInFormat(
     args,
     Format.GeoJson,
@@ -109,7 +109,7 @@ export const getRadarStationsGeoJson = (args: GetRadarStationsArgs) =>
     getRadarStationsInternal
   );
 
-export const getRadarStationsJsonLd = (args: GetRadarStationsArgs) =>
+export const getRadarStationsJsonLd = (args: GetRadarStationsArgs = {}) =>
   requestInFormat(
     args,
     Format.JsonLd,

@@ -47,7 +47,7 @@ export const getProduct = ({ productId, userAgent }: GetProductArgs) => {
   });
 };
 
-export const getProductLocations = ({ userAgent }: BaseEndpointArgs) => {
+export const getProductLocations = ({ userAgent }: BaseEndpointArgs = {}) => {
   return simpleGetRequest<TextProductLocationCollection>({
     endpoint: `${apiRoot}/products/locations`,
     format: Format.JsonLd,
@@ -66,7 +66,7 @@ export const getProductLocationsByType = ({
   });
 };
 
-export const getProductTypes = ({ userAgent }: BaseEndpointArgs) => {
+export const getProductTypes = ({ userAgent }: BaseEndpointArgs = {}) => {
   return simpleGetRequest<TextProductTypeCollection>({
     endpoint: `${apiRoot}/products/types`,
     format: Format.JsonLd,
@@ -94,7 +94,7 @@ export const getProducts = ({
   type,
   userAgent,
   wmoid,
-}: GetProductsArgs) => {
+}: GetProductsArgs = {}) => {
   const endpoint = addQueryString(`${apiRoot}/products`, {
     end,
     limit,

@@ -162,7 +162,7 @@ export const getZoneStationsJsonLd = (args: GetZoneStationsArgs) =>
     getZoneStationsInternal
   );
 
-export const getZonesGeoJson = (args: GetZonesArgs) =>
+export const getZonesGeoJson = (args: GetZonesArgs = {}) =>
   requestInFormat(
     args,
     Format.GeoJson,
@@ -170,7 +170,7 @@ export const getZonesGeoJson = (args: GetZonesArgs) =>
     getZonesInternal
   );
 
-export const getZonesJsonLd = (args: GetZonesArgs) =>
+export const getZonesJsonLd = (args: GetZonesArgs = {}) =>
   requestInFormat(
     args,
     Format.JsonLd,

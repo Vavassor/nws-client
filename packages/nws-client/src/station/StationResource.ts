@@ -145,7 +145,7 @@ export const getStationObservationsJsonLd = (
     getStationObservationsInternal
   );
 
-export const getStationsGeoJson = (args: GetStationsArgs) =>
+export const getStationsGeoJson = (args: GetStationsArgs = {}) =>
   requestInFormat(
     args,
     Format.GeoJson,
@@ -153,7 +153,7 @@ export const getStationsGeoJson = (args: GetStationsArgs) =>
     getStationsInternal
   );
 
-export const getStationsJsonLd = (args: GetStationsArgs) =>
+export const getStationsJsonLd = (args: GetStationsArgs = {}) =>
   requestInFormat(
     args,
     Format.JsonLd,

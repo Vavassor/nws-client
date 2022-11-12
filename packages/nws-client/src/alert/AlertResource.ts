@@ -68,7 +68,7 @@ interface GetAlertsArgs extends BaseEndpointArgs {
   zone?: string[];
 }
 
-export const getActiveAlertsGeoJson = (args: GetActiveAlertsArgs) =>
+export const getActiveAlertsGeoJson = (args: GetActiveAlertsArgs = {}) =>
   requestInFormat(
     args,
     Format.GeoJson,
@@ -76,7 +76,7 @@ export const getActiveAlertsGeoJson = (args: GetActiveAlertsArgs) =>
     getActiveAlertsInternal
   );
 
-export const getActiveAlertsJsonLd = (args: GetActiveAlertsArgs) =>
+export const getActiveAlertsJsonLd = (args: GetActiveAlertsArgs = {}) =>
   requestInFormat(
     args,
     Format.JsonLd,
@@ -158,7 +158,7 @@ export const getAlertTypes = ({ userAgent }: BaseEndpointArgs) => {
   });
 };
 
-export const getAlertsGeoJson = (args: GetAlertsArgs) =>
+export const getAlertsGeoJson = (args: GetAlertsArgs = {}) =>
   requestInFormat(
     args,
     Format.GeoJson,
@@ -166,7 +166,7 @@ export const getAlertsGeoJson = (args: GetAlertsArgs) =>
     getAlertsInternal
   );
 
-export const getAlertsJsonLd = (args: GetAlertsArgs) =>
+export const getAlertsJsonLd = (args: GetAlertsArgs = {}) =>
   requestInFormat(
     args,
     Format.JsonLd,
