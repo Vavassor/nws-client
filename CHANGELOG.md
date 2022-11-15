@@ -1,5 +1,14 @@
 # Versions
 
+## v0.4.0
+
+Released November 15, 2022.
+
+### @vavassor/nws-client v0.4.0
+
+- Fixes endpoints that return data in JSON-LD format throwing an error despite succeeding.
+- Makes endpoint argument objects optional when there are no required arguments.
+
 ## v0.3.0
 
 Released November 4, 2022.
