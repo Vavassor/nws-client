@@ -1,5 +1,13 @@
 # Versions
 
+## v0.5.0
+
+Released November 17, 2022.
+
+### @vavassor/nws-client v0.5.0
+
+- Fixes an issue where [Network Inspect in React Native Debugger causes calls to fail](https://github.com/lquixada/cross-fetch/issues/71).
+
 ## v0.4.0
 
 Released November 15, 2022.
