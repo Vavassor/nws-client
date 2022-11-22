@@ -1,7 +1,31 @@
 import { BaseEndpointArgs, Format } from "../common";
 import { apiRoot } from "../common/CommonConstants";
 import { addQueryString, simpleGetRequest } from "../common/Network";
-import { SigmetCollectionGeoJson, SigmetGeoJson } from "./AviationTypes";
+import {
+  CenterWeatherAdvisoryCollectionGeoJson,
+  CenterWeatherAdvisoryGeoJson,
+  CenterWeatherServiceUnitJsonLd,
+  SigmetCollectionGeoJson,
+  SigmetGeoJson,
+} from "./AviationTypes";
+
+interface GetCenterWeatherAdvisoriesArgs extends BaseEndpointArgs {
+  cwsuId: string;
+}
+
+interface GetCenterWeatherAdvisoryArgs extends BaseEndpointArgs {
+  cwsuId: string;
+  date: string;
+  sequence: number;
+}
+
+interface GetCenterWeatherAdvisoryByUriArgs extends BaseEndpointArgs {
+  uri: string;
+}
+
+interface GetCenterWeatherServiceUnitArgs extends BaseEndpointArgs {
+  cwsuId: string;
+}
 
 interface GetSigmetArgs extends BaseEndpointArgs {
   /** The Air Traffic Services Unit (ATSU) Identifier. */
@@ -40,6 +64,52 @@ interface GetSigmetsByAtsuAndDateArgs extends BaseEndpointArgs {
   /** Date in YYYY-MM-DD format. */
   date: string;
 }
+
+export const getCenterWeatherAdvisories = ({
+  cwsuId,
+  userAgent,
+}: GetCenterWeatherAdvisoriesArgs) => {
+  return simpleGetRequest<CenterWeatherAdvisoryCollectionGeoJson>({
+    endpoint: `${apiRoot}/aviation/cwsus/${cwsuId}/cwas`,
+    format: Format.GeoJson,
+    userAgent,
+  });
+};
+
+export const getCenterWeatherAdvisory = ({
+  cwsuId,
+  date,
+  sequence,
+  userAgent,
+}: GetCenterWeatherAdvisoryArgs) => {
+  return simpleGetRequest<CenterWeatherAdvisoryGeoJson>({
+    endpoint: `${apiRoot}/aviation/cwsus/${cwsuId}/cwas/${date}/${sequence}`,
+    format: Format.GeoJson,
+    userAgent,
+  });
+};
+
+export const getCenterWeatherAdvisoryByUri = ({
+  uri,
+  userAgent,
+}: GetCenterWeatherAdvisoryByUriArgs) => {
+  return simpleGetRequest<CenterWeatherAdvisoryGeoJson>({
+    endpoint: uri,
+    format: Format.GeoJson,
+    userAgent,
+  });
+};
+
+export const getCenterWeatherServiceUnitJsonLd = ({
+  cwsuId,
+  userAgent,
+}: GetCenterWeatherServiceUnitArgs) => {
+  return simpleGetRequest<CenterWeatherServiceUnitJsonLd>({
+    endpoint: `${apiRoot}/aviation/cwsus/${cwsuId}`,
+    format: Format.JsonLd,
+    userAgent,
+  });
+};
 
 export const getSigmet = ({ atsu, date, time, userAgent }: GetSigmetArgs) => {
   return simpleGetRequest<SigmetGeoJson>({
