@@ -1,6 +1,6 @@
 import { isProblemDetail } from "./CommonTypeguards";
 import { ProblemDetail, ResponseWithoutBodyError } from "./CommonTypes";
-import fetch from "cross-fetch";
+import { fetchPonyfill } from "./Fetch";
 
 type QueryStringValue =
   | boolean
@@ -79,7 +79,7 @@ export async function jsonRequest<ResponseType>(
     mode: "cors",
     signal,
   };
-  const response = await fetch(endpoint, options);
+  const response = await fetchPonyfill(endpoint, options);
 
   if (!response.ok) {
     let problemDetail: ProblemDetail;
