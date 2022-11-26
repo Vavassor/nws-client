@@ -52,16 +52,16 @@ interface GetStationObservationsArgs extends BaseEndpointArgs {
 }
 
 interface GetStationsArgs extends BaseEndpointArgs {
-  /** Pagination cursor that specifies which page of results to fetch. */
+  /** The pagination cursor that specifies the page of records to fetch. */
   cursor?: string;
-  /** Filter the results by observation station IDs. */
+  /** Filter by observation station IDs. */
   id?: string[];
   /**
-   * The maximum number of results to return. This is also the page size when
+   * The maximum number of records to return. This is also the page size when
    * using pagination.
    */
   limit?: number;
-  /** Filter the results by state or marine area codes. */
+  /** Filter by state or marine area codes. */
   state?: string[];
 }
 

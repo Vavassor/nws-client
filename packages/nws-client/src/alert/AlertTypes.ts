@@ -1,4 +1,4 @@
-import { FeatureGeoJson, JsonLdContext } from "../common";
+import { FeatureGeoJson, JsonLdContext, PaginationInfo } from "../common";
 
 export interface ActiveAlertsCount {
   areas: Record<string, number>;
@@ -100,7 +100,7 @@ export type AlertCertainty =
   | "Unlikely";
 
 export interface AlertCollection {
-  pagination?: AlertCollectionPagination;
+  pagination?: PaginationInfo;
   /** A title describing the alert collection. */
   title?: string;
   /**
@@ -114,7 +114,7 @@ export interface AlertCollection {
 export interface AlertCollectionGeoJson {
   "@context"?: JsonLdContext;
   features: AlertGeoJson[];
-  pagination?: AlertCollectionPagination;
+  pagination?: PaginationInfo;
   /** A title describing the alert collection. */
   title?: string;
   type: "FeatureCollection";
@@ -129,7 +129,7 @@ export interface AlertCollectionGeoJson {
 export interface AlertCollectionJsonLd {
   "@context"?: JsonLdContext;
   "@graph": Alert[];
-  pagination?: AlertCollectionPagination;
+  pagination?: PaginationInfo;
   /** A title describing the alert collection. */
   title?: string;
   /**
@@ -138,11 +138,6 @@ export interface AlertCollectionJsonLd {
    * @see {@link https://www.rfc-editor.org/rfc/rfc3339 | RFC 3339}
    */
   updated?: string;
-}
-
-export interface AlertCollectionPagination {
-  /** A link to the next set of alerts. */
-  next: string;
 }
 
 export type AlertGeoJson = FeatureGeoJson<Alert>;

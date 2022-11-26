@@ -53,6 +53,7 @@ interface GetAlertsArgs extends BaseEndpointArgs {
   area?: string[];
   certainty?: string[];
   code?: string[];
+  /** The pagination cursor that specifies the page of records to fetch. */
   cursor?: string;
   end?: string;
   event?: string[];
