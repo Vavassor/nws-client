@@ -57,6 +57,10 @@ interface GetAlertsArgs extends BaseEndpointArgs {
   cursor?: string;
   end?: string;
   event?: string[];
+  /**
+   * The maximum number of records to return. This is also the page size when
+   * using pagination.
+   */
   limit?: number;
   messageType?: string[];
   point?: string;

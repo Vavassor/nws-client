@@ -61,6 +61,13 @@ interface GetZoneObservationsArgs extends BaseEndpointArgs {
 }
 
 interface GetZoneStationsArgs extends BaseEndpointArgs {
+  /** The pagination cursor that specifies the page of records to fetch. */
+  cursor?: string;
+  /**
+   * The maximum number of records to return. This is also the page size when
+   * using pagination.
+   */
+  limit?: number;
   zoneId: string;
 }
 
@@ -261,13 +268,18 @@ const getZoneObservationsInternal = (
 };
 
 const getZoneStationsInternal = (
-  { userAgent, zoneId }: GetZoneStationsArgs,
+  { cursor, limit, userAgent, zoneId }: GetZoneStationsArgs,
   format: Format
 ) => {
+  const endpoint = addQueryString(
+    `${apiRoot}/zones/forecast/${zoneId}/stations`,
+    { cursor, limit }
+  );
+
   return simpleGetRequest<
     ObservationStationCollectionGeoJson | ObservationStationCollectionJsonLd
   >({
-    endpoint: `${apiRoot}/zones/forecast/${zoneId}/stations`,
+    endpoint,
     format,
     userAgent,
   });
