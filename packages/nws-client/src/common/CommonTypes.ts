@@ -185,6 +185,12 @@ export type ExpandedTermDefinition = {
  */
 export type JsonLdContext = OrArray<ContextDefinition | string | null>;
 
+/** Links for retrieving more data from paged data sets. */
+export interface PaginationInfo {
+  /** The URI link to the next page of records. */
+  next: string;
+}
+
 /**
  * Quality control data descriptor.
  *

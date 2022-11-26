@@ -1,4 +1,4 @@
-import { FeatureGeoJson, JsonLdContext, QuantitativeValue } from "../common";
+import { FeatureGeoJson, JsonLdContext, PaginationInfo, QuantitativeValue } from "../common";
 
 export interface ObservationStation {
   "@context"?: JsonLdContext;
@@ -56,6 +56,7 @@ export interface ObservationStationCollectionGeoJson {
   "@context"?: JsonLdContext;
   features: FeatureGeoJson<ObservationStation>[];
   observationStations: string[];
+  pagination?: PaginationInfo;
   type: "FeatureCollection";
 }
 
@@ -63,4 +64,5 @@ export interface ObservationStationCollectionJsonLd {
   "@context": JsonLdContext;
   "@graph": ObservationStation[];
   observationStations: string[];
+  pagination?: PaginationInfo;
 }
