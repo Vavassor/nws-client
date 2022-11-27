@@ -11,11 +11,7 @@ import {
   ObservationJsonLd,
 } from "../common";
 import { apiRoot } from "../common/CommonConstants";
-import {
-  addQueryString,
-  simpleGetRequest,
-  textGetRequest,
-} from "../common/Network";
+import { addQueryString, simpleGetRequest } from "../common/Network";
 import { requestInFormat } from "../common/RequestInFormat";
 import {
   isObservationStationCollectionGeoJson,
@@ -45,7 +41,9 @@ interface GetStationByUriArgs extends BaseEndpointArgs {
 }
 
 interface GetStationObservationByTimeArgs extends BaseEndpointArgs {
+  /** The observation station ID. */
   stationId: string;
+  /** The timestamp of the observation. */
   time: string;
 }
 
@@ -71,8 +69,11 @@ interface GetStationsArgs extends BaseEndpointArgs {
 }
 
 interface GetTafArgs extends BaseEndpointArgs {
+  /** Date in YYYY-MM-DD format. */
   date: string;
+  /** The observation station ID. */
   stationId: string;
+  /** Time in HHMM format. This time is always specified in UTC (Zulu) time. */
   time: string;
 }
 
@@ -201,7 +202,7 @@ export const getTafIwxxm = ({
   time,
   userAgent,
 }: GetTafArgs) => {
-  return textGetRequest({
+  return simpleGetRequest<string>({
     endpoint: `/stations/${stationId}/tafs/${date}/${time}`,
     format: Format.Iwxxm,
     userAgent,
@@ -212,7 +213,7 @@ export const getTafIwxxm = ({
  * Get a Terminal Aerodrome Forecast (TAF) in IWXXM format.
  */
 export const getTafByUriIwxxm = ({ uri, userAgent }: GetTafByUriArgs) => {
-  return textGetRequest({
+  return simpleGetRequest<string>({
     endpoint: uri,
     format: Format.Iwxxm,
     userAgent,
