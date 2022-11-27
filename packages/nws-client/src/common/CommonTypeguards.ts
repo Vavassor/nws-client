@@ -12,6 +12,10 @@ export const isRecord = (value: unknown): value is Record<string, unknown> => {
   return typeof value === "object" && value !== null;
 };
 
+export const isString = (value: unknown): value is string => {
+  return typeof value === "string";
+};
+
 export const isResponseWithoutBodyError = (
   value: unknown
 ): value is ResponseWithoutBodyError => {

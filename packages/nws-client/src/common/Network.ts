@@ -1,5 +1,5 @@
 import { isProblemDetail } from "./CommonTypeguards";
-import { ProblemDetail, ResponseWithoutBodyError } from "./CommonTypes";
+import { Format, ProblemDetail, ResponseWithoutBodyError } from "./CommonTypes";
 import crossFetch from "cross-fetch";
 
 type QueryStringValue =
@@ -124,14 +124,27 @@ export function simpleGetRequest<T>({
   format,
   userAgent,
 }: SimpleGetRequestArgs) {
-  return jsonRequest<T>({
-    endpoint,
-    headers: getStringRecord({
-      Accept: format,
-      "User-Agent": userAgent,
-    }),
-    method: "GET",
-  });
+  switch (format) {
+    default:
+      return textRequest({
+        endpoint,
+        headers: getStringRecord({
+          Accept: format,
+          "User-Agent": userAgent,
+        }),
+        method: "GET",
+      });
+    case Format.GeoJson:
+    case Format.JsonLd:
+      return jsonRequest<T>({
+        endpoint,
+        headers: getStringRecord({
+          Accept: format,
+          "User-Agent": userAgent,
+        }),
+        method: "GET",
+      });
+  }
 }
 
 /**

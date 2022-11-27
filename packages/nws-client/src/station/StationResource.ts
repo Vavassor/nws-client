@@ -13,9 +13,8 @@ import {
 import { apiRoot } from "../common/CommonConstants";
 import {
   addQueryString,
-  getStringRecord,
   simpleGetRequest,
-  textRequest,
+  textGetRequest,
 } from "../common/Network";
 import { requestInFormat } from "../common/RequestInFormat";
 import {
@@ -202,13 +201,10 @@ export const getTafIwxxm = ({
   time,
   userAgent,
 }: GetTafArgs) => {
-  return textRequest({
+  return textGetRequest({
     endpoint: `/stations/${stationId}/tafs/${date}/${time}`,
-    headers: getStringRecord({
-      Accept: Format.Iwxxm,
-      "User-Agent": userAgent,
-    }),
-    method: "GET",
+    format: Format.Iwxxm,
+    userAgent,
   });
 };
 
@@ -216,13 +212,10 @@ export const getTafIwxxm = ({
  * Get a Terminal Aerodrome Forecast (TAF) in IWXXM format.
  */
 export const getTafByUriIwxxm = ({ uri, userAgent }: GetTafByUriArgs) => {
-  return textRequest({
+  return textGetRequest({
     endpoint: uri,
-    headers: getStringRecord({
-      Accept: Format.Iwxxm,
-      "User-Agent": userAgent,
-    }),
-    method: "GET",
+    format: Format.Iwxxm,
+    userAgent,
   });
 };
 
