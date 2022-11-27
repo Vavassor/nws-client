@@ -24,6 +24,14 @@ export interface SimpleGetRequestArgs {
   userAgent?: string;
 }
 
+export interface TextRequestArgs {
+  body?: string | FormData;
+  endpoint: string;
+  headers: Record<string, string>;
+  method: "GET" | "POST" | "PUT" | "DELETE";
+  signal?: AbortSignal;
+}
+
 export const addQueryString = (
   path: string,
   parameters: Partial<Record<string, QueryStringValue>>
@@ -82,26 +90,34 @@ export async function jsonRequest<ResponseType>(
   const response = await fetchPonyfill(endpoint, options);
 
   if (!response.ok) {
-    let problemDetail: ProblemDetail;
-    try {
-      const json = await response.json();
-      if (!isProblemDetail(json)) {
-        throw Error("The response body was not a ProblemDetail.");
-      }
-      problemDetail = json;
-    } catch (error) {
-      const genericError: ResponseWithoutBodyError = {
-        message: "Something went wrong",
-        status: response.status,
-        statusText: response.statusText,
-      };
-      throw genericError;
-    }
-    throw problemDetail;
+    throw await getProblemDetail(response);
   }
 
   return await response.json();
 }
+
+export const textRequest = async ({
+  body,
+  endpoint,
+  headers,
+  method,
+  signal,
+}: TextRequestArgs): Promise<string> => {
+  const options: RequestInit = {
+    method,
+    headers,
+    body,
+    mode: "cors",
+    signal,
+  };
+  const response = await fetchPonyfill(endpoint, options);
+
+  if (!response.ok) {
+    throw await getProblemDetail(response);
+  }
+
+  return await response.text();
+};
 
 export function simpleGetRequest<T>({
   endpoint,
@@ -146,4 +162,25 @@ const getQueryValue = (value: QueryStringValue | undefined) => {
   } else {
     return undefined;
   }
+};
+
+const getProblemDetail = async (response: Response) => {
+  let problemDetail: ProblemDetail;
+
+  try {
+    const json = await response.json();
+    if (!isProblemDetail(json)) {
+      throw Error("The response body was not a ProblemDetail.");
+    }
+    problemDetail = json;
+  } catch (error) {
+    const genericError: ResponseWithoutBodyError = {
+      message: "Something went wrong",
+      status: response.status,
+      statusText: response.statusText,
+    };
+    throw genericError;
+  }
+
+  return problemDetail;
 };

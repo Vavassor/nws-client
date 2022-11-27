@@ -43,17 +43,63 @@ export interface FeatureGeoJson<PropertiesType> {
  */
 export enum Format {
   /**
+   * Atom Syndication Format is a format for syndicated web content and
+   * metadata.
+   *
+   * @see {@link https://www.rfc-editor.org/rfc/rfc4287 | RFC 4287}
+   */
+  Atom = "application/atom+xml",
+  /**
+   * Common Alerting Protocol (CAP) is a general format for emergency alerts
+   * and public warnings.
+   *
+   * @see {@link https://www.oasis-open.org/committees/download.php/14759/emergency-CAPv1.1.pdf | Common Alerting Protocol Specification}
+   */
+  Cap = "application/cap+xml",
+  /**
+   * Digital Weather Markup Language (DWML) is a format for National
+   * Digital Forecast Database (NDFD) data with support for other environmental
+   * science applications.
+   *
+   * @see {@link https://www.nws.noaa.gov/mdl/XML/Design/MDL_XML_Design.pdf_orig | Digital Weather Markup Language Specification}
+   */
+  Dwml = "application/vnd.noaa.dwml+xml",
+  /**
    * GeoJSON is a format for geographic data.
    *
    * @see {@link https://datatracker.ietf.org/doc/html/rfc7946 | RFC 7946}
    */
   GeoJson = "application/geo+json",
   /**
+   * ICAO Meteorological Information Exchange Model (IWXXM) is a format for
+   * reporting weather information.
+   *
+   * IWXXM is regulated by World Meteorological Organization (WMO) in
+   * association with International Civil Aviation Organization (ICAO).
+   *
+   * @see {@link https://store.icao.int/en/manual-on-the-icao-meteorological-information-exchange-model-doc-10003 | Manual on the ICAO Meteorological Information Exchange Model}
+   * @see {@link https://vlab.noaa.gov/web/mdl/data-modeling | Data Modeling}
+   */
+  Iwxxm = "application/vnd.wmo.iwxxm+xml",
+  /**
    * JSON-LD is a format for linked data.
    *
    * @see {@link https://www.w3.org/TR/json-ld/ | JSON LD}
    */
   JsonLd = "application/ld+json",
+  /**
+   * OXML is a format for weather observations.
+   *
+   * OXML is managed by the Office of Observations (OBS) organization.
+   */
+  Oxml = "application/vnd.noaa.obs+xml",
+  /**
+   * Weather Schemas Governed by the United States (USWX) is a format for
+   * meteorological products.
+   * 
+   * @see {@link https://vlab.noaa.gov/web/mdl/data-modeling | Data Modeling}
+   */
+  Uswx = "application/vnd.noaa.uswx+xml",
 }
 
 export type GeoJsonGeometry =

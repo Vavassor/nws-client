@@ -11,7 +11,12 @@ import {
   ObservationJsonLd,
 } from "../common";
 import { apiRoot } from "../common/CommonConstants";
-import { addQueryString, simpleGetRequest } from "../common/Network";
+import {
+  addQueryString,
+  getStringRecord,
+  simpleGetRequest,
+  textRequest,
+} from "../common/Network";
 import { requestInFormat } from "../common/RequestInFormat";
 import {
   isObservationStationCollectionGeoJson,
@@ -24,6 +29,7 @@ import {
   ObservationStationCollectionJsonLd,
   ObservationStationGeoJson,
   ObservationStationJsonLd,
+  TerminalAerodromeForecastCollectionJsonLd,
 } from "./StationTypes";
 
 interface GetLatestStationObservationArgs extends BaseEndpointArgs {
@@ -63,6 +69,20 @@ interface GetStationsArgs extends BaseEndpointArgs {
   limit?: number;
   /** Filter by state or marine area codes. */
   state?: string[];
+}
+
+interface GetTafArgs extends BaseEndpointArgs {
+  date: string;
+  stationId: string;
+  time: string;
+}
+
+interface GetTafByUriArgs extends BaseEndpointArgs {
+  uri: string;
+}
+
+interface GetTafsArgs extends BaseEndpointArgs {
+  stationId: string;
 }
 
 export const getLatestStationObservationGeoJson = (
@@ -173,6 +193,50 @@ export const getStationsJsonLd = (args: GetStationsArgs = {}) =>
     getStationsInternal
   );
 
+/**
+ * Get a Terminal Aerodrome Forecast (TAF) in IWXXM format.
+ */
+export const getTafIwxxm = ({
+  date,
+  stationId,
+  time,
+  userAgent,
+}: GetTafArgs) => {
+  return textRequest({
+    endpoint: `/stations/${stationId}/tafs/${date}/${time}`,
+    headers: getStringRecord({
+      Accept: Format.Iwxxm,
+      "User-Agent": userAgent,
+    }),
+    method: "GET",
+  });
+};
+
+/**
+ * Get a Terminal Aerodrome Forecast (TAF) in IWXXM format.
+ */
+export const getTafByUriIwxxm = ({ uri, userAgent }: GetTafByUriArgs) => {
+  return textRequest({
+    endpoint: uri,
+    headers: getStringRecord({
+      Accept: Format.Iwxxm,
+      "User-Agent": userAgent,
+    }),
+    method: "GET",
+  });
+};
+
+/**
+ * Get Terminal Aerodrome Forecasts (TAF) in JSON-LD format.
+ */
+export const getTafsJsonLd = ({ stationId, userAgent }: GetTafsArgs) => {
+  return simpleGetRequest<TerminalAerodromeForecastCollectionJsonLd>({
+    endpoint: `/stations/${stationId}/tafs`,
+    format: Format.JsonLd,
+    userAgent,
+  });
+};
+
 const getLatestStationObservationInternal = (
   { requireQc, stationId, userAgent }: GetLatestStationObservationArgs,
   format: Format
@@ -255,7 +319,7 @@ const getStationsInternal = (
     limit,
     state,
   });
-  
+
   return simpleGetRequest<
     ObservationStationCollectionGeoJson | ObservationStationCollectionJsonLd
   >({
