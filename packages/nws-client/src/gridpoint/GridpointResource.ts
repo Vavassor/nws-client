@@ -1,4 +1,4 @@
-import { BaseEndpointArgs, Format, UnitType } from "../common";
+import { BaseEndpointArgs, Format, isString, UnitType } from "../common";
 import { apiRoot } from "../common/CommonConstants";
 import {
   addQueryString,
@@ -54,9 +54,11 @@ interface GetGridpointForecastByUriArgs extends BaseEndpointArgs {
 }
 
 interface GetGridpointStationsArgs extends BaseEndpointArgs {
+  cursor?: string;
   forecastOfficeId: string;
   gridX: string;
   gridY: string;
+  limit?: number;
 }
 
 interface GetGridpointStationsByUriArgs extends BaseEndpointArgs {
@@ -100,6 +102,9 @@ export const getGridpointByUriJsonLd = (args: GetGridpointByUriArgs) =>
     getGridpointByUriInternal
   );
 
+export const getGridpointForecastDwml = (args: GetGridpointForecastArgs) =>
+  requestInFormat(args, Format.Dwml, isString, getGridpointForecastInternal);
+
 export const getGridpointForecastGeoJson = (args: GetGridpointForecastArgs) =>
   requestInFormat(
     args,
@@ -114,6 +119,16 @@ export const getGridpointForecastJsonLd = (args: GetGridpointForecastArgs) =>
     Format.JsonLd,
     isGridpointForecastJsonLd,
     getGridpointForecastInternal
+  );
+
+export const getGridpointForecastByUriDwml = (
+  args: GetGridpointForecastByUriArgs
+) =>
+  requestInFormat(
+    args,
+    Format.Dwml,
+    isString,
+    getGridpointForecastByUriInternal
   );
 
 export const getGridpointForecastByUriGeoJson = (
@@ -136,6 +151,16 @@ export const getGridpointForecastByUriJsonLd = (
     getGridpointForecastByUriInternal
   );
 
+export const getGridpointForecastHourlyDwml = (
+  args: GetGridpointForecastArgs
+) =>
+  requestInFormat(
+    args,
+    Format.Dwml,
+    isString,
+    getGridpointForecastHourlyInternal
+  );
+
 export const getGridpointForecastHourlyGeoJson = (
   args: GetGridpointForecastArgs
 ) =>
@@ -154,6 +179,16 @@ export const getGridpointForecastHourlyJsonLd = (
     Format.JsonLd,
     isGridpointForecastJsonLd,
     getGridpointForecastHourlyInternal
+  );
+
+export const getGridpointForecastHourlyByUriDwml = (
+  args: GetGridpointForecastByUriArgs
+) =>
+  requestInFormat(
+    args,
+    Format.Dwml,
+    isString,
+    getGridpointForecastHourlyByUriInternal
   );
 
 export const getGridpointForecastHourlyByUriGeoJson = (
@@ -335,13 +370,25 @@ const getGridpointStationsByUriInternal = (
 };
 
 const getGridpointStationsInternal = (
-  { forecastOfficeId, gridX, gridY, userAgent }: GetGridpointStationsArgs,
+  {
+    cursor,
+    forecastOfficeId,
+    gridX,
+    gridY,
+    limit,
+    userAgent,
+  }: GetGridpointStationsArgs,
   format: Format
 ) => {
+  const endpoint = addQueryString(
+    `${apiRoot}/gridpoints/${forecastOfficeId}/${gridX},${gridY}/stations`,
+    { cursor, limit }
+  );
+
   return simpleGetRequest<
     ObservationStationCollectionGeoJson | ObservationStationCollectionJsonLd
   >({
-    endpoint: `${apiRoot}/gridpoints/${forecastOfficeId}/${gridX},${gridY}/stations`,
+    endpoint,
     format,
     userAgent,
   });
