@@ -1,6 +1,6 @@
 {
   "name": "@vavassor/nws-client",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "NWS Client is a JavaScript library for the National Weather Service API.",
   "exports": "./build/index.js",
   "main": "./build/index.js",

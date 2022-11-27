@@ -1,5 +1,17 @@
 # Versions
 
+## v0.6.0
+
+Released November 27, 2022.
+
+### @vavassor/nws-client v0.6.0
+
+- Reverts the non-working fix for Network Inspect in React Native Debugger.
+- Adds aviation endpoints.
+- Adds Terminal Aerodrome Forecast (TAF) endpoints.
+- Adds pagination support to all station endpoints.
+- Adds support for XML formats including ATOM, CAP, DWML, IWXXM, OXML, and USWX.
+
 ## v0.5.0
 
 Released November 17, 2022.
