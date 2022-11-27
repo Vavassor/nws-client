@@ -5,6 +5,7 @@ import {
   isObservationCollectionJsonLd,
   isObservationGeoJson,
   isObservationJsonLd,
+  isString,
   ObservationCollectionGeoJson,
   ObservationCollectionJsonLd,
   ObservationGeoJson,
@@ -105,6 +106,26 @@ export const getLatestStationObservationJsonLd = (
     getLatestStationObservationInternal
   );
 
+export const getLatestStationObservationOxml = (
+  args: GetLatestStationObservationArgs
+) =>
+  requestInFormat(
+    args,
+    Format.Oxml,
+    isString,
+    getLatestStationObservationInternal
+  );
+
+export const getLatestStationObservationUswx = (
+  args: GetLatestStationObservationArgs
+) =>
+  requestInFormat(
+    args,
+    Format.Uswx,
+    isString,
+    getLatestStationObservationInternal
+  );
+
 export const getStationGeoJson = (args: GetStationArgs) =>
   requestInFormat(
     args,
@@ -154,6 +175,26 @@ export const getStationObservationByTimeJsonLd = (
     args,
     Format.JsonLd,
     isObservationJsonLd,
+    getStationObservationByTimeInternal
+  );
+
+export const getStationObservationByTimeOxml = (
+  args: GetStationObservationByTimeArgs
+) =>
+  requestInFormat(
+    args,
+    Format.Oxml,
+    isString,
+    getStationObservationByTimeInternal
+  );
+
+export const getStationObservationByTimeUswx = (
+  args: GetStationObservationByTimeArgs
+) =>
+  requestInFormat(
+    args,
+    Format.Uswx,
+    isString,
     getStationObservationByTimeInternal
   );
 
