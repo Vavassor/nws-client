@@ -1,6 +1,11 @@
-import { BaseEndpointArgs, Format } from "../common";
+import { BaseEndpointArgs, Format, isString } from "../common";
 import { apiRoot } from "../common/CommonConstants";
 import { addQueryString, simpleGetRequest } from "../common/Network";
+import { requestInFormat } from "../common/RequestInFormat";
+import {
+  isCenterWeatherAdvisoryGeoJson,
+  isSigmetGeoJson,
+} from "./AviationTypeguards";
 import {
   CenterWeatherAdvisoryCollectionGeoJson,
   CenterWeatherAdvisoryGeoJson,
@@ -76,29 +81,45 @@ export const getCenterWeatherAdvisories = ({
   });
 };
 
-export const getCenterWeatherAdvisory = ({
-  cwsuId,
-  date,
-  sequence,
-  userAgent,
-}: GetCenterWeatherAdvisoryArgs) => {
-  return simpleGetRequest<CenterWeatherAdvisoryGeoJson>({
-    endpoint: `${apiRoot}/aviation/cwsus/${cwsuId}/cwas/${date}/${sequence}`,
-    format: Format.GeoJson,
-    userAgent,
-  });
-};
+export const getCenterWeatherAdvisoryGeoJson = (
+  args: GetCenterWeatherAdvisoryArgs
+) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isCenterWeatherAdvisoryGeoJson,
+    getCenterWeatherAdvisoryInternal
+  );
 
-export const getCenterWeatherAdvisoryByUri = ({
-  uri,
-  userAgent,
-}: GetCenterWeatherAdvisoryByUriArgs) => {
-  return simpleGetRequest<CenterWeatherAdvisoryGeoJson>({
-    endpoint: uri,
-    format: Format.GeoJson,
-    userAgent,
-  });
-};
+export const getCenterWeatherAdvisoryUswx = (
+  args: GetCenterWeatherAdvisoryArgs
+) =>
+  requestInFormat(
+    args,
+    Format.Uswx,
+    isString,
+    getCenterWeatherAdvisoryInternal
+  );
+
+export const getCenterWeatherAdvisoryByUriGeoJson = (
+  args: GetCenterWeatherAdvisoryByUriArgs
+) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isCenterWeatherAdvisoryGeoJson,
+    getCenterWeatherAdvisoryByUriInternal
+  );
+
+export const getCenterWeatherAdvisoryByUriUswx = (
+  args: GetCenterWeatherAdvisoryByUriArgs
+) =>
+  requestInFormat(
+    args,
+    Format.Uswx,
+    isString,
+    getCenterWeatherAdvisoryByUriInternal
+  );
 
 export const getCenterWeatherServiceUnitJsonLd = ({
   cwsuId,
@@ -111,21 +132,22 @@ export const getCenterWeatherServiceUnitJsonLd = ({
   });
 };
 
-export const getSigmet = ({ atsu, date, time, userAgent }: GetSigmetArgs) => {
-  return simpleGetRequest<SigmetGeoJson>({
-    endpoint: `${apiRoot}/aviation/sigmets/${atsu}/${date}/${time}`,
-    format: Format.GeoJson,
-    userAgent,
-  });
-};
+export const getSigmetGeoJson = (args: GetSigmetArgs) =>
+  requestInFormat(args, Format.GeoJson, isSigmetGeoJson, getSigmetInternal);
 
-export const getSigmetByUri = ({ uri, userAgent }: GetSigmetByUriArgs) => {
-  return simpleGetRequest<SigmetGeoJson>({
-    endpoint: uri,
-    format: Format.GeoJson,
-    userAgent,
-  });
-};
+export const getSigmetUswx = (args: GetSigmetArgs) =>
+  requestInFormat(args, Format.Uswx, isString, getSigmetInternal);
+
+export const getSigmetByUriGeoJson = (args: GetSigmetByUriArgs) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isSigmetGeoJson,
+    getSigmetByUriInternal
+  );
+
+export const getSigmetByUriUswx = (args: GetSigmetByUriArgs) =>
+  requestInFormat(args, Format.Uswx, isString, getSigmetByUriInternal);
 
 export const getSigmets = ({
   atsu,
@@ -166,6 +188,50 @@ export const getSigmetsByAtsuAndDate = ({
   return simpleGetRequest<SigmetCollectionGeoJson>({
     endpoint: `${apiRoot}/aviation/sigmets/${atsu}/${date}`,
     format: Format.GeoJson,
+    userAgent,
+  });
+};
+
+const getCenterWeatherAdvisoryInternal = (
+  { cwsuId, date, sequence, userAgent }: GetCenterWeatherAdvisoryArgs,
+  format: Format
+) => {
+  return simpleGetRequest<CenterWeatherAdvisoryGeoJson>({
+    endpoint: `${apiRoot}/aviation/cwsus/${cwsuId}/cwas/${date}/${sequence}`,
+    format,
+    userAgent,
+  });
+};
+
+const getCenterWeatherAdvisoryByUriInternal = (
+  { uri, userAgent }: GetCenterWeatherAdvisoryByUriArgs,
+  format: Format
+) => {
+  return simpleGetRequest<CenterWeatherAdvisoryGeoJson>({
+    endpoint: uri,
+    format,
+    userAgent,
+  });
+};
+
+const getSigmetInternal = (
+  { atsu, date, time, userAgent }: GetSigmetArgs,
+  format: Format
+) => {
+  return simpleGetRequest<SigmetGeoJson>({
+    endpoint: `${apiRoot}/aviation/sigmets/${atsu}/${date}/${time}`,
+    format,
+    userAgent,
+  });
+};
+
+export const getSigmetByUriInternal = (
+  { uri, userAgent }: GetSigmetByUriArgs,
+  format: Format
+) => {
+  return simpleGetRequest<SigmetGeoJson>({
+    endpoint: uri,
+    format,
     userAgent,
   });
 };
