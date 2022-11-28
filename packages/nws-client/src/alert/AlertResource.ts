@@ -180,9 +180,8 @@ export const getAlertTypes = ({ userAgent }: BaseEndpointArgs) => {
   });
 };
 
-export const getAlertsAtom = (args: GetAlertsArgs = {}) => {
+export const getAlertsAtom = (args: GetAlertsArgs = {}) =>
   requestInFormat(args, Format.Atom, isString, getAlertsInternal);
-};
 
 export const getAlertsGeoJson = (args: GetAlertsArgs = {}) =>
   requestInFormat(
@@ -204,7 +203,9 @@ const getActiveAlertsByAreaInternal = (
   { areaId, userAgent }: GetActiveAlertsByAreaArgs,
   format: Format
 ) => {
-  return simpleGetRequest<AlertCollectionGeoJson | AlertCollectionJsonLd>({
+  return simpleGetRequest<
+    AlertCollectionGeoJson | AlertCollectionJsonLd | string
+  >({
     endpoint: `${apiRoot}/alerts/active/area/${areaId}`,
     format,
     userAgent,
@@ -215,7 +216,9 @@ const getActiveAlertsByRegionInternal = (
   { regionId, userAgent }: GetActiveAlertsByRegionArgs,
   format: Format
 ) => {
-  return simpleGetRequest<AlertCollectionGeoJson | AlertCollectionJsonLd>({
+  return simpleGetRequest<
+    AlertCollectionGeoJson | AlertCollectionJsonLd | string
+  >({
     endpoint: `${apiRoot}/alerts/active/region/${regionId}`,
     format,
     userAgent,
@@ -226,7 +229,9 @@ const getActiveAlertsByZoneInternal = (
   { userAgent, zoneId }: GetActiveAlertsByZoneArgs,
   format: Format
 ) => {
-  return simpleGetRequest<AlertCollectionGeoJson | AlertCollectionJsonLd>({
+  return simpleGetRequest<
+    AlertCollectionGeoJson | AlertCollectionJsonLd | string
+  >({
     endpoint: `${apiRoot}/alerts/active/zone/${zoneId}`,
     format,
     userAgent,
@@ -268,7 +273,9 @@ const getActiveAlertsInternal = (
     zone,
   });
 
-  return simpleGetRequest<AlertCollectionGeoJson | AlertCollectionJsonLd>({
+  return simpleGetRequest<
+    AlertCollectionGeoJson | AlertCollectionJsonLd | string
+  >({
     endpoint,
     format,
     userAgent,
@@ -276,7 +283,7 @@ const getActiveAlertsInternal = (
 };
 
 const getAlertInternal = ({ id, userAgent }: GetAlertArgs, format: Format) => {
-  return simpleGetRequest<AlertJsonLd | AlertGeoJson>({
+  return simpleGetRequest<AlertJsonLd | AlertGeoJson | string>({
     endpoint: `${apiRoot}/alerts/${id}`,
     format,
     userAgent,
@@ -324,7 +331,9 @@ const getAlertsInternal = (
     zone,
   });
 
-  return simpleGetRequest<AlertCollectionGeoJson | AlertCollectionJsonLd>({
+  return simpleGetRequest<
+    AlertCollectionGeoJson | AlertCollectionJsonLd | string
+  >({
     endpoint,
     format,
     userAgent,

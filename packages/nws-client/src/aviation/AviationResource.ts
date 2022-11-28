@@ -196,7 +196,7 @@ const getCenterWeatherAdvisoryInternal = (
   { cwsuId, date, sequence, userAgent }: GetCenterWeatherAdvisoryArgs,
   format: Format
 ) => {
-  return simpleGetRequest<CenterWeatherAdvisoryGeoJson>({
+  return simpleGetRequest<CenterWeatherAdvisoryGeoJson | string>({
     endpoint: `${apiRoot}/aviation/cwsus/${cwsuId}/cwas/${date}/${sequence}`,
     format,
     userAgent,
@@ -207,7 +207,7 @@ const getCenterWeatherAdvisoryByUriInternal = (
   { uri, userAgent }: GetCenterWeatherAdvisoryByUriArgs,
   format: Format
 ) => {
-  return simpleGetRequest<CenterWeatherAdvisoryGeoJson>({
+  return simpleGetRequest<CenterWeatherAdvisoryGeoJson | string>({
     endpoint: uri,
     format,
     userAgent,
@@ -218,7 +218,7 @@ const getSigmetInternal = (
   { atsu, date, time, userAgent }: GetSigmetArgs,
   format: Format
 ) => {
-  return simpleGetRequest<SigmetGeoJson>({
+  return simpleGetRequest<SigmetGeoJson | string>({
     endpoint: `${apiRoot}/aviation/sigmets/${atsu}/${date}/${time}`,
     format,
     userAgent,
@@ -229,7 +229,7 @@ export const getSigmetByUriInternal = (
   { uri, userAgent }: GetSigmetByUriArgs,
   format: Format
 ) => {
-  return simpleGetRequest<SigmetGeoJson>({
+  return simpleGetRequest<SigmetGeoJson | string>({
     endpoint: uri,
     format,
     userAgent,

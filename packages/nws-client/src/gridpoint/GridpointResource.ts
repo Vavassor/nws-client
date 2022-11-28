@@ -251,7 +251,7 @@ const getGridpointByUriInternal = (
   { uri, userAgent }: GetGridpointByUriArgs,
   format: Format
 ) => {
-  return simpleGetRequest<GridpointJsonLd | GridpointGeoJson>({
+  return simpleGetRequest<GridpointJsonLd | GridpointGeoJson | string>({
     endpoint: uri,
     format,
     userAgent,
@@ -264,7 +264,9 @@ const getGridpointForecastByUriInternal = (
 ) => {
   const endpoint = addQueryString(uri, { units });
 
-  return jsonRequest<GridpointForecastJsonLd | GridpointForecastGeoJson>({
+  return jsonRequest<
+    GridpointForecastJsonLd | GridpointForecastGeoJson | string
+  >({
     endpoint,
     headers: getStringRecord({
       Accept: format,
@@ -280,7 +282,9 @@ const getGridpointForecastHourlyByUriInternal = (
   format: Format
 ) => {
   const endpoint = addQueryString(uri, { units });
-  return jsonRequest<GridpointForecastJsonLd | GridpointForecastGeoJson>({
+  return jsonRequest<
+    GridpointForecastJsonLd | GridpointForecastGeoJson | string
+  >({
     endpoint,
     headers: getStringRecord({
       Accept: format,
@@ -307,7 +311,9 @@ const getGridpointForecastHourlyInternal = (
     { units }
   );
 
-  return jsonRequest<GridpointForecastJsonLd | GridpointForecastGeoJson>({
+  return jsonRequest<
+    GridpointForecastJsonLd | GridpointForecastGeoJson | string
+  >({
     endpoint,
     headers: getStringRecord({
       Accept: format,
@@ -334,7 +340,9 @@ const getGridpointForecastInternal = (
     { units }
   );
 
-  return jsonRequest<GridpointForecastJsonLd | GridpointForecastGeoJson>({
+  return jsonRequest<
+    GridpointForecastJsonLd | GridpointForecastGeoJson | string
+  >({
     endpoint,
     headers: getStringRecord({
       Accept: format,

@@ -123,7 +123,7 @@ export function simpleGetRequest<T>({
   endpoint,
   format,
   userAgent,
-}: SimpleGetRequestArgs) {
+}: SimpleGetRequestArgs): Promise<T> {
   switch (format) {
     default:
       return textRequest({
@@ -133,7 +133,7 @@ export function simpleGetRequest<T>({
           "User-Agent": userAgent,
         }),
         method: "GET",
-      });
+      }) as Promise<T>;
     case Format.GeoJson:
     case Format.JsonLd:
       return jsonRequest<T>({

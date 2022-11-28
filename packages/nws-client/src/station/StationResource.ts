@@ -283,7 +283,7 @@ const getLatestStationObservationInternal = (
     }
   );
 
-  return simpleGetRequest<ObservationGeoJson | ObservationJsonLd>({
+  return simpleGetRequest<ObservationGeoJson | ObservationJsonLd | string>({
     endpoint,
     format,
     userAgent,
@@ -320,7 +320,7 @@ const getStationObservationByTimeInternal = (
   { stationId, time, userAgent }: GetStationObservationByTimeArgs,
   format: Format
 ) => {
-  return simpleGetRequest<ObservationJsonLd | ObservationGeoJson>({
+  return simpleGetRequest<ObservationJsonLd | ObservationGeoJson | string>({
     endpoint: `${apiRoot}/stations/${stationId}/observations/${time}`,
     format,
     userAgent,
