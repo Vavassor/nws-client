@@ -71,6 +71,10 @@ interface GetZoneStationsArgs extends BaseEndpointArgs {
   zoneId: string;
 }
 
+interface GetZoneStationsByUriArgs extends BaseEndpointArgs {
+  uri: string;
+}
+
 interface GetZonesArgs extends BaseEndpointArgs {
   area?: string[];
   effective?: string;
@@ -167,6 +171,22 @@ export const getZoneStationsJsonLd = (args: GetZoneStationsArgs) =>
     Format.JsonLd,
     isObservationStationCollectionJsonLd,
     getZoneStationsInternal
+  );
+
+export const getZoneStationsByUriGeoJson = (args: GetZoneStationsByUriArgs) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isObservationStationCollectionGeoJson,
+    getZoneStationsByUriInternal
+  );
+
+export const getZoneStationsByUriJsonLd = (args: GetZoneStationsByUriArgs) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isObservationStationCollectionJsonLd,
+    getZoneStationsByUriInternal
   );
 
 export const getZonesGeoJson = (args: GetZonesArgs = {}) =>
@@ -280,6 +300,19 @@ const getZoneStationsInternal = (
     ObservationStationCollectionGeoJson | ObservationStationCollectionJsonLd
   >({
     endpoint,
+    format,
+    userAgent,
+  });
+};
+
+const getZoneStationsByUriInternal = (
+  { uri, userAgent }: GetZoneStationsByUriArgs,
+  format: Format
+) => {
+  return simpleGetRequest<
+    ObservationStationCollectionGeoJson | ObservationStationCollectionJsonLd
+  >({
+    endpoint: uri,
     format,
     userAgent,
   });

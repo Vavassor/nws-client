@@ -73,6 +73,10 @@ interface GetAlertsArgs extends BaseEndpointArgs {
   zone?: string[];
 }
 
+interface GetAlertsByUriArgs extends BaseEndpointArgs {
+  uri: string;
+}
+
 export const getActiveAlertsAtom = (args: GetActiveAlertsArgs = {}) =>
   requestInFormat(args, Format.Atom, isString, getActiveAlertsInternal);
 
@@ -197,6 +201,22 @@ export const getAlertsJsonLd = (args: GetAlertsArgs = {}) =>
     Format.JsonLd,
     isAlertCollectionJsonLd,
     getAlertsInternal
+  );
+
+export const getAlertsByUriGeoJson = (args: GetAlertsByUriArgs) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isAlertCollectionGeoJson,
+    getAlertsByUriInternal
+  );
+
+export const getAlertsByUriJsonLd = (args: GetAlertsByUriArgs) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isAlertCollectionJsonLd,
+    getAlertsByUriInternal
   );
 
 const getActiveAlertsByAreaInternal = (
@@ -335,6 +355,19 @@ const getAlertsInternal = (
     AlertCollectionGeoJson | AlertCollectionJsonLd | string
   >({
     endpoint,
+    format,
+    userAgent,
+  });
+};
+
+const getAlertsByUriInternal = (
+  { uri, userAgent }: GetAlertsByUriArgs,
+  format: Format
+) => {
+  return simpleGetRequest<
+    AlertCollectionGeoJson | AlertCollectionJsonLd | string
+  >({
+    endpoint: uri,
     format,
     userAgent,
   });

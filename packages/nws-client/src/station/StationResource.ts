@@ -69,6 +69,10 @@ interface GetStationsArgs extends BaseEndpointArgs {
   state?: string[];
 }
 
+interface GetStationsByUriArgs extends BaseEndpointArgs {
+  uri: string;
+}
+
 interface GetTafArgs extends BaseEndpointArgs {
   /** Date in YYYY-MM-DD format. */
   date: string;
@@ -234,6 +238,22 @@ export const getStationsJsonLd = (args: GetStationsArgs = {}) =>
     getStationsInternal
   );
 
+export const getStationsByUriGeoJson = (args: GetStationsByUriArgs) =>
+  requestInFormat(
+    args,
+    Format.GeoJson,
+    isObservationStationCollectionGeoJson,
+    getStationsByUriInternal
+  );
+
+export const getStationsByUriJsonLd = (args: GetStationsByUriArgs) =>
+  requestInFormat(
+    args,
+    Format.JsonLd,
+    isObservationStationCollectionJsonLd,
+    getStationsByUriInternal
+  );
+
 /**
  * Get a Terminal Aerodrome Forecast (TAF) in IWXXM format.
  */
@@ -359,6 +379,19 @@ const getStationsInternal = (
     ObservationStationCollectionGeoJson | ObservationStationCollectionJsonLd
   >({
     endpoint,
+    format,
+    userAgent,
+  });
+};
+
+const getStationsByUriInternal = (
+  { uri, userAgent }: GetStationsByUriArgs,
+  format: Format
+) => {
+  return simpleGetRequest<
+    ObservationStationCollectionGeoJson | ObservationStationCollectionJsonLd
+  >({
+    endpoint: uri,
     format,
     userAgent,
   });
