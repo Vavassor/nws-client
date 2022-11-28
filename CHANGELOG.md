@@ -1,5 +1,14 @@
 # Versions
 
+## v0.7.0
+
+Released November 27, 2022.
+
+### @vavassor/nws-client v0.7.0
+
+- Fixes type errors where many endpoints were mistakenly returning the type `Promise<string>`.
+- Adds fetching stations and alerts by URI, to improve pagination support.
+
 ## v0.6.0
 
 Released November 27, 2022.
