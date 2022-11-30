@@ -39,7 +39,7 @@ export const addQueryString = (
   // The below implementation avoids using URLSearchParams because most of its
   // methods aren't supported in React Native.
   // https://github.com/facebook/react-native/blob/87c356d56c73c3289da3d5911288909720b11994/Libraries/Blob/URL.js#L56
-  const pathWithSlash = ensureEnd(path, "/");
+  const pathWithSlash = stripEnd(path, "/");
   const entries = Object.entries(parameters)
     .map(([key, value]) => [key, getQueryValue(value)])
     .filter(
@@ -159,8 +159,8 @@ const encodeUriComponentRfc3986 = (value: string) => {
   );
 };
 
-const ensureEnd = (value: string, end: string) => {
-  return value.endsWith(end) ? value : value.concat(end);
+const stripEnd = (value: string, end: string) => {
+  return value.endsWith(end) ? value.slice(0, -end.length) : value;
 };
 
 const getQueryValue = (value: QueryStringValue | undefined) => {
