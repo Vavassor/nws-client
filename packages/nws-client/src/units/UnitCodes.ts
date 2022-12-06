@@ -1,3 +1,4 @@
+import { cldrCodes } from "./CldrCodes";
 import { wmoCodes } from "./WmoCodes";
 
 /**
@@ -13,6 +14,19 @@ interface UnitOfMeasure {
   namespace: UnitNamespace | "unknown";
   unit: string;
 }
+
+/**
+ * Finds a Unicode CLDR unit code matching a given UCUM code.
+ *
+ * @param unitCode the unit of measure as a UCUM code
+ * @returns a unit of measure as a CLDR code
+ *
+ * @see {@link https://cldr.unicode.org/translation/units/unit-names-and-patterns | Unit Names and Patterns}
+ */
+export const getCldrCode = (unitCode: string): string | null => {
+  const entry = cldrCodes.find((entry) => entry.ucumCode === unitCode);
+  return entry ? entry.cldrCode : null;
+};
 
 /**
  * Standardizes a {@link QuantitativeValue} unit code to UCUM code format.
