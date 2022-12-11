@@ -1,4 +1,5 @@
 import { cldrCodes } from "./CldrCodes";
+import { ecmaScriptCodes } from "./EcmaScriptCodes";
 import { wmoCodes } from "./WmoCodes";
 
 /**
@@ -26,6 +27,19 @@ interface UnitOfMeasure {
 export const getCldrCode = (unitCode: string): string | null => {
   const entry = cldrCodes.find((entry) => entry.ucumCode === unitCode);
   return entry ? entry.cldrCode : null;
+};
+
+/**
+ * Finds an EcmaScript unit code matching a given UCUM code.
+ *
+ * @param unitCode the unit of measure as a UCUM code
+ * @returns a unit of measure as an EcmaScript code
+ *
+ * @see {@link https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_proposed_out.html#sec-measurement-unit-identifiers | Measurement Unit Identifiers}
+ */
+export const getEcmaScriptCode = (unitCode: string): string | null => {
+  const entry = ecmaScriptCodes.find((entry) => entry.ucumCode === unitCode);
+  return entry ? entry.ecmaScriptCode : null;
 };
 
 /**
