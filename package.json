@@ -21,6 +21,7 @@
   },
   "scripts": {
     "docs": "typedoc --options typedoc.json",
+    "docs:external": "typedoc --options typedoc.json --out ../api",
     "g:clean": "cd $INIT_CWD && rimraf build",
     "g:tsc": "cd $INIT_CWD && tsc",
     "lint": "eslint . --ext .js,.ts",
