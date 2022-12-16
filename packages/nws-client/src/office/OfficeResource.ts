@@ -24,7 +24,8 @@ interface GetOfficeHeadlinesArgs extends BaseEndpointArgs {
   officeId: string;
 }
 
-export const getOffice = ({ officeId, userAgent }: GetOfficeArgs) => {
+export const getOffice = (args: GetOfficeArgs) => {
+  const { officeId, userAgent } = args;
   return simpleGetRequest<Office>({
     endpoint: `${apiRoot}/offices/${officeId}`,
     format: Format.JsonLd,
@@ -32,7 +33,8 @@ export const getOffice = ({ officeId, userAgent }: GetOfficeArgs) => {
   });
 };
 
-export const getOfficeByUri = ({ uri, userAgent }: GetOfficeByUriArgs) => {
+export const getOfficeByUri = (args: GetOfficeByUriArgs) => {
+  const { uri, userAgent } = args;
   return simpleGetRequest<Office>({
     endpoint: uri,
     format: Format.JsonLd,
@@ -40,11 +42,8 @@ export const getOfficeByUri = ({ uri, userAgent }: GetOfficeByUriArgs) => {
   });
 };
 
-export const getOfficeHeadline = ({
-  headlineId,
-  officeId,
-  userAgent,
-}: GetOfficeHeadlineArgs) => {
+export const getOfficeHeadline = (args: GetOfficeHeadlineArgs) => {
+  const { headlineId, officeId, userAgent } = args;
   return simpleGetRequest<OfficeHeadline>({
     endpoint: `${apiRoot}/offices/${officeId}/headlines/${headlineId}`,
     format: Format.JsonLd,
@@ -52,10 +51,8 @@ export const getOfficeHeadline = ({
   });
 };
 
-export const getOfficeHeadlines = ({
-  officeId,
-  userAgent,
-}: GetOfficeHeadlinesArgs) => {
+export const getOfficeHeadlines = (args: GetOfficeHeadlinesArgs) => {
+  const { officeId, userAgent } = args;
   return simpleGetRequest<OfficeHeadlineCollection>({
     endpoint: `${apiRoot}/offices/${officeId}/headlines`,
     format: Format.JsonLd,

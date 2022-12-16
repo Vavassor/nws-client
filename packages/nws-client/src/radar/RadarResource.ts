@@ -43,11 +43,9 @@ interface GetRadarStationsArgs extends BaseEndpointArgs {
   stationType?: string;
 }
 
-export const getRadarServer = ({
-  reportingHost,
-  serverId,
-  userAgent,
-}: GetRadarServerArgs) => {
+export const getRadarServer = (args: GetRadarServerArgs) => {
+  const { reportingHost, serverId, userAgent } = args;
+
   const endpoint = addQueryString(`${apiRoot}/radar/servers/${serverId}`, {
     reportingHost,
   });
@@ -59,10 +57,9 @@ export const getRadarServer = ({
   });
 };
 
-export const getRadarServers = ({
-  reportingHost,
-  userAgent,
-}: GetRadarServersArgs = {}) => {
+export const getRadarServers = (args: GetRadarServersArgs = {}) => {
+  const { reportingHost, userAgent } = args;
+
   const endpoint = addQueryString(`${apiRoot}/radar/servers`, {
     reportingHost,
   });
@@ -90,10 +87,8 @@ export const getRadarStationJsonLd = (args: GetRadarStationArgs) =>
     getRadarStationInternal
   );
 
-export const getRadarStationAlarms = ({
-  stationId,
-  userAgent,
-}: GetRadarStationAlarmsArgs) => {
+export const getRadarStationAlarms = (args: GetRadarStationAlarmsArgs) => {
+  const { stationId, userAgent } = args;
   return simpleGetRequest<RadarStationAlarmCollection>({
     endpoint: `${apiRoot}/radar/stations/${stationId}/alarms`,
     format: Format.JsonLd,

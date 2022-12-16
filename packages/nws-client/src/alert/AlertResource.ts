@@ -159,7 +159,8 @@ export const getActiveAlertsByZoneJsonLd = (args: GetActiveAlertsByZoneArgs) =>
     getActiveAlertsByZoneInternal
   );
 
-export const getActiveAlertsCount = ({ userAgent }: BaseEndpointArgs) => {
+export const getActiveAlertsCount = (args: BaseEndpointArgs) => {
+  const { userAgent } = args;
   return simpleGetRequest<ActiveAlertsCount>({
     endpoint: `${apiRoot}/alerts/active/count`,
     format: Format.JsonLd,
@@ -176,7 +177,8 @@ export const getAlertGeoJson = (args: GetAlertArgs) =>
 export const getAlertJsonLd = (args: GetAlertArgs) =>
   requestInFormat(args, Format.JsonLd, isAlertJsonLd, getAlertInternal);
 
-export const getAlertTypes = ({ userAgent }: BaseEndpointArgs) => {
+export const getAlertTypes = (args: BaseEndpointArgs) => {
+  const { userAgent } = args;
   return simpleGetRequest<AlertTypes>({
     endpoint: `${apiRoot}/alerts/types`,
     format: Format.JsonLd,

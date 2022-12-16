@@ -39,7 +39,8 @@ interface GetProductsByTypeArgs extends BaseEndpointArgs {
   typeId: string;
 }
 
-export const getProduct = ({ productId, userAgent }: GetProductArgs) => {
+export const getProduct = (args: GetProductArgs) => {
+  const { productId, userAgent } = args;
   return simpleGetRequest<TextProduct>({
     endpoint: `${apiRoot}/products/${productId}`,
     format: Format.JsonLd,
@@ -47,7 +48,8 @@ export const getProduct = ({ productId, userAgent }: GetProductArgs) => {
   });
 };
 
-export const getProductLocations = ({ userAgent }: BaseEndpointArgs = {}) => {
+export const getProductLocations = (args: BaseEndpointArgs = {}) => {
+  const { userAgent } = args;
   return simpleGetRequest<TextProductLocationCollection>({
     endpoint: `${apiRoot}/products/locations`,
     format: Format.JsonLd,
@@ -55,10 +57,10 @@ export const getProductLocations = ({ userAgent }: BaseEndpointArgs = {}) => {
   });
 };
 
-export const getProductLocationsByType = ({
-  typeId,
-  userAgent,
-}: GetProductLocationsByTypeArgs) => {
+export const getProductLocationsByType = (
+  args: GetProductLocationsByTypeArgs
+) => {
+  const { typeId, userAgent } = args;
   return simpleGetRequest<TextProductLocationCollection>({
     endpoint: `${apiRoot}/products/types/${typeId}/locations`,
     format: Format.JsonLd,
@@ -66,7 +68,8 @@ export const getProductLocationsByType = ({
   });
 };
 
-export const getProductTypes = ({ userAgent }: BaseEndpointArgs = {}) => {
+export const getProductTypes = (args: BaseEndpointArgs = {}) => {
+  const { userAgent } = args;
   return simpleGetRequest<TextProductTypeCollection>({
     endpoint: `${apiRoot}/products/types`,
     format: Format.JsonLd,
@@ -74,10 +77,10 @@ export const getProductTypes = ({ userAgent }: BaseEndpointArgs = {}) => {
   });
 };
 
-export const getProductTypesByLocation = ({
-  locationId,
-  userAgent,
-}: GetProductTypesByLocationArgs) => {
+export const getProductTypesByLocation = (
+  args: GetProductTypesByLocationArgs
+) => {
+  const { locationId, userAgent } = args;
   return simpleGetRequest<TextProductTypeCollection>({
     endpoint: `${apiRoot}/products/locations/${locationId}/types`,
     format: Format.JsonLd,
@@ -85,16 +88,8 @@ export const getProductTypesByLocation = ({
   });
 };
 
-export const getProducts = ({
-  end,
-  limit,
-  location,
-  office,
-  start,
-  type,
-  userAgent,
-  wmoid,
-}: GetProductsArgs = {}) => {
+export const getProducts = (args: GetProductsArgs = {}) => {
+  const { end, limit, location, office, start, type, userAgent, wmoid } = args;
   const endpoint = addQueryString(`${apiRoot}/products`, {
     end,
     limit,
@@ -112,10 +107,8 @@ export const getProducts = ({
   });
 };
 
-export const getProductsByType = ({
-  typeId,
-  userAgent,
-}: GetProductsByTypeArgs) => {
+export const getProductsByType = (args: GetProductsByTypeArgs) => {
+  const { typeId, userAgent } = args;
   return simpleGetRequest<TextProductCollection>({
     endpoint: `${apiRoot}/products/types/${typeId}`,
     format: Format.JsonLd,
@@ -123,11 +116,10 @@ export const getProductsByType = ({
   });
 };
 
-export const getProductsByTypeAndLocation = ({
-  locationId,
-  typeId,
-  userAgent,
-}: GetProductsByTypeAndLocationArgs) => {
+export const getProductsByTypeAndLocation = (
+  args: GetProductsByTypeAndLocationArgs
+) => {
+  const { locationId, typeId, userAgent } = args;
   return simpleGetRequest<TextProductCollection>({
     endpoint: `${apiRoot}/products/types/${typeId}/locations/${locationId}`,
     format: Format.JsonLd,

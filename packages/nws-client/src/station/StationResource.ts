@@ -257,12 +257,8 @@ export const getStationsByUriJsonLd = (args: GetStationsByUriArgs) =>
 /**
  * Get a Terminal Aerodrome Forecast (TAF) in IWXXM format.
  */
-export const getTafIwxxm = ({
-  date,
-  stationId,
-  time,
-  userAgent,
-}: GetTafArgs) => {
+export const getTafIwxxm = (args: GetTafArgs) => {
+  const { date, stationId, time, userAgent } = args;
   return simpleGetRequest<string>({
     endpoint: `/stations/${stationId}/tafs/${date}/${time}`,
     format: Format.Iwxxm,
@@ -273,7 +269,8 @@ export const getTafIwxxm = ({
 /**
  * Get a Terminal Aerodrome Forecast (TAF) in IWXXM format.
  */
-export const getTafByUriIwxxm = ({ uri, userAgent }: GetTafByUriArgs) => {
+export const getTafByUriIwxxm = (args: GetTafByUriArgs) => {
+  const { uri, userAgent } = args;
   return simpleGetRequest<string>({
     endpoint: uri,
     format: Format.Iwxxm,
@@ -284,7 +281,8 @@ export const getTafByUriIwxxm = ({ uri, userAgent }: GetTafByUriArgs) => {
 /**
  * Get Terminal Aerodrome Forecasts (TAF) in JSON-LD format.
  */
-export const getTafsJsonLd = ({ stationId, userAgent }: GetTafsArgs) => {
+export const getTafsJsonLd = (args: GetTafsArgs) => {
+  const { stationId, userAgent } = args;
   return simpleGetRequest<TerminalAerodromeForecastCollectionJsonLd>({
     endpoint: `/stations/${stationId}/tafs`,
     format: Format.JsonLd,

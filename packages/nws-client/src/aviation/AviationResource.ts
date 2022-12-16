@@ -70,10 +70,10 @@ interface GetSigmetsByAtsuAndDateArgs extends BaseEndpointArgs {
   date: string;
 }
 
-export const getCenterWeatherAdvisories = ({
-  cwsuId,
-  userAgent,
-}: GetCenterWeatherAdvisoriesArgs) => {
+export const getCenterWeatherAdvisories = (
+  args: GetCenterWeatherAdvisoriesArgs
+) => {
+  const { cwsuId, userAgent } = args;
   return simpleGetRequest<CenterWeatherAdvisoryCollectionGeoJson>({
     endpoint: `${apiRoot}/aviation/cwsus/${cwsuId}/cwas`,
     format: Format.GeoJson,
@@ -121,10 +121,10 @@ export const getCenterWeatherAdvisoryByUriUswx = (
     getCenterWeatherAdvisoryByUriInternal
   );
 
-export const getCenterWeatherServiceUnitJsonLd = ({
-  cwsuId,
-  userAgent,
-}: GetCenterWeatherServiceUnitArgs) => {
+export const getCenterWeatherServiceUnitJsonLd = (
+  args: GetCenterWeatherServiceUnitArgs
+) => {
+  const { cwsuId, userAgent } = args;
   return simpleGetRequest<CenterWeatherServiceUnitJsonLd>({
     endpoint: `${apiRoot}/aviation/cwsus/${cwsuId}`,
     format: Format.JsonLd,
@@ -149,14 +149,9 @@ export const getSigmetByUriGeoJson = (args: GetSigmetByUriArgs) =>
 export const getSigmetByUriUswx = (args: GetSigmetByUriArgs) =>
   requestInFormat(args, Format.Uswx, isString, getSigmetByUriInternal);
 
-export const getSigmets = ({
-  atsu,
-  date,
-  end,
-  sequence,
-  start,
-  userAgent,
-}: GetSigmetsArgs = {}) => {
+export const getSigmets = (args: GetSigmetsArgs = {}) => {
+  const { atsu, date, end, sequence, start, userAgent } = args;
+
   const endpoint = addQueryString(`${apiRoot}/aviation/sigmets`, {
     atsu,
     date,
@@ -172,7 +167,8 @@ export const getSigmets = ({
   });
 };
 
-export const getSigmetsByAtsu = ({ atsu, userAgent }: GetSigmetsByAtsuArgs) => {
+export const getSigmetsByAtsu = (args: GetSigmetsByAtsuArgs) => {
+  const { atsu, userAgent } = args;
   return simpleGetRequest<SigmetCollectionGeoJson>({
     endpoint: `${apiRoot}/aviation/sigmets/${atsu}`,
     format: Format.GeoJson,
@@ -180,11 +176,9 @@ export const getSigmetsByAtsu = ({ atsu, userAgent }: GetSigmetsByAtsuArgs) => {
   });
 };
 
-export const getSigmetsByAtsuAndDate = ({
-  atsu,
-  date,
-  userAgent,
-}: GetSigmetsByAtsuAndDateArgs) => {
+export const getSigmetsByAtsuAndDate = (args: GetSigmetsByAtsuAndDateArgs) => {
+  const { atsu, date, userAgent } = args;
+
   return simpleGetRequest<SigmetCollectionGeoJson>({
     endpoint: `${apiRoot}/aviation/sigmets/${atsu}/${date}`,
     format: Format.GeoJson,
