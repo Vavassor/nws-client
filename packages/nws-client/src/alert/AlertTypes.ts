@@ -112,6 +112,7 @@ export interface AlertCollection {
 }
 
 export interface AlertCollectionGeoJson {
+  /** Term definitions for the data in this resource. */
   "@context"?: JsonLdContext;
   features: AlertGeoJson[];
   pagination?: PaginationInfo;
@@ -127,6 +128,7 @@ export interface AlertCollectionGeoJson {
 }
 
 export interface AlertCollectionJsonLd {
+  /** Term definitions for the data in this resource. */
   "@context"?: JsonLdContext;
   "@graph": Alert[];
   pagination?: PaginationInfo;
@@ -200,6 +202,7 @@ export type AlertSeverity =
 export type AlertStatus = "Actual" | "Draft" | "Exercise" | "System" | "Test";
 
 export interface AlertTypes {
+  /** Term definitions for the data in this resource. */
   "@context": JsonLdContext;
   eventTypes: string[];
 }

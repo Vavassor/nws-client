@@ -6,6 +6,7 @@ import {
 
 /** Metadata about a latitude/longitude point. */
 export interface Point {
+  /** Term definitions for the data in this resource. */
   "@context"?: JsonLdContext;
   /** URI of this resource. */
   "@id"?: string;
@@ -31,7 +32,9 @@ export interface Point {
   geometry?: null | string;
   /** Three-letter identifier for a NWS office. */
   gridId: string;
+  /** The X coordinate of the grid at this point. */
   gridX: number;
+  /** The Y coordinate of the grid at this point. */
   gridY: number;
   /** URI of the forecast stations. */
   observationStations: string;
@@ -48,6 +51,7 @@ export interface Point {
 
 /** Metadata about a latitude/longitude point in JSON-LD format. */
 export interface PointJsonLd {
+   /** Term definitions for the data in this resource. */
   "@context": JsonLdContext;
   /** URI of this resource. */
   "@id": string;
@@ -73,7 +77,9 @@ export interface PointJsonLd {
   geometry?: null | string;
   /** Three-letter identifier for a NWS office. */
   gridId: string;
+  /** The X coordinate of the grid at this point. */
   gridX: number;
+  /** The Y coordinate of the grid at this point. */
   gridY: number;
   /** URI of the forecast stations. */
   observationStations: string;

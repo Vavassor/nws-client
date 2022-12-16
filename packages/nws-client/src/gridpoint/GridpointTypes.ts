@@ -90,6 +90,7 @@ export type GetGridpointForecastFeatureFlag =
 
 /** Raw forecast data for a 2.5km grid square. */
 export interface Gridpoint {
+  /** Term definitions for the data in this resource. */
   "@context"?: JsonLdContext;
   /** URI of this resource. */
   "@id"?: string;
@@ -181,6 +182,7 @@ export interface Gridpoint {
 
 /** Raw forecast data for a 2.5km grid square. */
 export interface GridpointJsonLd {
+  /** Term definitions for the data in this resource. */
   "@context": JsonLdContext;
   /** URI of this resource. */
   "@id": string;
@@ -272,6 +274,7 @@ export interface GridpointJsonLd {
 
 /** A multi-day forecast for a 2.5km grid square. */
 export interface GridpointForecast {
+  /** Term definitions for the data in this resource. */
   "@context"?: JsonLdContext;
   elevation: QuantitativeValue;
   /**
@@ -310,6 +313,7 @@ export type GridpointForecastGeoJson = FeatureGeoJson<GridpointForecast>;
 
 /** A multi-day forecast for a 2.5km grid square. */
 export interface GridpointForecastJsonLd {
+  /** Term definitions for the data in this resource. */
   "@context": JsonLdContext;
   elevation: QuantitativeValue;
   /**
