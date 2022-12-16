@@ -77,9 +77,15 @@ interface GetAlertsByUriArgs extends BaseEndpointArgs {
   uri: string;
 }
 
+/**
+ * Get active alerts in {@link Format.Atom | Atom} format.
+ */
 export const getActiveAlertsAtom = (args: GetActiveAlertsArgs = {}) =>
   requestInFormat(args, Format.Atom, isString, getActiveAlertsInternal);
 
+/**
+ * Get active alerts in {@link Format.GeoJson | GeoJSON} format.
+ */
 export const getActiveAlertsGeoJson = (args: GetActiveAlertsArgs = {}) =>
   requestInFormat(
     args,
@@ -88,6 +94,9 @@ export const getActiveAlertsGeoJson = (args: GetActiveAlertsArgs = {}) =>
     getActiveAlertsInternal
   );
 
+/**
+ * Get active alerts in {@link Format.JsonLd | JSON-LD} format.
+ */
 export const getActiveAlertsJsonLd = (args: GetActiveAlertsArgs = {}) =>
   requestInFormat(
     args,
@@ -96,9 +105,16 @@ export const getActiveAlertsJsonLd = (args: GetActiveAlertsArgs = {}) =>
     getActiveAlertsInternal
   );
 
+/**
+ * Get active alerts for a defined area in {@link Format.Atom | Atom} format.
+ */
 export const getActiveAlertsByAreaAtom = (args: GetActiveAlertsByAreaArgs) =>
   requestInFormat(args, Format.Atom, isString, getActiveAlertsByAreaInternal);
 
+/**
+ * Get active alerts for a defined area in {@link Format.GeoJson | GeoJSON}
+ * format.
+ */
 export const getActiveAlertsByAreaGeoJson = (args: GetActiveAlertsByAreaArgs) =>
   requestInFormat(
     args,
@@ -107,6 +123,10 @@ export const getActiveAlertsByAreaGeoJson = (args: GetActiveAlertsByAreaArgs) =>
     getActiveAlertsByAreaInternal
   );
 
+/**
+ * Get active alerts for a defined area in {@link Format.JsonLd | JSON-LD}
+ * format.
+ */
 export const getActiveAlertsByAreaJsonLd = (args: GetActiveAlertsByAreaArgs) =>
   requestInFormat(
     args,
@@ -115,11 +135,17 @@ export const getActiveAlertsByAreaJsonLd = (args: GetActiveAlertsByAreaArgs) =>
     getActiveAlertsByAreaInternal
   );
 
+/**
+ * Get active alerts for a region in {@link Format.Atom | Atom} format.
+ */
 export const getActiveAlertsByRegionAtom = (
   args: GetActiveAlertsByRegionArgs
 ) =>
   requestInFormat(args, Format.Atom, isString, getActiveAlertsByRegionInternal);
 
+/**
+ * Get active alerts for a region in {@link Format.GeoJson | GeoJSON} format.
+ */
 export const getActiveAlertsByRegionGeoJson = (
   args: GetActiveAlertsByRegionArgs
 ) =>
@@ -130,6 +156,9 @@ export const getActiveAlertsByRegionGeoJson = (
     getActiveAlertsByRegionInternal
   );
 
+/**
+ * Get active alerts for a region in {@link Format.JsonLd | JSON-LD} format.
+ */
 export const getActiveAlertsByRegionJsonLd = (
   args: GetActiveAlertsByRegionArgs
 ) =>
@@ -140,9 +169,15 @@ export const getActiveAlertsByRegionJsonLd = (
     getActiveAlertsByRegionInternal
   );
 
+/**
+ * Get active alerts for a zone in {@link Format.Atom | Atom} format.
+ */
 export const getActiveAlertsByZoneAtom = (args: GetActiveAlertsByZoneArgs) =>
   requestInFormat(args, Format.Atom, isString, getActiveAlertsByZoneInternal);
 
+/**
+ * Get active alerts for a zone in {@link Format.GeoJson | GeoJSON} format.
+ */
 export const getActiveAlertsByZoneGeoJson = (args: GetActiveAlertsByZoneArgs) =>
   requestInFormat(
     args,
@@ -151,6 +186,9 @@ export const getActiveAlertsByZoneGeoJson = (args: GetActiveAlertsByZoneArgs) =>
     getActiveAlertsByZoneInternal
   );
 
+/**
+ * Get active alerts for a zone in {@link Format.JsonLd | JSON-LD} format.
+ */
 export const getActiveAlertsByZoneJsonLd = (args: GetActiveAlertsByZoneArgs) =>
   requestInFormat(
     args,
@@ -159,6 +197,9 @@ export const getActiveAlertsByZoneJsonLd = (args: GetActiveAlertsByZoneArgs) =>
     getActiveAlertsByZoneInternal
   );
 
+/**
+ * Get information about the number of active alerts.
+ */
 export const getActiveAlertsCount = (args: BaseEndpointArgs) => {
   const { userAgent } = args;
   return simpleGetRequest<ActiveAlertsCount>({
@@ -168,15 +209,27 @@ export const getActiveAlertsCount = (args: BaseEndpointArgs) => {
   });
 };
 
+/**
+ * Get an alert in {@link Format.Cap | CAP} format.
+ */
 export const getAlertCap = (args: GetAlertArgs) =>
   requestInFormat(args, Format.Cap, isString, getAlertInternal);
 
+/**
+ * Get an alert in {@link Format.GeoJson | GeoJSON} format.
+ */
 export const getAlertGeoJson = (args: GetAlertArgs) =>
   requestInFormat(args, Format.GeoJson, isAlertGeoJson, getAlertInternal);
 
+/**
+ * Get an alert in {@link Format.JsonLd | JSON-LD} format.
+ */
 export const getAlertJsonLd = (args: GetAlertArgs) =>
   requestInFormat(args, Format.JsonLd, isAlertJsonLd, getAlertInternal);
 
+/**
+ * Get information about alert types.
+ */
 export const getAlertTypes = (args: BaseEndpointArgs) => {
   const { userAgent } = args;
   return simpleGetRequest<AlertTypes>({
@@ -186,9 +239,15 @@ export const getAlertTypes = (args: BaseEndpointArgs) => {
   });
 };
 
+/**
+ * Get alerts in {@link Format.Atom | Atom} format.
+ */
 export const getAlertsAtom = (args: GetAlertsArgs = {}) =>
   requestInFormat(args, Format.Atom, isString, getAlertsInternal);
 
+/**
+ * Get alerts in {@link Format.GeoJson | GeoJSON} format.
+ */
 export const getAlertsGeoJson = (args: GetAlertsArgs = {}) =>
   requestInFormat(
     args,
@@ -197,6 +256,9 @@ export const getAlertsGeoJson = (args: GetAlertsArgs = {}) =>
     getAlertsInternal
   );
 
+/**
+ * Get alerts in {@link Format.JsonLd | JSON-LD} format.
+ */
 export const getAlertsJsonLd = (args: GetAlertsArgs = {}) =>
   requestInFormat(
     args,
@@ -205,6 +267,9 @@ export const getAlertsJsonLd = (args: GetAlertsArgs = {}) =>
     getAlertsInternal
   );
 
+/**
+ * Get alerts given a URI in {@link Format.GeoJson | GeoJSON} format.
+ */
 export const getAlertsByUriGeoJson = (args: GetAlertsByUriArgs) =>
   requestInFormat(
     args,
@@ -213,6 +278,9 @@ export const getAlertsByUriGeoJson = (args: GetAlertsByUriArgs) =>
     getAlertsByUriInternal
   );
 
+/**
+ * Get alerts given a URI in {@link Format.JsonLd | JSON-LD} format.
+ */
 export const getAlertsByUriJsonLd = (args: GetAlertsByUriArgs) =>
   requestInFormat(
     args,
