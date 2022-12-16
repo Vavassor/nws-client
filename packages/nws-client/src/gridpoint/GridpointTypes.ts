@@ -78,6 +78,16 @@ type WindDirection =
   | "NW"
   | "NNW";
 
+/**
+ * Enable future and experimental features.
+ *
+ * - forecast_temperature_qv - Represent temperature as QuantitativeValue.
+ * - forecast_wind_speed_qv - Represent wind speed as QuantitativeValue.
+ */
+export type GetGridpointForecastFeatureFlag =
+  | "forecast_temperature_qv"
+  | "forecast_wind_speed_qv";
+
 /** Raw forecast data for a 2.5km grid square. */
 export interface Gridpoint {
   "@context"?: JsonLdContext;
@@ -372,8 +382,8 @@ export interface GridpointForecastPeriod {
    *
    * This property as an integer value is deprecated. Future
    * versions will express this value as a quantitative value object. To make
-   * use of the future standard format now, set the "forecast_temperature_qv"
-   * feature flag on the request.
+   * use of the future standard format now, set the `forecast_temperature_qv`
+   * {@link GetGridpointForecastFeatureFlag | feature flag} on the request.
    */
   temperature: number | QuantitativeValue;
   /**
@@ -394,8 +404,8 @@ export interface GridpointForecastPeriod {
    *
    * This property as an string value is deprecated. Future versions will
    * express this value as a quantitative value object. To make use of the
-   * future standard format now, set the "forecast_wind_speed_qv" feature flag
-   * on the request.
+   * future standard format now, set the "forecast_wind_speed_qv"
+   * {@link GetGridpointForecastFeatureFlag | feature flag} on the request.
    */
   windGust?: string | QuantitativeValue;
   /**
@@ -403,8 +413,8 @@ export interface GridpointForecastPeriod {
    *
    * This property as an string value is deprecated. Future versions will
    * express this value as a quantitative value object. To make use of the
-   * future standard format now, set the "forecast_wind_speed_qv" feature flag
-   * on the request.
+   * future standard format now, set the "forecast_wind_speed_qv"
+   * {@link GetGridpointForecastFeatureFlag | feature flag} on the request.
    */
   windSpeed: string | QuantitativeValue;
 }

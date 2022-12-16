@@ -21,6 +21,7 @@ import {
   isGridpointJsonLd,
 } from "./GridpointTypeguards";
 import {
+  GetGridpointForecastFeatureFlag,
   GridpointForecastGeoJson,
   GridpointForecastJsonLd,
   GridpointGeoJson,
@@ -66,15 +67,8 @@ interface GetGridpointStationsByUriArgs extends BaseEndpointArgs {
 }
 
 /**
- * Enable future and experimental features.
- *
- * forecast_temperature_qv - Represent temperature as QuantitativeValue.
- * forecast_wind_speed_qv - Represent wind speed as QuantitativeValue.
+ * Get a gridpoint in {@link Format.GeoJson | GeoJSON} format.
  */
-export type GetGridpointForecastFeatureFlag =
-  | "forecast_temperature_qv"
-  | "forecast_wind_speed_qv";
-
 export const getGridpointGeoJson = (args: GetGridpointArgs) =>
   requestInFormat(
     args,
@@ -83,9 +77,15 @@ export const getGridpointGeoJson = (args: GetGridpointArgs) =>
     getGridpointInternal
   );
 
+/**
+ * Get a gridpoint in {@link Format.JsonLd | JSON-LD} format.
+ */
 export const getGridpointJsonLd = (args: GetGridpointArgs) =>
   requestInFormat(args, Format.JsonLd, isGridpointJsonLd, getGridpointInternal);
 
+/**
+ * Get a gridpoint given a URI in {@link Format.GeoJson | GeoJSON} format.
+ */
 export const getGridpointByUriGeoJson = (args: GetGridpointByUriArgs) =>
   requestInFormat(
     args,
@@ -94,6 +94,10 @@ export const getGridpointByUriGeoJson = (args: GetGridpointByUriArgs) =>
     getGridpointByUriInternal
   );
 
+
+/**
+ * Get a gridpoint given a URI in {@link Format.JsonLd | JSON-LD} format.
+ */
 export const getGridpointByUriJsonLd = (args: GetGridpointByUriArgs) =>
   requestInFormat(
     args,
@@ -102,9 +106,15 @@ export const getGridpointByUriJsonLd = (args: GetGridpointByUriArgs) =>
     getGridpointByUriInternal
   );
 
+/**
+ * Get the forecast for a gridpoint in {@link Format.Dwml | DWML} format.
+ */
 export const getGridpointForecastDwml = (args: GetGridpointForecastArgs) =>
   requestInFormat(args, Format.Dwml, isString, getGridpointForecastInternal);
 
+/**
+ * Get the forecast for a gridpoint in {@link Format.GeoJson | GeoJSON} format.
+ */
 export const getGridpointForecastGeoJson = (args: GetGridpointForecastArgs) =>
   requestInFormat(
     args,
@@ -113,6 +123,9 @@ export const getGridpointForecastGeoJson = (args: GetGridpointForecastArgs) =>
     getGridpointForecastInternal
   );
 
+/**
+ * Get the forecast for a gridpoint in {@link Format.JsonLd | JSON-LD} format.
+ */
 export const getGridpointForecastJsonLd = (args: GetGridpointForecastArgs) =>
   requestInFormat(
     args,
@@ -121,6 +134,9 @@ export const getGridpointForecastJsonLd = (args: GetGridpointForecastArgs) =>
     getGridpointForecastInternal
   );
 
+/**
+ * Get a gridpoint forecast given a URI in {@link Format.Dwml | DWML} format.
+ */
 export const getGridpointForecastByUriDwml = (
   args: GetGridpointForecastByUriArgs
 ) =>
@@ -131,6 +147,10 @@ export const getGridpointForecastByUriDwml = (
     getGridpointForecastByUriInternal
   );
 
+/**
+ * Get a gridpoint forecast given a URI in
+ * {@link Format.GeoJson | GeoJSON} format.
+ */
 export const getGridpointForecastByUriGeoJson = (
   args: GetGridpointForecastByUriArgs
 ) =>
@@ -141,6 +161,10 @@ export const getGridpointForecastByUriGeoJson = (
     getGridpointForecastByUriInternal
   );
 
+/**
+ * Get a gridpoint forecast given a URI in
+ * {@link Format.JsonLd | JSON-LD} format.
+ */
 export const getGridpointForecastByUriJsonLd = (
   args: GetGridpointForecastByUriArgs
 ) =>
@@ -151,6 +175,9 @@ export const getGridpointForecastByUriJsonLd = (
     getGridpointForecastByUriInternal
   );
 
+/**
+ * Get an hourly gridpoint forecast in {@link Format.Dwml | DWML} format.
+ */
 export const getGridpointForecastHourlyDwml = (
   args: GetGridpointForecastArgs
 ) =>
@@ -161,6 +188,9 @@ export const getGridpointForecastHourlyDwml = (
     getGridpointForecastHourlyInternal
   );
 
+/**
+ * Get an hourly gridpoint forecast in {@link Format.GeoJson | GeoJSON} format.
+ */
 export const getGridpointForecastHourlyGeoJson = (
   args: GetGridpointForecastArgs
 ) =>
@@ -171,6 +201,9 @@ export const getGridpointForecastHourlyGeoJson = (
     getGridpointForecastHourlyInternal
   );
 
+/**
+ * Get an hourly gridpoint forecast in {@link Format.JsonLd | JSON-LD} format.
+ */
 export const getGridpointForecastHourlyJsonLd = (
   args: GetGridpointForecastArgs
 ) =>
@@ -181,6 +214,10 @@ export const getGridpointForecastHourlyJsonLd = (
     getGridpointForecastHourlyInternal
   );
 
+/**
+ * Get an hourly gridpoint forecast given a URI in
+ * {@link Format.Dwml | DWML} format.
+ */
 export const getGridpointForecastHourlyByUriDwml = (
   args: GetGridpointForecastByUriArgs
 ) =>
@@ -191,6 +228,10 @@ export const getGridpointForecastHourlyByUriDwml = (
     getGridpointForecastHourlyByUriInternal
   );
 
+/**
+ * Get an hourly gridpoint forecast given a URI in
+ * {@link Format.GeoJson | GeoJSON} format.
+ */
 export const getGridpointForecastHourlyByUriGeoJson = (
   args: GetGridpointForecastByUriArgs
 ) =>
@@ -201,6 +242,10 @@ export const getGridpointForecastHourlyByUriGeoJson = (
     getGridpointForecastHourlyByUriInternal
   );
 
+/**
+ * Get an hourly gridpoint forecast given a URI in
+ * {@link Format.JsonLd | JSON-LD} format.
+ */
 export const getGridpointForecastHourlyByUriJsonLd = (
   args: GetGridpointForecastByUriArgs
 ) =>
@@ -211,6 +256,10 @@ export const getGridpointForecastHourlyByUriJsonLd = (
     getGridpointForecastHourlyByUriInternal
   );
 
+/**
+ * Get observations stations within a gridpoint in
+ * {@link Format.GeoJson | GeoJSON} format.
+ */
 export const getGridpointStationsGeoJson = (args: GetGridpointStationsArgs) =>
   requestInFormat(
     args,
@@ -219,6 +268,10 @@ export const getGridpointStationsGeoJson = (args: GetGridpointStationsArgs) =>
     getGridpointStationsInternal
   );
 
+/**
+ * Get observations stations within a gridpoint in
+ * {@link Format.JsonLd | JSON-LD} format.
+ */
 export const getGridpointStationsJsonLd = (args: GetGridpointStationsArgs) =>
   requestInFormat(
     args,
@@ -227,6 +280,10 @@ export const getGridpointStationsJsonLd = (args: GetGridpointStationsArgs) =>
     getGridpointStationsInternal
   );
 
+/**
+ * Get observations stations within a gridpoint, given a URI, in
+ * {@link Format.GeoJson | GeoJSON} format.
+ */
 export const getGridpointStationsByUriGeoJson = (
   args: GetGridpointStationsByUriArgs
 ) =>
@@ -237,6 +294,10 @@ export const getGridpointStationsByUriGeoJson = (
     getGridpointStationsByUriInternal
   );
 
+/**
+ * Get observations stations within a gridpoint, given a URI, in
+ * {@link Format.JsonLd | JSON-LD} format.
+ */
 export const getGridpointStationsByUriJsonLd = (
   args: GetGridpointStationsByUriArgs
 ) =>
