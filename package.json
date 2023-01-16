@@ -23,7 +23,7 @@
     "docs": "typedoc --options typedoc.json",
     "docs:external": "typedoc --options typedoc.json --out ../_site/api",
     "g:clean": "cd $INIT_CWD && rimraf build",
-    "g:test": "cd $INIT_CWD && jest",
+    "g:test": "cd $INIT_CWD && jest --ci",
     "g:tsc": "cd $INIT_CWD && tsc",
     "lint": "eslint . --ext .js,.ts",
     "prettier:all": "prettier --write ."
