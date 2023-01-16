@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "build": "yarn run g:clean && node ../../scripts/build && node ../../scripts/copy-files",
-    "test": "cd ../.. && jest"
+    "test": "cd ../.. && yarn run g:test"
   },
   "repository": {
     "type": "git",

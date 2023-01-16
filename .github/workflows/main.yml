@@ -22,4 +22,4 @@ jobs:
           
       - name: Test
         run: |
-          yarn workspaces foreach run test
+          yarn workspace @vavassor/nws-client test
