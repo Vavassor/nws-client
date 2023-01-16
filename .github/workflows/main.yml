@@ -10,6 +10,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
+
+      - name: Set Yarn 3.x
+        run: |
+          corepack enable
+          corepack prepare yarn@stable --activate
           
       - name: Install
         run: |
